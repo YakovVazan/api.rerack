@@ -1,0 +1,5 @@
+[[headers]]
+  # Define which paths this should apply to
+  for = "/*.jsx"
+  [headers.values]
+    Content-Type = "text/javascript"
