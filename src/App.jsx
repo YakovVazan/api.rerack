@@ -12,15 +12,12 @@ const App = () => {
 
   return (
     <>
-      <SeekingContext.Provider value={(setSearchBoxValue, setView)}>
+      <SeekingContext.Provider value={{ setSearchBoxValue, setView }}>
         <Nav />
+        <DataContext.Provider value={{ PluginsList, searchBoxValue, view }}>
+          <Body />
+        </DataContext.Provider>
       </SeekingContext.Provider>
-
-      <DataContext.Provider
-        value={{ PluginsList, searchBoxValue, view, setView }}
-      >
-        <Body />
-      </DataContext.Provider>
     </>
   );
 };

@@ -7,7 +7,7 @@ nav {
     padding: 10px;
     color: rgb(100, 100, 100);
     z-index: 1000;
-    height: 9vh;
+    height: 3.5em;
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -2,7 +2,11 @@ import { useContext } from "react";
 import SeekingContext from "../../../assets/Seeking/SeekingContext.jsx";
 
 const SearchBox = () => {
-  const setSearchBoxValue = useContext(SeekingContext);
+  const setSearchBoxValue = useContext(SeekingContext)["setSearchBoxValue"];
+
+  function handleSearchBox(value) {
+    setSearchBoxValue(value.toLowerCase());
+  }
 
   return (
     <>
@@ -24,9 +28,7 @@ const SearchBox = () => {
           type="text"
           className="form-control"
           placeholder="Search"
-          onInput={(event) =>
-            setSearchBoxValue(event.target.value.toLowerCase())
-          }
+          onInput={(event) => handleSearchBox(event.target.value)}
         />
       </div>
     </>

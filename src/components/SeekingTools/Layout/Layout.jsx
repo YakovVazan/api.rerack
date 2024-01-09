@@ -2,7 +2,7 @@ import { useContext } from "react";
 import SeekingContext from "../../../assets/Seeking/SeekingContext.jsx";
 
 const Layout = () => {
-  const setView = useContext(SeekingContext);
+  const setView = useContext(SeekingContext)["setView"];
 
   function handleViewClick(value) {
     setView(value);
