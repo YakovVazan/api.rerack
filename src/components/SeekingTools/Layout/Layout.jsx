@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import DataContext from "../../../assets/Data/DataContext";
+import SeekingContext from "../../../assets/Seeking/SeekingContext.jsx";
 
 const Layout = () => {
-  const setView = useContext(DataContext)["setView"];
+  const setView = useContext(SeekingContext);
 
   function handleViewClick(value) {
     setView(value);
