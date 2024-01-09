@@ -37,7 +37,7 @@ const Filter = () => {
           type="button"
           className="btn btn-warning"
           title="galery view"
-          onClick={() => handleViewClick("galery")}
+          onClick={() => handleViewClick("gallery")}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

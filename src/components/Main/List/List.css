@@ -16,18 +16,18 @@
     text-overflow: ellipsis;
 }
 
-.galery-ul {
+.ul-gallery {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     padding: 0;
 }
 
-.galery-li {
+.li-gallery {
     margin: 0.5em;
 }
 
-.plugin-item-galery {
+.plugin-item-gallery {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -35,11 +35,11 @@
     width: 29%;
 }
 
-.plugin-image-galery {
+.plugin-image-gallery {
     height: 100%;
 }
 
-.plugin-name-galery {
+.plugin-name-gallery {
     width: 50%;
     white-space: nowrap;
     overflow: hidden;
