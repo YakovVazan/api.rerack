@@ -40,20 +40,39 @@ const List = () => {
             onMouseUp={handleFocusEnd}
             onTouchEnd={handleFocusEnd}
           >
-            <img
-              className={`card-img-top ${
-                view === "list" ? "plugin-image-list" : "plugin-image-gallery"
-              }`}
-              src={plug["src"]}
-              alt={plug["name"]}
-            />
-            <span
-              className={
-                view === " list" ? "plugin-name-list" : "plugin-name-gallery"
-              }
+            <div
+              className={view === "list" ? "img-and-text-container-list" : "img-and-text-container-gallery"}
             >
-              {plug["name"]}
-            </span>
+              <img
+                className={`card-img-top ${
+                  view === "list" ? "plugin-image-list" : "plugin-image-gallery"
+                }`}
+                src={plug["src"]}
+                alt={plug["name"]}
+              />
+              <div
+                className={
+                  view === "list" ? "name-and-manufacturer-container-list" : "card-body"
+                }
+              >
+                <span
+                  className={
+                    view === "list" ? "plugin-name-list" : "plugin-name-gallery"
+                  }
+                >
+                  {plug["name"]}
+                </span>
+                <span
+                  className={
+                    view === "gallery"
+                      ? "d-none"
+                      : "manufacturer-container-list"
+                  }
+                >
+                  {plug["manufacturer"]}
+                </span>
+              </div>
+            </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"

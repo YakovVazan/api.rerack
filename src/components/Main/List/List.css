@@ -9,8 +9,30 @@
     width: 30%;
 }
 
-.plugin-name-list {
+.img-and-text-container-list {
+    display: flex;
+}
+
+.img-and-text-container-gallery {
+    height: 80%;
+    width: 100%;
+}
+
+.manufacturer-container-list {
+    color: rgb(117, 117, 117);
+}
+
+.name-and-manufacturer-container-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 1em;
     width: 50%;
+}
+
+.plugin-name-list {
+    width: 80%;
+    font-size: 1.5em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -40,11 +62,14 @@
 }
 
 .plugin-name-gallery {
-    width: 50%;
+    display: block;
+    width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
+    font-size: 1em;
+    font-weight:bold;
 }
 
 .hide-plugin-arrow {
