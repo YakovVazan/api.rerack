@@ -1,0 +1,39 @@
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #dbdbdb;
+    padding: 10px;
+    color: rgb(100, 100, 100);
+    z-index: 1000;
+    height: 9vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h1 {
+    margin: 0;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+    #search-box-in-nav-container {
+        display: none;
+    }
+
+    #hamburger-for-side-bar {
+        display: block;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #search-box-in-nav-container {
+        display: block;
+    }
+
+    #hamburger-for-side-bar {
+        display: none;
+    }
+}

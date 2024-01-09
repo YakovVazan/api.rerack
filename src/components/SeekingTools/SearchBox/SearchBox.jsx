@@ -1,13 +1,12 @@
 import { useContext } from "react";
 import SeekingContext from "../../../assets/Seeking/SeekingContext.jsx";
-import "./SearchBox.css";
 
 const SearchBox = () => {
   const setSearchBoxValue = useContext(SeekingContext);
 
   return (
     <>
-      <div id="plugins-filter" className="input-group">
+      <div className="input-group">
         <span className="input-group-text" id="basic-addon1">
           <svg
             xmlns="http://www.w3.org/2000/svg"

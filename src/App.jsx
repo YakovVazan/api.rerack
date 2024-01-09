@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Header from "./components/Header/Header.jsx";
+import Nav from './components/Header/Nav/Nav.jsx'
 import PluginData from "./assets/Data/Data.jsx";
 import DataContext from "./assets/Data/DataContext.jsx";
 import Body from "./components/Main/Body/Body.jsx";
@@ -13,7 +13,7 @@ const App = () => {
   return (
     <>
       <SeekingContext.Provider value={setSearchBoxValue}>
-        <Header />
+        <Nav />
       </SeekingContext.Provider>
 
       <DataContext.Provider

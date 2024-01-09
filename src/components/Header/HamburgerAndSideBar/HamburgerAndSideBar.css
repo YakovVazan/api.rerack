@@ -1,0 +1,15 @@
+#offcanvasRight {
+    width: 75%;
+}
+
+#filter-and-layout-container-for-small-screens {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+@media screen and (min-width: 576px) {
+    #offcanvasRight {
+        width: 50%;
+    }
+}

@@ -4,7 +4,7 @@ import "./FilterAndLayout.css";
 
 const FilterAndLayout = () => {
   return (
-    <div id="filter-and-layout-container">
+    <div id="filter-and-layout-container-for-big-screens">
       <Layout />
       <Filter />
     </div>
