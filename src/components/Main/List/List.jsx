@@ -29,7 +29,7 @@ const List = () => {
             } ${
               searchBoxValue === "" ||
               plug["name"].toLowerCase().includes(searchBoxValue)
-                ? selectedItem === index
+                ? view === "list" && selectedItem === index
                   ? "active"
                   : ""
                 : "d-none"

@@ -32,7 +32,7 @@
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    width: 29%;
+    width: 20em;
 }
 
 .plugin-image-gallery {
@@ -44,6 +44,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: center;
 }
 
 .hide-plugin-arrow {
