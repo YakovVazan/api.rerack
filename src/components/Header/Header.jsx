@@ -29,7 +29,6 @@ const Header = ({ setSearchBoxValue }) => {
             type="text"
             className="form-control"
             placeholder="Search"
-            autoFocus
             onInput={(event) => handleInput(event.target.value)}
           />
         </div>
