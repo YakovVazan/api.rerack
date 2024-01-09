@@ -75,7 +75,8 @@ const List = () => {
                       : "manufacturer-and-type-container-list"
                   }
                 >
-                  <span title="manufacturer">{plug["manufacturer"]} - </span>
+                  <span title="manufacturer">{plug["manufacturer"]}</span>
+                  <span id="manufacturer-and-type-dash-list">{" - "}</span>
                   <span title="type">{plug["type"]}</span>
                 </span>
               </div>

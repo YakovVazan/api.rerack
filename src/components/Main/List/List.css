@@ -79,3 +79,14 @@
         font-size: 2em;
     }
 }
+
+@media screen and (max-width: 440px) {
+    .manufacturer-and-type-container-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #manufacturer-and-type-dash-list {
+        display: none;
+    }
+}
