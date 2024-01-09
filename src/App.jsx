@@ -3,6 +3,7 @@ import Header from "./components/Header/Header.jsx";
 import PluginData from "./assets/Data/Data.jsx";
 import DataContext from "./assets/Data/DataContext.jsx";
 import Body from "./components/Main/Body/Body.jsx";
+import SeekingContext from "./assets/Seeking/SeekingContext.jsx";
 
 const App = () => {
   const PluginsList = PluginData[0];
@@ -11,7 +12,10 @@ const App = () => {
 
   return (
     <>
-      <Header setSearchBoxValue={setSearchBoxValue} />
+      <SeekingContext.Provider value={setSearchBoxValue}>
+        <Header />
+      </SeekingContext.Provider>
+
       <DataContext.Provider
         value={{ PluginsList, searchBoxValue, view, setView }}
       >

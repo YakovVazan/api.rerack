@@ -13,10 +13,6 @@ nav {
     justify-content: space-between;
 }
 
-#plugins-filter {
-    width: 50%;
-}
-
 h1 {
     margin: 0;
     font-weight: bold;

@@ -18,7 +18,7 @@
     width: 100%;
 }
 
-.manufacturer-container-list {
+.manufacturer-and-type-container-list {
     color: rgb(117, 117, 117);
 }
 
@@ -68,8 +68,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
-    font-size: 1em;
-    font-weight:bold;
 }
 
 .hide-plugin-arrow {

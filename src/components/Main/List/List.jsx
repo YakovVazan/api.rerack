@@ -41,7 +41,11 @@ const List = () => {
             onTouchEnd={handleFocusEnd}
           >
             <div
-              className={view === "list" ? "img-and-text-container-list" : "img-and-text-container-gallery"}
+              className={
+                view === "list"
+                  ? "img-and-text-container-list"
+                  : "img-and-text-container-gallery"
+              }
             >
               <img
                 className={`card-img-top ${
@@ -52,7 +56,9 @@ const List = () => {
               />
               <div
                 className={
-                  view === "list" ? "name-and-manufacturer-container-list" : "card-body"
+                  view === "list"
+                    ? "name-and-manufacturer-container-list"
+                    : "card-body"
                 }
               >
                 <span
@@ -66,10 +72,11 @@ const List = () => {
                   className={
                     view === "gallery"
                       ? "d-none"
-                      : "manufacturer-container-list"
+                      : "manufacturer-and-type-container-list"
                   }
                 >
-                  {plug["manufacturer"]}
+                  <span title="manufacturer">{plug["manufacturer"]} - </span>
+                  <span title="type">{plug["type"]}</span>
                 </span>
               </div>
             </div>
