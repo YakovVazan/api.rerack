@@ -2,8 +2,8 @@ import SearchBox from "../../SeekingTools/SearchBox/SearchBox.jsx";
 import Layout from "../../SeekingTools/Layout/Layout";
 import Filter from "../../SeekingTools/Filter/Filter";
 import TypeDropDown from "../../SeekingTools/DropDowns/TypeDropDown/TypeDropDown.jsx";
-import "./HamburgerAndSideBar.css";
 import ManuDropDown from "../../SeekingTools/DropDowns/ManuDropDown/ManuDropDown.jsx";
+import "./HamburgerAndSideBar.css";
 
 const HamburgerAndSideBar = () => {
   return (

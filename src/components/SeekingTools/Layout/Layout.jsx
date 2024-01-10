@@ -1,8 +1,10 @@
 import { useContext } from "react";
-import SeekingContext from "../../../assets/Seeking/SeekingContext.jsx";
+import Context from "../../../assets/Context/Context.jsx";
 
 const Layout = () => {
-  const setView = useContext(SeekingContext)["setView"];
+  const data = useContext(Context);
+  const setView = data["setView"];
+  const view = data["view"];
 
   function handleViewClick(value) {
     setView(value);
@@ -13,7 +15,9 @@ const Layout = () => {
       <div className="btn-group" role="group">
         <button
           type="button"
-          className="btn btn-warning"
+          className={`btn btn-outline-secondary ${
+            view === "list" ? "active" : ""
+          }`}
           title="list view"
           onClick={() => handleViewClick("list")}
         >
@@ -33,7 +37,9 @@ const Layout = () => {
         </button>
         <button
           type="button"
-          className="btn btn-warning"
+          className={`btn btn-outline-secondary ${
+            view === "gallery" ? "active" : ""
+          }`}
           title="galery view"
           onClick={() => handleViewClick("gallery")}
         >

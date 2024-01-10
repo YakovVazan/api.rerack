@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import SeekingContext from "../../../../assets/Seeking/SeekingContext.jsx";
 import Data from "../../../../assets/Data/Data.jsx";
+import Context from "../../../../assets/Context/Context.jsx";
 import "./ManuDropDown.css";
 
 const TypeDropDown = () => {
-  const setManuFilterValue = useContext(SeekingContext)["setManuFilterValue"];
+  const setManuFilterValue = useContext(Context)["setManuFilterValue"];
   const ManusList = [...new Set(Data.map((plug) => plug.manufacturer))];
 
   function handleClick(manuName) {

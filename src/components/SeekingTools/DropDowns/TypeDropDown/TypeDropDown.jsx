@@ -1,10 +1,10 @@
 import { useContext } from "react";
-import SeekingContext from "../../../../assets/Seeking/SeekingContext.jsx";
 import Data from "../../../../assets/Data/Data.jsx";
+import Context from "../../../../assets/Context/Context.jsx";
 import "./TypeDropDown.css";
 
 const TypeDropDown = () => {
-  const setTypeFilterValue = useContext(SeekingContext)["setTypeFilterValue"];
+  const setTypeFilterValue = useContext(Context)["setTypeFilterValue"];
   const uniqueType = new Set();
 
   Data.forEach((plug) => {

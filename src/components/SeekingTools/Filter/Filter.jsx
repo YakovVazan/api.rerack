@@ -1,7 +1,11 @@
 const Filter = () => {
   return (
     <>
-      <div className="btn btn-warning" data-bs-toggle="dropdown" title="filter">
+      <div
+        className="btn btn-outline-secondary"
+        data-bs-toggle="dropdown"
+        title="filter"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"

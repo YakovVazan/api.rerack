@@ -17,6 +17,7 @@
 
 .plugin-image-list {
     width: 30%;
+    border-radius: calc(.25rem - 1px);
 }
 
 .img-and-text-container-list {

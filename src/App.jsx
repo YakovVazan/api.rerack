@@ -1,9 +1,8 @@
 import { useState } from "react";
-import Nav from "./components/Header/Nav/Nav.jsx";
 import PluginData from "./assets/Data/Data.jsx";
-import DataContext from "./assets/Data/DataContext.jsx";
+import Context from "./assets/Context/Context.jsx";
+import Nav from "./components/Header/Nav/Nav.jsx";
 import Body from "./components/Main/Body/Body.jsx";
-import SeekingContext from "./assets/Seeking/SeekingContext.jsx";
 
 const App = () => {
   const PluginsList = PluginData;
@@ -14,27 +13,22 @@ const App = () => {
 
   return (
     <>
-      <SeekingContext.Provider
+      <Context.Provider
         value={{
           setSearchBoxValue,
           setTypeFilterValue,
           setManuFilterValue,
           setView,
+          PluginsList,
+          searchBoxValue,
+          typeFilterValue,
+          manuFilterValue,
+          view,
         }}
       >
         <Nav />
-        <DataContext.Provider
-          value={{
-            PluginsList,
-            searchBoxValue,
-            typeFilterValue,
-            manuFilterValue,
-            view,
-          }}
-        >
-          <Body />
-        </DataContext.Provider>
-      </SeekingContext.Provider>
+        <Body />
+      </Context.Provider>
     </>
   );
 };

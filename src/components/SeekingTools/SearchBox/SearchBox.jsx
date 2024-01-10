@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import SeekingContext from "../../../assets/Seeking/SeekingContext.jsx";
+import Context from "../../../assets/Context/Context.jsx";
 
 const SearchBox = () => {
-  const setSearchBoxValue = useContext(SeekingContext)["setSearchBoxValue"];
+  const setSearchBoxValue = useContext(Context)["setSearchBoxValue"];
 
   function handleSearchBox(value) {
     setSearchBoxValue(value.toLowerCase());

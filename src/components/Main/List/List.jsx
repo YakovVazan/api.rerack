@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
+import Context from "../../../assets/Context/Context.jsx";
 import "./List.css";
-import DataContext from "../../../assets/Data/DataContext.jsx";
 
 const List = () => {
-  const data = useContext(DataContext);
+  const data = useContext(Context);
   const pluginsData = data["PluginsList"];
   const searchBoxValue = data["searchBoxValue"];
   const typeFilterValue = data["typeFilterValue"];
@@ -53,10 +53,16 @@ const List = () => {
               }
             >
               <img
-                className={`card-img-top ${
-                  view === "list" ? "plugin-image-list" : "plugin-image-gallery"
+                className={
+                  view === "list"
+                    ? "plugin-image-list"
+                    : "card-img-top plugin-image-gallery"
+                }
+                src={`${
+                  plug["src"] !== ""
+                    ? plug["src"]
+                    : "https://res.cloudinary.com/soundbetter/image/upload/c_fill,f_auto,g_face:auto,h_630,q_90,w_1200/v1504776435/assets/photos/46753/yv_fhs.jpg"
                 }`}
-                src={plug["src"]}
                 alt={plug["name"]}
               />
               <div
