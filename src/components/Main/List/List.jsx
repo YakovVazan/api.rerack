@@ -4,8 +4,10 @@ import DataContext from "../../../assets/Data/DataContext.jsx";
 
 const List = () => {
   const data = useContext(DataContext);
-  const pluginsData = data["PluginsList"]["FabFilter"];
+  const pluginsData = data["PluginsList"];
   const searchBoxValue = data["searchBoxValue"];
+  const typeFilterValue = data["typeFilterValue"];
+  const manuFilterValue = data["manuFilterValue"];
   const view = data["view"];
   const [selectedItem, setSelectedItem] = useState(-1);
 
@@ -27,8 +29,11 @@ const List = () => {
                 ? "plugin-item-list list-group-item"
                 : "plugin-item-gallery li-gallery card"
             } ${
-              searchBoxValue === "" ||
-              plug["name"].toLowerCase().includes(searchBoxValue)
+              (searchBoxValue === "" ||
+                plug["name"].toLowerCase().includes(searchBoxValue)) &&
+              (typeFilterValue === "" || plug["type"] === typeFilterValue) &&
+              (manuFilterValue === "" ||
+                plug["manufacturer"] === manuFilterValue)
                 ? view === "list" && selectedItem === index
                   ? "active"
                   : ""

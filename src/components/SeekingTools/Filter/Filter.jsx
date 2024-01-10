@@ -16,9 +16,9 @@ const Filter = () => {
 
       {/* filter drop down */}
       <ul className="dropdown-menu">
-        <li className="dropdown-item">alphabetically</li>
         <li className="dropdown-item">manufacturer</li>
         <li className="dropdown-item">Type</li>
+        <li className="dropdown-item">A-Z</li>
       </ul>
     </>
   );

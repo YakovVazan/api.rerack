@@ -6,15 +6,32 @@ import Body from "./components/Main/Body/Body.jsx";
 import SeekingContext from "./assets/Seeking/SeekingContext.jsx";
 
 const App = () => {
-  const PluginsList = PluginData[0];
+  const PluginsList = PluginData;
   const [searchBoxValue, setSearchBoxValue] = useState("");
+  const [typeFilterValue, setTypeFilterValue] = useState("");
+  const [manuFilterValue, setManuFilterValue] = useState("");
   const [view, setView] = useState("list");
 
   return (
     <>
-      <SeekingContext.Provider value={{ setSearchBoxValue, setView }}>
+      <SeekingContext.Provider
+        value={{
+          setSearchBoxValue,
+          setTypeFilterValue,
+          setManuFilterValue,
+          setView,
+        }}
+      >
         <Nav />
-        <DataContext.Provider value={{ PluginsList, searchBoxValue, view }}>
+        <DataContext.Provider
+          value={{
+            PluginsList,
+            searchBoxValue,
+            typeFilterValue,
+            manuFilterValue,
+            view,
+          }}
+        >
           <Body />
         </DataContext.Provider>
       </SeekingContext.Provider>

@@ -2,6 +2,19 @@
     width: 75%;
 }
 
+#typeDownsContainer {
+    display: flex;
+    justify-content: center;
+}
+
+#typeDownsContainer>* {
+    width: 50%;
+}
+
+.search-button-container>*:first-child {
+    width: 100%;
+}
+
 #filter-and-layout-container-for-small-screens {
     display: flex;
     width: 100%;

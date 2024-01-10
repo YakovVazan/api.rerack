@@ -27,7 +27,7 @@ const SearchBox = () => {
           id="plugins-filter-input"
           type="text"
           className="form-control"
-          placeholder="Search"
+          placeholder="Search by name"
           onInput={(event) => handleSearchBox(event.target.value)}
         />
       </div>

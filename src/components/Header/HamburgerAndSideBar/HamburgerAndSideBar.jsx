@@ -1,7 +1,9 @@
 import SearchBox from "../../SeekingTools/SearchBox/SearchBox.jsx";
 import Layout from "../../SeekingTools/Layout/Layout";
 import Filter from "../../SeekingTools/Filter/Filter";
+import TypeDropDown from "../../SeekingTools/DropDowns/TypeDropDown/TypeDropDown.jsx";
 import "./HamburgerAndSideBar.css";
+import ManuDropDown from "../../SeekingTools/DropDowns/ManuDropDown/ManuDropDown.jsx";
 
 const HamburgerAndSideBar = () => {
   return (
@@ -47,6 +49,11 @@ const HamburgerAndSideBar = () => {
         </div>
         <div className="offcanvas-body">
           <SearchBox />
+          <hr className="dropdown-divider"></hr>
+          <div id="typeDownsContainer">
+            <TypeDropDown />
+            <ManuDropDown />
+          </div>
           <hr className="dropdown-divider"></hr>
           <div id="filter-and-layout-container-for-small-screens">
             <Layout />
