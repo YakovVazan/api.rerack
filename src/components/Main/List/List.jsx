@@ -88,7 +88,7 @@ const List = () => {
                 >
                   <span title="manufacturer">{plug["manufacturer"]}</span>
                   <span id="manufacturer-and-type-dash-list">{" - "}</span>
-                  <span title="type">{plug["type"]}</span>
+                  <span className="type-list" title="type">{plug["type"]}</span>
                 </span>
               </div>
             </div>

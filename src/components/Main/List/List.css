@@ -95,6 +95,13 @@
     .manufacturer-and-type-container-list {
         display: flex;
         flex-direction: column;
+        /* width: 100%; */
+    }
+
+    .type-list {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     #manufacturer-and-type-dash-list {

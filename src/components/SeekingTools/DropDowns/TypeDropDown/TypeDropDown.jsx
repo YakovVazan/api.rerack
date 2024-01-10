@@ -14,7 +14,7 @@ const TypeDropDown = () => {
   const TypesList = [...uniqueType];
 
   function handleClick(typeName) {
-    document.querySelector("#type-filter").innerHTML =
+    document.querySelector("#inner-button-text-type").innerHTML =
       typeName !== "" ? typeName : "type";
     setTypeFilterValue(typeName);
   }
@@ -29,10 +29,10 @@ const TypeDropDown = () => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          type
+          <span id="inner-button-text-type">type</span>
         </button>
         {/* filter drop down */}
-        <ul className="dropdown-menu">
+        <ul className="dropdown-menu" id="type-drop-down">
           <div className="dropdown-item" onClick={() => handleClick("")}>
             all
           </div>
