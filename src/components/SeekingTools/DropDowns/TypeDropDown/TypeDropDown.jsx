@@ -4,7 +4,8 @@ import Context from "../../../../assets/Context/Context.jsx";
 import "./TypeDropDown.css";
 
 const TypeDropDown = () => {
-  const setTypeFilterValue = useContext(Context)["setTypeFilterValue"];
+  const data = useContext(Context);
+  const setTypeFilterValue = data["setTypeFilterValue"];
   const uniqueType = new Set();
 
   Data.forEach((plug) => {
@@ -14,8 +15,9 @@ const TypeDropDown = () => {
   const TypesList = [...uniqueType];
 
   function handleClick(typeName) {
-    document.querySelector("#inner-button-text-type").innerHTML =
-      typeName !== "" ? typeName : "type";
+    document.querySelectorAll(".inner-button-text-type").forEach((element) => {
+      element.innerHTML = typeName !== "" ? typeName : "type";
+    });
     setTypeFilterValue(typeName);
   }
 
@@ -29,7 +31,7 @@ const TypeDropDown = () => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <span id="inner-button-text-type">type</span>
+          <span className="inner-button-text-type">type</span>
         </button>
         {/* filter drop down */}
         <ul className="dropdown-menu" id="type-drop-down">

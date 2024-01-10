@@ -5,7 +5,7 @@
     border-bottom-left-radius: 0px;
 }
 
-#inner-button-text-manu {
+.inner-button-text-manu {
     display: block;
     width: 80%;
     white-space: nowrap;

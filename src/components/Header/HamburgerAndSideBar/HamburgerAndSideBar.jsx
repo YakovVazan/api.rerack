@@ -50,7 +50,7 @@ const HamburgerAndSideBar = () => {
         <div className="offcanvas-body">
           <SearchBox />
           <hr className="dropdown-divider"></hr>
-          <div id="typeDownsContainer">
+          <div id="dropDownsContainer">
             <TypeDropDown />
             <ManuDropDown />
           </div>

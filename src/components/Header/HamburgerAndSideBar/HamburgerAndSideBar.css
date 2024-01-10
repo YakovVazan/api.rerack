@@ -2,12 +2,12 @@
     width: 75%;
 }
 
-#typeDownsContainer {
+#dropDownsContainer {
     display: flex;
     justify-content: center;
 }
 
-#typeDownsContainer>* {
+#dropDownsContainer>* {
     width: 50%;
 }
 

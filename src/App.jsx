@@ -6,10 +6,10 @@ import Body from "./components/Main/Body/Body.jsx";
 
 const App = () => {
   const PluginsList = PluginData;
+  const [view, setView] = useState("list");
   const [searchBoxValue, setSearchBoxValue] = useState("");
   const [typeFilterValue, setTypeFilterValue] = useState("");
   const [manuFilterValue, setManuFilterValue] = useState("");
-  const [view, setView] = useState("list");
 
   return (
     <>

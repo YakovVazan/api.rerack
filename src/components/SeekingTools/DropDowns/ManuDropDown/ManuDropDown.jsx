@@ -8,8 +8,12 @@ const TypeDropDown = () => {
   const ManusList = [...new Set(Data.map((plug) => plug.manufacturer))];
 
   function handleClick(manuName) {
-    document.querySelector("#inner-button-text-manu").innerHTML =
-      manuName !== "" ? manuName : "factory";
+    document
+      .querySelectorAll(".inner-button-text-manu")
+      .forEach(
+        (element) =>
+          (element.innerHTML = manuName !== "" ? manuName : "factory")
+      );
     setManuFilterValue(manuName);
   }
 
@@ -23,7 +27,7 @@ const TypeDropDown = () => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <span id="inner-button-text-manu">factory</span>
+          <span className="inner-button-text-manu">factory</span>
         </button>
         {/* filter drop down */}
         <ul className="dropdown-menu">

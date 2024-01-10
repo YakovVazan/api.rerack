@@ -1,12 +1,12 @@
-import Layout from "../../SeekingTools/Layout/Layout";
-import Filter from "../../SeekingTools/Filter/Filter";
+import Layout from "../Layout/Layout";
+import Filter from "../Filter/Filter";
 import "./FilterAndLayout.css";
 
 const FilterAndLayout = () => {
   return (
     <div id="filter-and-layout-container-for-big-screens">
-      <Layout />
       <Filter />
+      <Layout />
     </div>
   );
 };
