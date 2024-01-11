@@ -403,4 +403,11 @@ const PluginData = [
   },
 ];
 
+// Set generic default photo when it's missing
+PluginData.forEach((plug) => {
+  if (plug.src === "")
+    plug.src =
+      "https://res.cloudinary.com/soundbetter/image/upload/c_fill,f_auto,g_face:auto,h_630,q_90,w_1200/v1504776435/assets/photos/46753/yv_fhs.jpg";
+});
+
 export default PluginData;

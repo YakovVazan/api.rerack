@@ -1,3 +1,4 @@
 #main-container {
     margin-top: 3.5em;
+    display: flex;
 }

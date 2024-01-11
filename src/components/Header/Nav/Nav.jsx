@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import SearchBox from "../../SeekingTools/SearchBox/SearchBox.jsx";
 import TypeDropDown from "../../SeekingTools/DropDowns/TypeDropDown/TypeDropDown.jsx";
 import ManuDropDown from "../../SeekingTools/DropDowns/ManuDropDown/ManuDropDown.jsx";
@@ -8,7 +9,9 @@ import "./Nav.css";
 const Header = () => {
   return (
     <nav>
-      <h1>Plugins</h1>
+      <Link to="/" id="logo-name">
+        <h1>Plugins</h1>
+      </Link>
       <div id="elements-in-nav-container">
         <FilterAndLayout />
 
