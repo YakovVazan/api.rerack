@@ -5,7 +5,6 @@ import Nav from "./components/Header/Nav/Nav.jsx";
 import Body from "./components/Main/Body/Body.jsx";
 
 const App = () => {
-  const PluginsList = PluginData;
   const [view, setView] = useState("list");
   const [searchBoxValue, setSearchBoxValue] = useState("");
   const [typeFilterValue, setTypeFilterValue] = useState("");
@@ -19,7 +18,7 @@ const App = () => {
           setTypeFilterValue,
           setManuFilterValue,
           setView,
-          PluginsList,
+          PluginData,
           searchBoxValue,
           typeFilterValue,
           manuFilterValue,

@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import Data from "../../../../assets/Data/Data.jsx";
 import Context from "../../../../assets/Context/Context.jsx";
+import { ResetManuValue } from "../../../../assets/ResetFactors/ResetFactors.jsx";
 import "./ManuDropDown.css";
 
 const TypeDropDown = () => {
@@ -8,18 +9,17 @@ const TypeDropDown = () => {
   const ManusList = [...new Set(Data.map((plug) => plug.manufacturer))];
 
   function handleClick(manuName) {
-    document
-      .querySelectorAll(".inner-button-text-manu")
-      .forEach(
-        (element) =>
-          (element.innerHTML = manuName !== "" ? manuName : "factory")
-      );
+    ResetManuValue(manuName);
+
     setManuFilterValue(manuName);
   }
 
   return (
     <>
-      <div className="dropdown-center search-button-container">
+      <div
+        className="dropdown-center search-button-container"
+        title="manufacturer"
+      >
         <button
           id="manu-filter"
           className="btn btn-outline-secondary dropdown-toggle"

@@ -3,7 +3,7 @@ const PluginData = [
     manufacturer: "FabFilter",
     name: "Micro",
     src: "https://www.fabfilter.com/img/products/micro-screenshot.jpg",
-    type: "Saturation/Tape Emulation", // Example type, please verify based on the plugin's actual function
+    type: "Saturation/Tape Emulation",
   },
   {
     manufacturer: "FabFilter",

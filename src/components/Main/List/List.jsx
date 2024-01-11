@@ -4,7 +4,7 @@ import "./List.css";
 
 const List = () => {
   const data = useContext(Context);
-  const pluginsData = data["PluginsList"];
+  const pluginsData = data["PluginData"];
   const searchBoxValue = data["searchBoxValue"];
   const typeFilterValue = data["typeFilterValue"];
   const manuFilterValue = data["manuFilterValue"];

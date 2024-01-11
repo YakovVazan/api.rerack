@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import Data from "../../../../assets/Data/Data.jsx";
 import Context from "../../../../assets/Context/Context.jsx";
+import { ResetTypeValue } from "../../../../assets/ResetFactors/ResetFactors.jsx";
 import "./TypeDropDown.css";
 
 const TypeDropDown = () => {
@@ -15,15 +16,14 @@ const TypeDropDown = () => {
   const TypesList = [...uniqueType];
 
   function handleClick(typeName) {
-    document.querySelectorAll(".inner-button-text-type").forEach((element) => {
-      element.innerHTML = typeName !== "" ? typeName : "type";
-    });
+    ResetTypeValue(typeName);
+
     setTypeFilterValue(typeName);
   }
 
   return (
     <>
-      <div className="dropdown-center search-button-container">
+      <div className="dropdown-center search-button-container" title="Type">
         <button
           id="type-filter"
           className="btn btn-outline-secondary dropdown-toggle"
