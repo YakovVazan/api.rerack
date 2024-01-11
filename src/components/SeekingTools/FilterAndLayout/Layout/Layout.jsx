@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import Context from "../../../assets/Context/Context.jsx";
+import Context from "../../../../assets/Context/Context.jsx";
 
 const Layout = () => {
   const data = useContext(Context);
@@ -7,6 +7,7 @@ const Layout = () => {
   const view = data["view"];
 
   function handleViewClick(value) {
+    localStorage.setItem("rerackView", value);
     setView(value);
   }
 

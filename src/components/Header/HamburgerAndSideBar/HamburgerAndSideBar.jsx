@@ -1,6 +1,6 @@
 import SearchBox from "../../SeekingTools/SearchBox/SearchBox.jsx";
-import Layout from "../../SeekingTools/Layout/Layout";
-import Filter from "../../SeekingTools/Filter/Filter";
+import Layout from "../../SeekingTools/FilterAndLayout/Layout/Layout.jsx";
+import Filter from "../../SeekingTools/FilterAndLayout/Filter/Filter.jsx";
 import TypeDropDown from "../../SeekingTools/DropDowns/TypeDropDown/TypeDropDown.jsx";
 import ManuDropDown from "../../SeekingTools/DropDowns/ManuDropDown/ManuDropDown.jsx";
 import "./HamburgerAndSideBar.css";

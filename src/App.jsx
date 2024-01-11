@@ -5,7 +5,9 @@ import Nav from "./components/Header/Nav/Nav.jsx";
 import Body from "./components/Main/Body/Body.jsx";
 
 const App = () => {
-  const [view, setView] = useState("list");
+  const [view, setView] = useState(
+    localStorage.getItem("rerackView") === "list" ? "list" : "gallery"
+  );
   const [searchBoxValue, setSearchBoxValue] = useState("");
   const [typeFilterValue, setTypeFilterValue] = useState("");
   const [manuFilterValue, setManuFilterValue] = useState("");

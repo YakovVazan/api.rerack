@@ -1,5 +1,5 @@
-import Layout from "../Layout/Layout";
-import Filter from "../Filter/Filter";
+import Layout from "./Layout/Layout.jsx";
+import Filter from "./Filter/Filter.jsx";
 import "./FilterAndLayout.css";
 
 const FilterAndLayout = () => {
