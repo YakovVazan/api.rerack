@@ -8,7 +8,7 @@ const ListItem = () => {
   return (
     <>
       <div className="list-item-container">
-      <div className="card">
+      <div className="card list-item">
         <img src={state["src"]} className="card-img-top" alt={state["name"]} />
         <div className="card-body">
           <h1 className="card-title">{state["name"]}</h1>
