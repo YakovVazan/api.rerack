@@ -26,6 +26,8 @@ const SearchBox = () => {
           className="btn btn-outline-secondary input-group-text"
           type="button"
           title="search"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

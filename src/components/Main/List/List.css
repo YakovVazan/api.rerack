@@ -29,11 +29,11 @@
     width: 100%;
 }
 
-.manufacturer-and-type-container-list {
+.company-and-type-container-list {
     color: rgb(117, 117, 117);
 }
 
-.name-and-manufacturer-container-list {
+.name-and-company-container-list {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -104,7 +104,7 @@
 }
 
 @media screen and (max-width: 440px) {
-    .manufacturer-and-type-container-list {
+    .company-and-type-container-list {
         display: flex;
         flex-direction: column;
         /* width: 100%; */
@@ -116,7 +116,7 @@
         text-overflow: ellipsis;
     }
 
-    #manufacturer-and-type-dash-list {
+    #company-and-type-dash-list {
         display: none;
     }
 }

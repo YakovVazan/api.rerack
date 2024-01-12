@@ -18,6 +18,6 @@ export const ResetManuValue = (manuName) => {
   document
     .querySelectorAll(".inner-button-text-manu")
     .forEach(
-      (element) => (element.innerHTML = manuName !== "" ? manuName : "factory")
+      (element) => (element.innerHTML = manuName !== "" ? manuName : "company")
     );
 };

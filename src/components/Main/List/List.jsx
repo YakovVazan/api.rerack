@@ -42,7 +42,7 @@ const List = () => {
                   plug["name"].toLowerCase().includes(searchBoxValue)) &&
                 (typeFilterValue === "" || plug["type"] === typeFilterValue) &&
                 (manuFilterValue === "" ||
-                  plug["manufacturer"] === manuFilterValue)
+                  plug["company"] === manuFilterValue)
                   ? view === "list" && selectedItem === index
                     ? "active"
                     : ""
@@ -73,7 +73,7 @@ const List = () => {
                 <div
                   className={
                     view === "list"
-                      ? "name-and-manufacturer-container-list"
+                      ? "name-and-company-container-list"
                       : "card-body"
                   }
                 >
@@ -90,11 +90,11 @@ const List = () => {
                     className={
                       view === "gallery"
                         ? "d-none"
-                        : "manufacturer-and-type-container-list"
+                        : "company-and-type-container-list"
                     }
                   >
-                    <span title="manufacturer">{plug["manufacturer"]}</span>
-                    <span id="manufacturer-and-type-dash-list">{" - "}</span>
+                    <span title="company">{plug["company"]}</span>
+                    <span id="company-and-type-dash-list">{" - "}</span>
                     <span className="type-list" title="type">
                       {plug["type"]}
                     </span>

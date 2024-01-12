@@ -6,7 +6,7 @@ import "./ManuDropDown.css";
 
 const TypeDropDown = () => {
   const setManuFilterValue = useContext(Context)["setManuFilterValue"];
-  const ManusList = [...new Set(Data.map((plug) => plug.manufacturer))];
+  const ManusList = [...new Set(Data.map((plug) => plug.company))];
 
   function handleClick(manuName) {
     ResetManuValue(manuName);
@@ -18,7 +18,7 @@ const TypeDropDown = () => {
     <>
       <div
         className="dropdown-center search-button-container"
-        title="manufacturer"
+        title="company"
       >
         <button
           id="manu-filter"
@@ -27,7 +27,7 @@ const TypeDropDown = () => {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <span className="inner-button-text-manu">factory</span>
+          <span className="inner-button-text-manu">company</span>
         </button>
         {/* filter drop down */}
         <ul className="dropdown-menu">
