@@ -41,8 +41,7 @@ const List = () => {
                 (searchBoxValue === "" ||
                   plug["name"].toLowerCase().includes(searchBoxValue)) &&
                 (typeFilterValue === "" || plug["type"] === typeFilterValue) &&
-                (manuFilterValue === "" ||
-                  plug["company"] === manuFilterValue)
+                (manuFilterValue === "" || plug["company"] === manuFilterValue)
                   ? view === "list" && selectedItem === index
                     ? "active"
                     : ""
