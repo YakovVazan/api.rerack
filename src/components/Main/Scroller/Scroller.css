@@ -6,7 +6,7 @@
     position: fixed;
     height: 100px;
     right: -2em;
-    top: 92%;
+    bottom: -8%;
     color: #6c757d;
     cursor: pointer;
     transition: right 0.2s ease-in;
