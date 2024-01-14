@@ -1,10 +1,25 @@
+import { useContext, useEffect } from "react";
+import Context from "../../../../assets/Context/Context";
+import SortData from "../../../../assets/Data/SortData"; //////////////////////////////////////////////////////////
+
 const Filter = () => {
+  const data = useContext(Context);
+
+  function handleClick(query) {
+    data["setOrderedData"](SortData(query));
+  }
+
+  // set initial sort by name
+  useEffect(() => {
+    handleClick("");
+  }, []);
+
   return (
     <>
       <div
         className="btn btn-outline-secondary"
         data-bs-toggle="dropdown"
-        title="filter"
+        title="filter A-Z"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -20,9 +35,15 @@ const Filter = () => {
 
       {/* filter drop down */}
       <ul className="dropdown-menu">
-        <li className="dropdown-item">A-Z</li>
-        <li className="dropdown-item">Type</li>
-        <li className="dropdown-item">company</li>
+        <li className="dropdown-item" onClick={() => handleClick("name")}>
+          Name
+        </li>
+        <li className="dropdown-item" onClick={() => handleClick("type")}>
+          Type
+        </li>
+        <li className="dropdown-item" onClick={() => handleClick("company")}>
+          company
+        </li>
       </ul>
     </>
   );

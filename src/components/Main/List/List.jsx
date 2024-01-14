@@ -5,7 +5,7 @@ import "./List.css";
 
 const List = () => {
   const data = useContext(Context);
-  const pluginsData = data["PluginData"];
+  const orderedData = data["orderedData"];
   const searchBoxValue = data["searchBoxValue"];
   const typeFilterValue = data["typeFilterValue"];
   const companyFilterValue = data["companyFilterValue"];
@@ -19,8 +19,8 @@ const List = () => {
     ).length;
 
     if (
-      (view === "list" && hiddenElements == pluginsData.length) ||
-      (view === "gallery" && hiddenElements == pluginsData.length * 2)
+      (view === "list" && hiddenElements == orderedData.length) ||
+      (view === "gallery" && hiddenElements == orderedData.length * 2)
     ) {
       document.querySelector("#none-found-message").style.display = "block";
     } else {
@@ -39,7 +39,7 @@ const List = () => {
   return (
     <>
       <ul className={view === "list" ? "list-group" : "ul-gallery"}>
-        {pluginsData.map((plug, index) => (
+        {orderedData.map((plug, index) => (
           <Link
             className="item-link"
             to={{
@@ -59,7 +59,8 @@ const List = () => {
                 (searchBoxValue === "" ||
                   plug["name"].toLowerCase().includes(searchBoxValue)) &&
                 (typeFilterValue === "" || plug["type"] === typeFilterValue) &&
-                (companyFilterValue === "" || plug["company"] === companyFilterValue)
+                (companyFilterValue === "" ||
+                  plug["company"] === companyFilterValue)
                   ? view === "list" && selectedItem === index
                     ? "active"
                     : ""

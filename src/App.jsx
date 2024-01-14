@@ -11,16 +11,18 @@ const App = () => {
   const [searchBoxValue, setSearchBoxValue] = useState("");
   const [typeFilterValue, setTypeFilterValue] = useState("");
   const [companyFilterValue, setCompanyFilterValue] = useState("");
+  const [orderedData, setOrderedData] = useState(PluginData);
 
   return (
     <>
       <Context.Provider
         value={{
+          setOrderedData,
           setSearchBoxValue,
           setTypeFilterValue,
           setCompanyFilterValue,
           setView,
-          PluginData,
+          orderedData,
           searchBoxValue,
           typeFilterValue,
           companyFilterValue,

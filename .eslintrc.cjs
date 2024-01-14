@@ -12,6 +12,7 @@ module.exports = {
   settings: { react: { version: "18.2" } },
   plugins: ["react-refresh"],
   rules: {
+    "react-hooks/exhaustive-deps": "off",
     "react/prop-types": "off",
     "react/jsx-key": [0, { checkFragmentShorthand: true }],
     "react-refresh/only-export-components": [

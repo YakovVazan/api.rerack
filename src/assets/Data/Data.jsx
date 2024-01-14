@@ -410,4 +410,8 @@ PluginData.forEach((plug) => {
       "https://res.cloudinary.com/soundbetter/image/upload/c_fill,f_auto,g_face:auto,h_630,q_90,w_1200/v1504776435/assets/photos/46753/yv_fhs.jpg";
 });
 
+// PluginData.sort((a, b) => a.name.localeCompare(b.name));
+// PluginData.sort((a, b) => a.company.localeCompare(b.company));
+// PluginData.sort((a, b) => a.type.localeCompare(b.type));
+
 export default PluginData;
