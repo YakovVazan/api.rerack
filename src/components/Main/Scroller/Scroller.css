@@ -1,0 +1,17 @@
+#scroller-container {
+    position: relative;
+}
+
+#scroller {
+    position: fixed;
+    height: 100px;
+    right: -2em;
+    top: 92%;
+    color: #6c757d;
+    cursor: pointer;
+    transition: right 0.2s ease-in;
+}
+
+#scroller:active {
+    color: #b6b8b9;
+}
