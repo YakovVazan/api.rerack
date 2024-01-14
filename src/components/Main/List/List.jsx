@@ -14,10 +14,10 @@ const List = () => {
 
   // control 'no plugs found' message
   useEffect(() => {
-    let hiddenElements = Array.from(
+    const hiddenElements = Array.from(
       document.querySelectorAll(".d-none")
     ).length;
-    
+
     if (
       (view === "list" && hiddenElements == pluginsData.length) ||
       (view === "gallery" && hiddenElements == pluginsData.length * 2)
