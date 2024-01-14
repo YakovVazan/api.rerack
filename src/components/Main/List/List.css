@@ -92,9 +92,16 @@
     display: none;
 }
 
-.item-link{
+.item-link {
     text-decoration: none;
-    color: #212529!important;
+    color: #212529 !important;
+}
+
+#none-found-message {
+    display: none;
+    align-self: center;
+    padding: 1em;
+    text-align: center;
 }
 
 @media screen and (min-width: 767px) {
@@ -107,7 +114,6 @@
     .company-and-type-container-list {
         display: flex;
         flex-direction: column;
-        /* width: 100%; */
     }
 
     .type-list {

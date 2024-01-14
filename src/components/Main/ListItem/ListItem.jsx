@@ -6,7 +6,7 @@ import "./ListItem.css";
 const ListItem = () => {
   const { name } = useParams();
   const pluginsList = useContext(Context)["PluginData"];
-  const pluginNames = pluginsList.map((plug) => plug.name);
+  const pluginNames = pluginsList.map((plug) => plug.name.replace(/ /g, "_").toLowerCase());
   const location = useLocation();
   const { state } = location;
 

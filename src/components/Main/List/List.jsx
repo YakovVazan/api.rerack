@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Context from "../../../assets/Context/Context.jsx";
 import "./List.css";
 
@@ -11,6 +11,18 @@ const List = () => {
   const manuFilterValue = data["manuFilterValue"];
   const view = data["view"];
   const [selectedItem, setSelectedItem] = useState(-1);
+
+  // control 'no plugs found' message
+  useEffect(() => {
+    if (
+      Array.from(document.querySelectorAll(".d-none")).length ==
+      pluginsData.length
+    ) {
+      document.querySelector("#none-found-message").style.display = "block";
+    } else {
+      document.querySelector("#none-found-message").style.display = "none";
+    }
+  });
 
   function handleFocusStart(focuesItem) {
     setSelectedItem(focuesItem);
@@ -27,7 +39,9 @@ const List = () => {
           <Link
             className="item-link"
             to={{
-              pathname: `/plug/${plug["name"].replace(/ /g, "_")}`,
+              pathname: `/plug/${plug["name"]
+                .replace(/ /g, "_")
+                .toLowerCase()}`,
             }}
             state={plug}
             key={index}
@@ -119,6 +133,9 @@ const List = () => {
           </Link>
         ))}
       </ul>
+      <span id="none-found-message">
+        Nothing to see here, try another search query.
+      </span>
     </>
   );
 };
