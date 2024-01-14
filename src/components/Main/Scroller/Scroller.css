@@ -10,6 +10,7 @@
     color: #6c757d;
     cursor: pointer;
     transition: right 0.2s ease-in;
+    transition: top 0.2s ease-in;
 }
 
 #scroller:active {
