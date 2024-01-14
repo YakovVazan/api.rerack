@@ -14,7 +14,7 @@ const SearchBox = () => {
   function resetAllFactors() {
     contextData["setSearchBoxValue"]("");
     contextData["setTypeFilterValue"]("");
-    contextData["setManuFilterValue"]("");
+    contextData["setCompanyFilterValue"]("");
 
     ResetAllFactors();
   }

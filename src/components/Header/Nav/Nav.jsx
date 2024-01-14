@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import SearchBox from "../../SeekingTools/SearchBox/SearchBox.jsx";
 import TypeDropDown from "../../SeekingTools/DropDowns/TypeDropDown/TypeDropDown.jsx";
-import ManuDropDown from "../../SeekingTools/DropDowns/ManuDropDown/ManuDropDown.jsx";
+import CompanyDropDown from "../../SeekingTools/DropDowns/CompanyDropDown/CompanyDropDown.jsx";
 import FilterAndLayout from "../../SeekingTools/FilterAndLayout/FilterAndLayout.jsx";
 import HamburgerAndSideBar from "../HamburgerAndSideBar/HamburgerAndSideBar";
 import plugsNames from "../../../assets/Data/PlugsNames.jsx";
@@ -44,7 +44,7 @@ const Header = () => {
 
             <div id="drop-down-in-nav-container">
               <TypeDropDown />
-              <ManuDropDown />
+              <CompanyDropDown />
             </div>
 
             <SearchBox />

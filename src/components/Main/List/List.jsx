@@ -8,7 +8,7 @@ const List = () => {
   const pluginsData = data["PluginData"];
   const searchBoxValue = data["searchBoxValue"];
   const typeFilterValue = data["typeFilterValue"];
-  const manuFilterValue = data["manuFilterValue"];
+  const companyFilterValue = data["companyFilterValue"];
   const view = data["view"];
   const [selectedItem, setSelectedItem] = useState(-1);
 
@@ -59,7 +59,7 @@ const List = () => {
                 (searchBoxValue === "" ||
                   plug["name"].toLowerCase().includes(searchBoxValue)) &&
                 (typeFilterValue === "" || plug["type"] === typeFilterValue) &&
-                (manuFilterValue === "" || plug["company"] === manuFilterValue)
+                (companyFilterValue === "" || plug["company"] === companyFilterValue)
                   ? view === "list" && selectedItem === index
                     ? "active"
                     : ""

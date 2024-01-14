@@ -2,7 +2,7 @@ import SearchBox from "../../SeekingTools/SearchBox/SearchBox.jsx";
 import Layout from "../../SeekingTools/FilterAndLayout/Layout/Layout.jsx";
 import Filter from "../../SeekingTools/FilterAndLayout/Filter/Filter.jsx";
 import TypeDropDown from "../../SeekingTools/DropDowns/TypeDropDown/TypeDropDown.jsx";
-import ManuDropDown from "../../SeekingTools/DropDowns/ManuDropDown/ManuDropDown.jsx";
+import CompanyDropDown from "../../SeekingTools/DropDowns/CompanyDropDown/CompanyDropDown.jsx";
 import "./HamburgerAndSideBar.css";
 
 const HamburgerAndSideBar = () => {
@@ -52,7 +52,7 @@ const HamburgerAndSideBar = () => {
           <hr className="dropdown-divider"></hr>
           <div id="dropDownsContainer">
             <TypeDropDown />
-            <ManuDropDown />
+            <CompanyDropDown />
           </div>
           <hr className="dropdown-divider"></hr>
           <div id="filter-and-layout-container-for-small-screens">

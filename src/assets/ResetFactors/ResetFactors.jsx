@@ -5,7 +5,7 @@ export const ResetAllFactors = () => {
     .forEach((element) => (element.value = ""));
 
   ResetTypeValue("");
-  ResetManuValue("");
+  ResetCompanyValue("");
 };
 
 export const ResetTypeValue = (typeName) => {
@@ -14,10 +14,10 @@ export const ResetTypeValue = (typeName) => {
   });
 };
 
-export const ResetManuValue = (manuName) => {
+export const ResetCompanyValue = (companyName) => {
   document
-    .querySelectorAll(".inner-button-text-manu")
+    .querySelectorAll(".inner-button-text-company")
     .forEach(
-      (element) => (element.innerHTML = manuName !== "" ? manuName : "company")
+      (element) => (element.innerHTML = companyName !== "" ? companyName : "company")
     );
 };

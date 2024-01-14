@@ -10,7 +10,7 @@ const App = () => {
   );
   const [searchBoxValue, setSearchBoxValue] = useState("");
   const [typeFilterValue, setTypeFilterValue] = useState("");
-  const [manuFilterValue, setManuFilterValue] = useState("");
+  const [companyFilterValue, setCompanyFilterValue] = useState("");
 
   return (
     <>
@@ -18,12 +18,12 @@ const App = () => {
         value={{
           setSearchBoxValue,
           setTypeFilterValue,
-          setManuFilterValue,
+          setCompanyFilterValue,
           setView,
           PluginData,
           searchBoxValue,
           typeFilterValue,
-          manuFilterValue,
+          companyFilterValue,
           view,
         }}
       >
