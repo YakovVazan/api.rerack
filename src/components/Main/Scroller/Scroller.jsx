@@ -4,7 +4,7 @@ import "./Scroller.css";
 const Scroller = () => {
   useEffect(() => {
     function handleScroll() {
-      if (document.documentElement.scrollTop > 200) {
+      if (document.documentElement.scrollTop > 400) {
         document.querySelector("#scroller").style.right = "1em";
       } else {
         document.querySelector("#scroller").style.right = "-2em";
