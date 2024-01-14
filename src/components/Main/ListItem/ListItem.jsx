@@ -1,18 +1,15 @@
-import { useContext } from "react";
 import { useLocation, useParams, Navigate } from "react-router-dom";
-import Context from "../../../assets/Context/Context.jsx";
+import plugsNames from "../../../assets/Data/PlugsNames.jsx";
 import "./ListItem.css";
 
 const ListItem = () => {
   const { name } = useParams();
-  const pluginsList = useContext(Context)["PluginData"];
-  const pluginNames = pluginsList.map((plug) => plug.name.replace(/ /g, "_").toLowerCase());
   const location = useLocation();
   const { state } = location;
 
   return (
     <>
-      {pluginNames.includes(name) ? (
+      {plugsNames.includes(name) ? (
         <div className="list-item-container">
           <div className="card list-item">
             <img
