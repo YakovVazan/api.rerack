@@ -27,7 +27,6 @@ const SearchBox = () => {
           type="button"
           title="search"
           data-bs-dismiss="offcanvas"
-          aria-label="Close"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -50,6 +49,7 @@ const SearchBox = () => {
           className="btn btn-outline-secondary"
           type="button"
           title="reset factors"
+          data-bs-dismiss="offcanvas"
           onClick={resetAllFactors}
         >
           <svg
