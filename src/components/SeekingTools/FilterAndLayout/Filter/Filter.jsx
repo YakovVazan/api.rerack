@@ -1,18 +1,14 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import Context from "../../../../assets/Context/Context";
-import SortData from "../../../../assets/Data/SortData"; //////////////////////////////////////////////////////////
+import SortData from "../../../../assets/Data/SortData";
 
 const Filter = () => {
   const data = useContext(Context);
 
   function handleClick(query) {
+    data["setOrderBy"](query);
     data["setOrderedData"](SortData(query));
   }
-
-  // set initial sort by name
-  useEffect(() => {
-    handleClick("");
-  }, []);
 
   return (
     <>

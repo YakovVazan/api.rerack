@@ -1,8 +1,8 @@
 import { useState } from "react";
-import PluginData from "./assets/Data/Data.jsx";
 import Context from "./assets/Context/Context.jsx";
 import Nav from "./components/Header/Nav/Nav.jsx";
 import Body from "./components/Main/Body/Body.jsx";
+import SortData from "./assets/Data/SortData.jsx";
 
 const App = () => {
   const [view, setView] = useState(
@@ -11,17 +11,20 @@ const App = () => {
   const [searchBoxValue, setSearchBoxValue] = useState("");
   const [typeFilterValue, setTypeFilterValue] = useState("");
   const [companyFilterValue, setCompanyFilterValue] = useState("");
-  const [orderedData, setOrderedData] = useState(PluginData);
+  const [orderBy, setOrderBy] = useState("name");
+  const [orderedData, setOrderedData] = useState(SortData("name"));
 
   return (
     <>
       <Context.Provider
         value={{
+          setOrderBy,
           setOrderedData,
           setSearchBoxValue,
           setTypeFilterValue,
           setCompanyFilterValue,
           setView,
+          orderBy,
           orderedData,
           searchBoxValue,
           typeFilterValue,

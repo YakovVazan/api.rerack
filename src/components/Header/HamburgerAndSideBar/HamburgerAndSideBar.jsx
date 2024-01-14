@@ -9,7 +9,7 @@ const HamburgerAndSideBar = () => {
   return (
     <>
       <div
-        className="btn btn-secondary"
+        className="btn btn-outline-secondary"
         type="button"
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasRight"
