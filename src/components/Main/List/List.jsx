@@ -12,6 +12,8 @@ const List = () => {
   const view = data["view"];
   const [selectedItem, setSelectedItem] = useState(-1);
 
+  console.log(data);
+
   // control 'no plugs found' message
   useEffect(() => {
     const hiddenElements = Array.from(
