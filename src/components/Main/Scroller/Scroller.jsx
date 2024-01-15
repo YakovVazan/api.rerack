@@ -3,23 +3,29 @@ import "./Scroller.css";
 
 const Scroller = () => {
   useEffect(() => {
+    const parentContainer = document.querySelector("#items-container");
+
     function handleScroll() {
-      if (document.documentElement.scrollTop > 400) {
-        document.querySelector("#scroller").style.right = "1em";
+      const scroller = document.querySelector("#scroller");
+
+      if (parentContainer.scrollTop > 400) {
+        scroller.style.right = "1em";
       } else {
-        document.querySelector("#scroller").style.right = "-2em";
+        scroller.style.right = "-2em";
       }
     }
 
-    window.addEventListener("scroll", handleScroll);
+    parentContainer.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      parentContainer.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   function handleClick() {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    document
+      .querySelector("#items-container")
+      .scrollTo({ top: 0, behavior: "smooth" });
   }
 
   return (

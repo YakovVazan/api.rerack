@@ -1,18 +1,28 @@
-import { Link } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect } from "react";
+import ListItem from "../ListItem/ListItem.jsx";
+import ListHeader from "../ListHeader/ListHeader.jsx";
 import Context from "../../../assets/Context/Context.jsx";
 import "./List.css";
 
 const List = () => {
   const data = useContext(Context);
   const orderedData = data["orderedData"];
-  const searchBoxValue = data["searchBoxValue"];
-  const typeFilterValue = data["typeFilterValue"];
-  const companyFilterValue = data["companyFilterValue"];
   const view = data["view"];
-  const [selectedItem, setSelectedItem] = useState(-1);
 
-  console.log(data);
+  const initials = Array.from(
+    new Set(
+      orderedData.map((piece) => {
+        if (data["orderBy"] === "name") {
+          return piece["name"][0];
+        } else {
+          return piece[data["orderBy"]];
+        }
+      })
+    )
+  );
+
+  let currentInitial = initials[0];
+  let previousInitial = currentInitial;
 
   // control 'no plugs found' message
   useEffect(() => {
@@ -30,115 +40,35 @@ const List = () => {
     }
   });
 
-  function handleFocusStart(focuesItem) {
-    setSelectedItem(focuesItem);
-  }
-
-  function handleFocusEnd() {
-    setSelectedItem(-1);
-  }
-
   return (
     <>
-      <ul className={view === "list" ? "list-group" : "ul-gallery"}>
-        {orderedData.map((plug, index) => (
-          <Link
-            className="item-link"
-            to={{
-              pathname: `/plug/${plug["name"]
-                .replace(/ /g, "_")
-                .toLowerCase()}`,
-            }}
-            state={plug}
-            key={index}
-          >
-            <li
-              className={`${
-                view === "list"
-                  ? "plugin-item-list list-group-item"
-                  : "plugin-item-gallery li-gallery card"
-              } ${
-                (searchBoxValue === "" ||
-                  plug["name"].toLowerCase().includes(searchBoxValue)) &&
-                (typeFilterValue === "" || plug["type"] === typeFilterValue) &&
-                (companyFilterValue === "" ||
-                  plug["company"] === companyFilterValue)
-                  ? view === "list" && selectedItem === index
-                    ? "active"
-                    : ""
-                  : "d-none"
-              }`}
-              key={index}
-              onMouseDown={() => handleFocusStart(index)}
-              onTouchStart={() => handleFocusStart(index)}
-              onMouseUp={handleFocusEnd}
-              onTouchEnd={handleFocusEnd}
-            >
-              <div
-                className={
-                  view === "list"
-                    ? "img-and-text-container-list"
-                    : "img-and-text-container-gallery"
-                }
-              >
-                <img
-                  className={
-                    view === "list"
-                      ? "plugin-image-list"
-                      : "card-img-top plugin-image-gallery"
-                  }
-                  src={plug["src"]}
-                  alt={plug["name"]}
-                />
-                <div
-                  className={
-                    view === "list"
-                      ? "name-and-company-container-list"
-                      : "card-body"
-                  }
-                >
-                  <span
-                    className={
-                      view === "list"
-                        ? "plugin-name-list"
-                        : "plugin-name-gallery"
-                    }
-                  >
-                    {plug["name"]}
-                  </span>
-                  <span
-                    className={
-                      view === "gallery"
-                        ? "d-none"
-                        : "company-and-type-container-list"
-                    }
-                  >
-                    <span title="company">{plug["company"]}</span>
-                    <span id="company-and-type-dash-list">{" - "}</span>
-                    <span className="type-list" title="type">
-                      {plug["type"]}
-                    </span>
-                  </span>
-                </div>
-              </div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                fill="currentColor"
-                className={`bi bi-chevron-right ${
-                  view === "gallery" && "hide-plugin-arrow"
-                }`}
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
-                />
-              </svg>
-            </li>
-          </Link>
-        ))}
+      <ul
+        id="items-container"
+        className={view === "list" ? "list-group" : "ul-gallery"}
+      >
+        {orderedData.map((plug, index) => {
+          const itsHeaderCompliance =
+            (view === "list" &&
+              data["orderBy"] === "name" &&
+              plug["name"][0] === currentInitial) ||
+            plug[data["orderBy"]] === currentInitial;
+
+          if (itsHeaderCompliance) {
+            // pick headers from initials array
+            initials.shift();
+            previousInitial = currentInitial;
+            currentInitial = initials[0];
+
+            return (
+              <Fragment key={index}>
+                <ListHeader previousInitial={previousInitial} />
+                <ListItem plug={plug} index={index} />
+              </Fragment>
+            );
+          } else {
+            return <ListItem plug={plug} index={index} key={index} />;
+          }
+        })}
       </ul>
       <span id="none-found-message">
         Nothing to see here, try another search query.
