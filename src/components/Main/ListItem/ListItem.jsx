@@ -22,7 +22,7 @@ const ListItem = ({ plug, index }) => {
     <Link
       className="item-link"
       to={{
-        pathname: `/plug/${plug["name"].replace(/ /g, "_").toLowerCase()}`,
+        pathname: `/plugs/${plug["name"].replace(/ /g, "_").toLowerCase()}`,
       }}
       state={plug}
       key={index}
@@ -83,7 +83,9 @@ const ListItem = ({ plug, index }) => {
                   : "company-and-type-container-list"
               }
             >
-              <span title="company">{plug["company"]}</span>
+              <span className="company-list" title="company">
+                {plug["company"]}
+              </span>
               <span id="company-and-type-dash-list">{" - "}</span>
               <span className="type-list" title="type">
                 {plug["type"]}

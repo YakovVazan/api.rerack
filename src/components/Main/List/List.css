@@ -1,5 +1,6 @@
 #items-container{
     overflow: auto;
+    scroll-behavior: smooth;
 }
 
 .list-group-item:last-child {

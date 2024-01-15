@@ -10,7 +10,7 @@ const Body = () => {
     <main id="main-container">
       <Routes>
         <Route path="/" element={<List />}></Route>
-        <Route path="/plug/:name" element={<PlugPage />}></Route>
+        <Route path="/plugs/:name" element={<PlugPage />}></Route>
         <Route path="/*" element={<NotFound />}></Route>
       </Routes>
       <Scroller />

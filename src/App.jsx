@@ -11,8 +11,12 @@ const App = () => {
   const [searchBoxValue, setSearchBoxValue] = useState("");
   const [typeFilterValue, setTypeFilterValue] = useState("");
   const [companyFilterValue, setCompanyFilterValue] = useState("");
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState(
+    localStorage.getItem("rerackOrder") !== null ? localStorage.getItem("rerackOrder") : "name"
+  );
   const [orderedData, setOrderedData] = useState(SortData("name"));
+
+  localStorage.setItem("rerackOrder", orderBy);
 
   return (
     <>
