@@ -14,7 +14,7 @@ const App = () => {
   const [orderBy, setOrderBy] = useState(
     localStorage.getItem("rerackOrder") !== null ? localStorage.getItem("rerackOrder") : "name"
   );
-  const [orderedData, setOrderedData] = useState(SortData("name"));
+  const [orderedData, setOrderedData] = useState(SortData(orderBy));
 
   localStorage.setItem("rerackOrder", orderBy);
 
