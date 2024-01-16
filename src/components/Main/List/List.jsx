@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import ListItem from "../ListItem/ListItem.jsx";
 import ListHeader from "../ListHeader/ListHeader.jsx";
 import Context from "../../../assets/Context/Context.jsx";
@@ -8,7 +8,6 @@ const List = () => {
   const data = useContext(Context);
   const orderedData = data["orderedData"];
   const view = data["view"];
-  const [initialAlt, setInitialAlt] = useState([]);
 
   const initials = Array.from(
     new Set(
@@ -22,26 +21,24 @@ const List = () => {
     )
   );
 
-  useEffect(() => {
-    const factor =
-      data["orderBy"] === "name"
-        ? ".plugin-name-list"
-        : `.${data["orderBy"]}-list`;
+  // useEffect(() => {
+  //   const factor =
+  //     data["orderBy"] === "name"
+  //       ? ".plugin-name-list"
+  //       : `.${data["orderBy"]}-list`;
 
-    setInitialAlt(
-      Array.from(
-        new Set(
-          Array.from(document.querySelectorAll(factor)).map((element) => {
-            return factor === ".plugin-name-list"
-              ? element.textContent[0]
-              : element.textContent;
-          })
-        )
-      )
-    );
-  }, [data["orderBy"]]);
-
-  console.log(initialAlt);
+  //   console.log(
+  //     Array.from(
+  //       new Set(
+  //         Array.from(document.querySelectorAll(factor)).map((element) => {
+  //           return factor === ".plugin-name-list"
+  //             ? element.textContent[0]
+  //             : element.textContent;
+  //         })
+  //       )
+  //     )
+  //   );
+  // });
 
   let currentInitial = initials[0];
   let previousInitial = currentInitial;
@@ -69,7 +66,11 @@ const List = () => {
         className={view === "list" ? "list-group" : "ul-gallery"}
       >
         {orderedData.map((plug, index) => {
+          console.log(data);
           const itsHeaderCompliance =
+            data["searchBoxValue"] === "" &&
+            data["companyFilterValue"] === "" &&
+            data["typeFilterValue"] === "" &&
             view === "list" &&
             ((data["orderBy"] === "name" &&
               plug["name"][0] === currentInitial) ||
