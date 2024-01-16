@@ -1,8 +1,15 @@
 import { useEffect } from "react";
 import "./Scroller.css";
+import { useLocation } from "react-router-dom";
 
 const Scroller = () => {
+  const location = useLocation();
+  
   useEffect(() => {
+    if (location.pathname !== "/") {
+      document.querySelector("#scroller").style.right = "-2em";
+      return;
+    }
     const parentContainer = document.querySelector("#items-container");
 
     function handleScroll() {
@@ -20,7 +27,7 @@ const Scroller = () => {
     return () => {
       parentContainer.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [location.pathname]);
 
   function handleClick() {
     document

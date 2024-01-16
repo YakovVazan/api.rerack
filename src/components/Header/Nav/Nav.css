@@ -6,7 +6,7 @@ nav {
     background-color: #dbdbdb;
     padding: 10px;
     color: rgb(100, 100, 100);
-    z-index: -1;
+    z-index: 4;
     height: 3.5em;
     display: flex;
     align-items: center;
