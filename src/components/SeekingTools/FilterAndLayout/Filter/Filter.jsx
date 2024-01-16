@@ -31,7 +31,9 @@ const Filter = () => {
   return (
     <>
       <div
-        className="btn btn-outline-secondary"
+        className={`btn btn-outline-secondary ${
+          data["view"] === "gallery" && "disabled"
+        }`}
         data-bs-toggle="dropdown"
         title="filter A-Z"
       >
