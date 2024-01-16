@@ -70,10 +70,10 @@ const List = () => {
       >
         {orderedData.map((plug, index) => {
           const itsHeaderCompliance =
-            (view === "list" &&
-              data["orderBy"] === "name" &&
+            view === "list" &&
+            ((data["orderBy"] === "name" &&
               plug["name"][0] === currentInitial) ||
-            plug[data["orderBy"]] === currentInitial;
+              plug[data["orderBy"]] === currentInitial);
 
           if (itsHeaderCompliance) {
             // pick headers from initials array
