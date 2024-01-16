@@ -70,8 +70,7 @@ const List = () => {
       >
         {orderedData.map((plug, index) => {
           const itsHeaderCompliance =
-            (!/iPad|iPhone|iPod/.test(navigator.userAgent) &&
-              view === "list" &&
+            (view === "list" &&
               data["orderBy"] === "name" &&
               plug["name"][0] === currentInitial) ||
             plug[data["orderBy"]] === currentInitial;

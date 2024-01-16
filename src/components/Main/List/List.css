@@ -66,6 +66,9 @@
 .item-link {
     display: flex;
     justify-content: center;
+    text-decoration: none;
+    color: #212529 !important;
+    z-index: -4;
 }
 
 .li-gallery {
@@ -98,11 +101,6 @@
     display: none;
 }
 
-.item-link {
-    text-decoration: none;
-    color: #212529 !important;
-}
-
 #none-found-message {
     display: none;
     align-self: center;
@@ -114,7 +112,7 @@
     position: sticky;
     top: 0;
     background-color: #e9e9e9;
-    z-index: 1;
+    z-index: -3;
 }
 
 
