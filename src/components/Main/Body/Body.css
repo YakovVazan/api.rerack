@@ -1,6 +1,6 @@
 #main-container {
     display: flex;
     justify-content: center;
-    max-height: calc(100vh - 3.5em);
-    /* position: fixed; */
+    height: calc(100vh - 3.5em);
+    position: fixed; /* for safari on iOS */
 }
