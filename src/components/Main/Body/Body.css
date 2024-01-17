@@ -4,7 +4,5 @@
     height: calc(100vh - 3.5em);
 
     /* for safari on iOS */
-    /* position: fixed; */
-    z-index: 3;
-    position: relative;
+    position: fixed;
 }
