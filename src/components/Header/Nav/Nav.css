@@ -3,8 +3,7 @@ nav {
     top: 0;
     left: 0;
     width: 100%;
-    /* background-color: #dbdbdb; */
-    background-color: rebeccapurple;
+    background-color: #dbdbdb;
     padding: 10px;
     color: rgb(100, 100, 100);
     z-index: 4;
