@@ -67,57 +67,45 @@ const PluginData = [
   },
   {
     company: "Acustica",
-    name: "AQUAMARINE4",
-    src: "",
+    name: "Aquamarine 4",
+    src: "https://knobcloud.com/storage/user-screenshots/Aquamarine4.jpg",
     type: "Compressor",
   },
   {
     company: "Acustica",
-    name: "AQUAMARINE4EQ",
-    src: "",
+    name: "Aquamarine 4 EQ",
+    src: "https://sounds-detour.com/wp-content/uploads/2020/11/a1e631ce78fbcc0305616344fb99932a-1024x372.png",
     type: "Vintage Passive Equalizer",
   },
   {
     company: "Acustica",
-    name: "ARCTIC",
-    src: "",
+    name: "Arctic",
+    src: "https://cms.acustica-audio.com/assets/Arctic.png",
     type: "Dynamics",
   },
   {
     company: "Acustica",
-    name: "ARCTICFLAT",
-    src: "",
-    type: "Dynamics",
-  },
-  {
-    company: "Acustica",
-    name: "BIGCEIL",
-    src: "",
+    name: "Big Ceil",
+    src: "https://cms.acustica-audio.com/assets/BigCeil-CeilCelestialCerise.png",
     type: "Compressor",
   },
   {
     company: "Acustica",
-    name: "BLACK",
-    src: "",
+    name: "Black",
+    src: "https://cms.acustica-audio.com/assets/Black.png",
     type: "Preamp",
   },
   {
     company: "Acustica",
-    name: "BLACK GURU",
-    src: "",
+    name: "Black Guru",
+    src: "https://cms.acustica-audio.com/assets/Black.png",
     type: "Preamp",
   },
   {
     company: "Acustica",
-    name: "CAMEL",
-    src: "",
+    name: "Camel",
+    src: "https://cms.acustica-audio.com/assets/Camel.png",
     type: "Channel Strip",
-  },
-  {
-    company: "Acustica",
-    name: "CAMELCOMP",
-    src: "",
-    type: "Compressor",
   },
   {
     company: "Acustica",
@@ -139,8 +127,8 @@ const PluginData = [
   },
   {
     company: "Acustica",
-    name: "CELESTIALMB",
-    src: "",
+    name: "Celestial",
+    src: "https://synthanatomy.com/wp-content/uploads/2019/12/Acustica-Audio-Celestial-Texture-Mix-Processor.png",
     type: "Psychoacoustic Mix Processor",
   },
   {
@@ -409,9 +397,5 @@ PluginData.forEach((plug) => {
     plug.src =
       "https://res.cloudinary.com/soundbetter/image/upload/c_fill,f_auto,g_face:auto,h_630,q_90,w_1200/v1504776435/assets/photos/46753/yv_fhs.jpg";
 });
-
-// PluginData.sort((a, b) => a.name.localeCompare(b.name));
-// PluginData.sort((a, b) => a.company.localeCompare(b.company));
-// PluginData.sort((a, b) => a.type.localeCompare(b.type));
 
 export default PluginData;
