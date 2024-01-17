@@ -1,7 +1,6 @@
 #items-container {
     overflow: auto;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
 }
 
 .list-group-item:last-child {
