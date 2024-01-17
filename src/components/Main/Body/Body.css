@@ -2,5 +2,5 @@
     display: flex;
     justify-content: center;
     max-height: calc(100vh - 3.5em);
-    position: fixed;
+    /* position: fixed; */
 }
