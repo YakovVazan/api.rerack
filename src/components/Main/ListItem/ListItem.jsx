@@ -55,15 +55,23 @@ const ListItem = ({ plug, index }) => {
               : "img-and-text-container-gallery"
           }
         >
-          <img
+          <div
             className={
               view === "list"
-                ? "plugin-image-list"
-                : "card-img-top plugin-image-gallery"
+                ? "image-list-container"
+                : "image-gallery-container"
             }
-            src={plug["src"]}
-            alt={plug["name"]}
-          />
+          >
+            <img
+              className={
+                view === "list"
+                  ? "plugin-image-list"
+                  : "plugin-image-gallery"
+              }
+              src={plug["src"]}
+              alt={plug["name"]}
+            />
+          </div>
           <div
             className={
               view === "list" ? "name-and-company-container-list" : "card-body"
