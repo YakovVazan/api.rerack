@@ -1,6 +1,6 @@
 #main-container {
     display: flex;
     justify-content: center;
-    height: calc(100vh - 3.5em);
-    -webkit-overflow-scrolling: touch;
+    max-height: calc(100vh - 3.5em);
+    position: fixed;
 }
