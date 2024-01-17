@@ -2,5 +2,8 @@
     display: flex;
     justify-content: center;
     height: calc(100vh - 3.5em);
-    position: fixed; /* for safari on iOS */
+
+    /* for safari on iOS */
+    position: fixed;
+    overflow: auto;
 }
