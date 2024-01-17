@@ -6,7 +6,6 @@ import NotFound from "../../../pages/NotFound/NotFound.jsx";
 import "./Body.css";
 
 const Body = () => {
-  console.log(navigator.userAgent);
   return (
     <main id="main-container">
       <Routes>
