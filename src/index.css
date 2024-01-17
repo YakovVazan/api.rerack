@@ -1,8 +1,3 @@
- html {
-     -webkit-overflow-scrolling: auto;
-     overflow: scroll;
- }
-
  /* For Firefox */
  * {
      scrollbar-width: thin;
