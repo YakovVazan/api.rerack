@@ -1,6 +1,9 @@
 #items-container {
     overflow: auto;
     scroll-behavior: smooth;
+
+    /* for safari on iOS */
+    z-index: -1;
 }
 
 .list-group-item:last-child {
@@ -68,6 +71,9 @@
     justify-content: center;
     text-decoration: none;
     color: #212529 !important;
+
+    /* for safari on iOS */
+    z-index: -1;
 }
 
 .li-gallery {
