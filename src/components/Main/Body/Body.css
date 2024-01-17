@@ -5,5 +5,5 @@
 
     /* for safari on iOS */
     position: fixed;
-    overflow: visible;
+    overflow: scroll;
 }
