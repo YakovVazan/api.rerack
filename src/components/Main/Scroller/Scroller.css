@@ -5,10 +5,11 @@
 
 #scroller {
     position: fixed;
-    height: 100px;
     right: -2em;
-    bottom: -8%;
+    bottom: 3%;
     color: #6c757d;
+    background: rgba(219, 219, 219, 0.7);
+    border-radius: 100%;
     cursor: pointer;
     transition: right 0.2s ease-in;
 }
