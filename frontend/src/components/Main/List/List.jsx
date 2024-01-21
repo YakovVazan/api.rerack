@@ -21,6 +21,7 @@ const List = () => {
     )
   );
 
+  // layouts for keeping subheader correctly when a search applied //
   // useEffect(() => {
   //   const factor =
   //     data["orderBy"] === "name"
@@ -68,7 +69,6 @@ const List = () => {
         className={view === "list" ? "list-group" : "ul-gallery"}
       >
         {orderedData.map((plug, index) => {
-          console.log(data);
           const itsHeaderCompliance =
             data["searchBoxValue"] === "" &&
             data["companyFilterValue"] === "" &&
