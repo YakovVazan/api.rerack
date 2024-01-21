@@ -53,9 +53,11 @@ const List = () => {
       (view === "list" && hiddenElements == orderedData.length) ||
       (view === "gallery" && hiddenElements == orderedData.length * 2)
     ) {
+      document.querySelector("#items-container").style.display = "none";
       document.querySelector("#none-found-message").style.display = "block";
     } else {
       document.querySelector("#none-found-message").style.display = "none";
+      document.querySelector("#items-container").style.display = "block";
     }
   });
 

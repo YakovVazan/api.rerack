@@ -7,9 +7,10 @@ const Scroller = () => {
   
   useEffect(() => {
     if (location.pathname !== "/") {
-      document.querySelector("#scroller").style.right = "-2em";
+      document.querySelector("#scroller").style.bottom = "-8%";
       return;
     }
+
     const parentContainer = document.querySelector("#items-container");
 
     function handleScroll() {
