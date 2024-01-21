@@ -16,9 +16,9 @@ const Scroller = () => {
       const scroller = document.querySelector("#scroller");
 
       if (parentContainer.scrollTop > 400) {
-        scroller.style.right = "1em";
+        scroller.style.bottom = "3%";
       } else {
-        scroller.style.right = "-2em";
+        scroller.style.bottom = "-8%";
       }
     }
 

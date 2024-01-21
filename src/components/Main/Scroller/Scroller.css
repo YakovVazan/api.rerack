@@ -5,13 +5,13 @@
 
 #scroller {
     position: fixed;
-    right: -2em;
-    bottom: 3%;
+    right: calc(50% - 16px);
+    bottom: -8%;
     color: #6c757d;
     background: rgba(219, 219, 219, 0.7);
     border-radius: 100%;
     cursor: pointer;
-    transition: right 0.2s ease-in;
+    transition: bottom 0.2s ease-in;
 }
 
 #scroller:active {
