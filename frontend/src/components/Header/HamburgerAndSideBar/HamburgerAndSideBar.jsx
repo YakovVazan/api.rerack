@@ -3,6 +3,7 @@ import Layout from "../../SeekingTools/FilterAndLayout/Layout/Layout.jsx";
 import Filter from "../../SeekingTools/FilterAndLayout/Filter/Filter.jsx";
 import TypeDropDown from "../../SeekingTools/DropDowns/TypeDropDown/TypeDropDown.jsx";
 import CompanyDropDown from "../../SeekingTools/DropDowns/CompanyDropDown/CompanyDropDown.jsx";
+import LogingButton from "../../Auth/Login/LoginButton/LoginButton.jsx";
 import "./HamburgerAndSideBar.css";
 
 const HamburgerAndSideBar = () => {
@@ -48,18 +49,25 @@ const HamburgerAndSideBar = () => {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <SearchBox />
-          <hr className="dropdown-divider"></hr>
-          <div id="dropDownsContainer">
-            <TypeDropDown />
-            <CompanyDropDown />
+          <div id="uppder-offcanvas-body">
+            <SearchBox />
+            <hr className="dropdown-divider"></hr>
+            <div id="dropDownsContainer">
+              <TypeDropDown />
+              <CompanyDropDown />
+            </div>
+            <hr className="dropdown-divider"></hr>
+            <div id="filter-and-layout-container-for-small-screens">
+              <Layout />
+              <Filter />
+            </div>
+            <hr className="dropdown-divider"></hr>
           </div>
-          <hr className="dropdown-divider"></hr>
-          <div id="filter-and-layout-container-for-small-screens">
-            <Layout />
-            <Filter />
+
+          <div id="lower-offcanvas-body">
+            <hr className="dropdown-divider"></hr>
+            <LogingButton />
           </div>
-          <hr className="dropdown-divider"></hr>
         </div>
       </div>
     </>
