@@ -407,8 +407,7 @@ fetch("http://localhost:5174/")
     }
   })
   .then((data) => {
-    PluginData = data;
-    console.log(PluginData);
+    console.log(data);
   })
   .catch((error) => {
     console.error(error);

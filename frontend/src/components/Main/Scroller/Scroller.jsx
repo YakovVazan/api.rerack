@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 const Scroller = () => {
   const location = useLocation();
-  
+
   useEffect(() => {
     if (location.pathname !== "/") {
       document.querySelector("#scroller").style.bottom = "-8%";
