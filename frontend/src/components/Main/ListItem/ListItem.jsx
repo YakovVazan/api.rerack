@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import Context from "../../../assets/Context/Context.jsx";
+import "./ListItem.css";
 
 const ListItem = ({ plug, index }) => {
   const data = useContext(Context);
@@ -64,9 +65,7 @@ const ListItem = ({ plug, index }) => {
           >
             <img
               className={
-                view === "list"
-                  ? "plugin-image-list"
-                  : "plugin-image-gallery"
+                view === "list" ? "plugin-image-list" : "plugin-image-gallery"
               }
               src={plug["src"]}
               alt={plug["name"]}
