@@ -31,8 +31,8 @@ const ListItem = ({ plug, index }) => {
       <li
         className={`${
           view === "list"
-            ? "plugin-item-list list-group-item"
-            : "plugin-item-gallery li-gallery card"
+            ? "list-item-plugin list-group-item"
+            : "gallery-item-plugin gallery-li card"
         } ${
           (searchBoxValue === "" ||
             plug["name"].toLowerCase().includes(searchBoxValue)) &&
@@ -52,20 +52,20 @@ const ListItem = ({ plug, index }) => {
         <div
           className={
             view === "list"
-              ? "img-and-text-container-list"
-              : "img-and-text-container-gallery"
+              ? "list-img-and-text-container"
+              : "gallery-img-and-text-container"
           }
         >
           <div
             className={
               view === "list"
-                ? "image-list-container"
-                : "image-gallery-container"
+                ? "list-image-container"
+                : "gallery-image-container"
             }
           >
             <img
               className={
-                view === "list" ? "plugin-image-list" : "plugin-image-gallery"
+                view === "list" ? "list-plugin-image" : "gallery-plugin-image"
               }
               src={plug["src"]}
               alt={plug["name"]}
@@ -73,12 +73,12 @@ const ListItem = ({ plug, index }) => {
           </div>
           <div
             className={
-              view === "list" ? "name-and-company-container-list" : "card-body"
+              view === "list" ? "list-name-and-details-container" : "card-body"
             }
           >
             <span
               className={
-                view === "list" ? "plugin-name-list" : "plugin-name-gallery"
+                view === "list" ? "list-plugin-name" : "gallery-plugin-name"
               }
             >
               {plug["name"]}
@@ -87,14 +87,14 @@ const ListItem = ({ plug, index }) => {
               className={
                 view === "gallery"
                   ? "d-none"
-                  : "company-and-type-container-list"
+                  : "list-company-and-type-container"
               }
             >
               <span className="company-list" title="company">
                 {plug["company"]}
               </span>
-              <span id="company-and-type-dash-list">{" - "}</span>
-              <span className="type-list" title="type">
+              <span id="list-company-and-type-dash">{" - "}</span>
+              <span className="list-type" title="type">
                 {plug["type"]}
               </span>
             </span>

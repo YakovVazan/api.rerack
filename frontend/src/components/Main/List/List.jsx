@@ -25,14 +25,14 @@ const List = () => {
   // useEffect(() => {
   //   const factor =
   //     data["orderBy"] === "name"
-  //       ? ".plugin-name-list"
+  //       ? ".list-plugin-name"
   //       : `.${data["orderBy"]}-list`;
 
   //   console.log(
   //     Array.from(
   //       new Set(
   //         Array.from(document.querySelectorAll(factor)).map((element) => {
-  //           return factor === ".plugin-name-list"
+  //           return factor === ".list-plugin-name"
   //             ? element.textContent[0]
   //             : element.textContent;
   //         })
@@ -66,7 +66,7 @@ const List = () => {
     <>
       <ul
         id="items-container"
-        className={view === "list" ? "list-group" : "ul-gallery"}
+        className={view === "list" ? "list-group" : "gallery-ul"}
       >
         {orderedData.map((plug, index) => {
           const itsHeaderCompliance =
