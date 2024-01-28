@@ -2,7 +2,7 @@
     "type": "module",
     "scripts": {
         "start:server": "node index.js",
-        "start:client": "cd ../frontend && npm run dev",
+        "start:client": "cd ../frontend && npm run dev -- --host 0.0.0.0",
         "start:both": "concurrently \"npm run start:server\" \"npm run start:client\""
     },
     "dependencies": {
