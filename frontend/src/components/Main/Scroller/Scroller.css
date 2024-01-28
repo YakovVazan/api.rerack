@@ -5,7 +5,7 @@
 
 #scroller {
     position: fixed;
-    right: calc(50% - 16px);
+    left: calc(50% - 16px);
     bottom: -8%;
     color: #6c757d;
     background: rgba(219, 219, 219, 0.7);
