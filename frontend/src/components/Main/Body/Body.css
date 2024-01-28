@@ -4,6 +4,5 @@
     height: calc(100dvh - 3.5em);
     width: 100%;
     position: relative;
-    overflow-y: auto;
     z-index: 1;
 }

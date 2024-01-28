@@ -1,14 +1,22 @@
-import plugsModel from "../models/plugsModel.js";
+import Plug from "../models/plugsModel.js";
+
+const plugInstance = new Plug();
 
 const createPlug = (req, res) => {
   const { company, name, src, type } = req.body;
-  const newPlug = plugsModel.createPlug(company, name, src, type);
-  //   res.status(201).json(newPlug);
+  const newPlug = plugInstance.createPlug(company, name, src, type);
+  res.status(201).json(newPlug);
 };
 
-const getAllPlugs = (req, res) => {
-  const plugs = plugsModel.getAllPlugs();
-  //   res.json(plugs);
+const getAllPlugs = async (req, res) => {
+  try {
+    const plugs = await plugInstance.getAllPlugs();
+    
+    res.json(plugs);
+  } catch (error) {
+    console.error("Error fetching plugs:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 export default { createPlug, getAllPlugs };
