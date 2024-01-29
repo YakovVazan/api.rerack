@@ -1,10 +1,10 @@
 import "./LoginButton.css";
 
-const LoginButton = () => {
-  function handleClick() {
-    fetch("http://localhost:5174");
-  }
+function handleClick() {
+  console.log("login!");
+}
 
+const LoginButton = () => {
   return (
     <div id="login-button">
       <div
