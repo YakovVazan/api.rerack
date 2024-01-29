@@ -16,6 +16,7 @@ const Header = () => {
 
   return (
     <nav>
+      {/* nav bar right side */}
       <Link to="/" id="logo-name">
         <div id="nav-left">
           {isHomePage ? (
@@ -37,6 +38,8 @@ const Header = () => {
           )}
         </div>
       </Link>
+
+      {/* nav bar left side */}
       {isHomePage ? (
         <>
           <div id="elements-in-nav-container">

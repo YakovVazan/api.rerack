@@ -398,19 +398,4 @@ PluginData.forEach((plug) => {
       "https://res.cloudinary.com/soundbetter/image/upload/c_fill,f_auto,g_face:auto,h_630,q_90,w_1200/v1504776435/assets/photos/46753/yv_fhs.jpg";
 });
 
-fetch("http://localhost:5174/")
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      throw new Error(`Request failed with status ${res.status}`);
-    }
-  })
-  .then((data) => {
-    console.log(data);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-
 export default PluginData;

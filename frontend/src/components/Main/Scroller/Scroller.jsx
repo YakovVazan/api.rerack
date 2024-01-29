@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import "./Scroller.css";
 import { useLocation } from "react-router-dom";
+import "./Scroller.css";
 
 const Scroller = () => {
   const location = useLocation();

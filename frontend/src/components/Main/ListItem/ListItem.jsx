@@ -48,6 +48,7 @@ const ListItem = ({ plug, index }) => {
         onTouchStart={() => handleFocusStart(index)}
         onMouseUp={handleFocusEnd}
         onTouchEnd={handleFocusEnd}
+        onDragOver={handleFocusEnd}
       >
         <div
           className={
