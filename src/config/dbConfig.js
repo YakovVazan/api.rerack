@@ -1,8 +1,11 @@
 import sqlite3 from "sqlite3";
+import path from "path";
+
+const dbPath = path.resolve("\src"+"/db/data.db");
 
 const sqliteInstance = sqlite3.verbose();
 const db = new sqliteInstance.Database(
-  "C:/Users/Yoga/Desktop/rerack/backend/src/db/data.db",
+  dbPath,
   sqliteInstance.OPEN_READWRITE | sqliteInstance.OPEN_CREATE,
   (err) => {
     if (err) {

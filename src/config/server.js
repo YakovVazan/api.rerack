@@ -10,7 +10,7 @@ app.use("/", plugsRoutes);
 
 const server = app.listen(port, "0.0.0.0", () => {
   console.log(
-    `Server is listening on port ${port}, URL: http://localhost:${port}`
+    `Server is listening on port ${port}...`
   );
 });
 
