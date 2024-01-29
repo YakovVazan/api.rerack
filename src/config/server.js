@@ -8,6 +8,10 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use("/", plugsRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Welcome to Rerack's DB!");
+});
+
 const server = app.listen(port, "0.0.0.0", () => {
   console.log(
     `Server is listening on port ${port}...`
