@@ -9,7 +9,7 @@ app.use(cors());
 app.use("/", plugsRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Welcome to Rerack's DB!");
+  res.send("Welcome to Rerack's API!");
 });
 
 const server = app.listen(port, "0.0.0.0", () => {

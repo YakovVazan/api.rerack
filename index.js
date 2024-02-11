@@ -1,1 +1,1 @@
-import * as server from "./src/config/server.js";
+import * as server from "./src/config/serverConfig.js";
