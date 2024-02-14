@@ -17,7 +17,7 @@ const createUser = async (req, res) => {
     res.status(201).json(newUser);
   } catch (error) {
     console.error("Error creating user:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error", msg: error });
   }
 };
 
@@ -28,6 +28,11 @@ const loginUser = async (req, res) => {
       return res
         .status(400)
         .json({ error: "Email and password are required." });
+    }
+
+    const emailExists = await usersServices.emailExists(email);
+    if (!emailExists) {
+      return res.status(400).json({ error: "Email not registered" });
     }
 
     const user = await usersServices.getUser("email", email);

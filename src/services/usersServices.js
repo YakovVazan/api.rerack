@@ -19,12 +19,17 @@ const validateAndSanitizeUserInput = async (req) => {
       body("email")
         .isEmail()
         .normalizeEmail()
-        .withMessage("Invalid email format.")
+        .withMessage("Invalid email format")
+        .trim()
+        .escape(),
+      body("name")
+        .isLength({ min: 1 })
+        .withMessage("Name is required")
         .trim()
         .escape(),
       body("password")
         .isLength({ min: 6 })
-        .withMessage("Password must be at least 6 characters long.")
+        .withMessage("Password must be at least 6 characters long")
         .trim()
         .escape(),
     ].map((validation) => validation.run(req))
@@ -32,7 +37,11 @@ const validateAndSanitizeUserInput = async (req) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new Error("Validation error.");
+    const errorsArray = errors.array().map((error) => {
+      return error.msg;
+    });
+
+    throw errorsArray;
   }
 };
 

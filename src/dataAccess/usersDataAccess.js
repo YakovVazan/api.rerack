@@ -17,18 +17,16 @@ const insertNewUser = (email, name, hash) => {
 };
 
 const selectUser = (factor, identifier) => {
+  const query = `SELECT * FROM users WHERE ${factor}  = ?`;
+
   return new Promise((resolve, reject) => {
-    db.get(
-      `SELECT * FROM users WHERE ${factor}  = ?`,
-      [identifier],
-      (err, row) => {
-        if (err || !row) {
-          reject(err);
-        } else {
-          resolve(row);
-        }
+    db.get(query, [identifier], (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row);
       }
-    );
+    });
   });
 };
 
