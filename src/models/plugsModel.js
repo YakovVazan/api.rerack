@@ -1,4 +1,7 @@
-import { insertNewPlug, selectAllPlugs } from "../dataAccess/dbDataAccess.js";
+import {
+  insertNewPlug,
+  selectAllPlugs,
+} from "../dataAccess/plugsDataAccess.js";
 
 export default class Plug {
   createPlug = (company, name, src, type) => {
