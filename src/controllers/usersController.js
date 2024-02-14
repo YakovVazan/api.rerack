@@ -60,7 +60,7 @@ const getUser = async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      return res.status(403).json({ error: "No token provided" });
+      return res.status(403).json({ error: "Forbidden" });
     }
 
     const userIdFromToken = usersServices.getUserIdFromToken(token);
@@ -78,14 +78,4 @@ const getUser = async (req, res) => {
   }
 };
 
-const getAllUsers = async (req, res) => {
-  try {
-    const users = await usersServices.getAllUsers();
-
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-export default { createUser, loginUser, getUser, getAllUsers };
+export default { createUser, loginUser, getUser };

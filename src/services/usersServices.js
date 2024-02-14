@@ -90,10 +90,6 @@ const getUser = async (factor, identifier) => {
   return await userInstance.getUser(factor, identifier);
 };
 
-const getAllUsers = async () => {
-  return await userInstance.getAllUsers();
-};
-
 export default {
   emailExists,
   validateAndSanitizeUserInput,
@@ -103,5 +99,4 @@ export default {
   generateUserToken,
   getUserIdFromToken,
   getUser,
-  getAllUsers,
 };

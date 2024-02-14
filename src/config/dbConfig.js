@@ -1,7 +1,8 @@
 import sqlite3 from "sqlite3";
 import path from "path";
 
-const dbPath = path.resolve("src" + "/db/data.db");
+const absolutePath = "src" + "/db/data.db";
+const dbPath = path.resolve(absolutePath);
 
 const sqliteInstance = sqlite3.verbose();
 const db = new sqliteInstance.Database(

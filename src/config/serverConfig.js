@@ -13,7 +13,11 @@ app.use("/", plugsRoutes);
 app.use("/", usersRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Welcome to Rerack's API!");
+  res.send({ msg: "Welcome to Rerack's API!" });
+});
+
+app.get("/*", (req, res) => {
+  res.send({ msg: "Unavailable" });
 });
 
 const server = app.listen(port, "0.0.0.0", () => {
@@ -23,12 +27,14 @@ const server = app.listen(port, "0.0.0.0", () => {
 process.on("SIGINT", () => {
   console.log("Closing database connection...");
 
+  // Close the server
   server.close(() => {
-    console.log("Server stopped.");
+    console.log("...Server shut down...");
+  });
 
-    db.close(() => {
-      console.log("Database connection closed.");
-      process.exit(0);
-    });
+  // Close the database connection
+  db.close(() => {
+    console.log("...Database connection closed");
+    process.exit(0);
   });
 });
