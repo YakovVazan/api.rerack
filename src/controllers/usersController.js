@@ -60,14 +60,16 @@ const getUser = async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      return res.status(403).json({ error: "Forbidden" });
+      return res.status(403).json({ msg: "Forbidden: Missing token" });
     }
 
     const userIdFromToken = usersServices.getUserIdFromToken(token);
 
     const userIdFromParams = req.params.userId;
     if (userIdFromToken !== parseInt(userIdFromParams)) {
-      return res.status(403).json({ error: "Forbidden" });
+      return res
+        .status(403)
+        .json({ msg: "Forbidden: Token does not match user ID" });
     }
 
     const user = await usersServices.getUser("id", userIdFromToken);

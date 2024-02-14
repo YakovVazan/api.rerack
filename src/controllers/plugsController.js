@@ -12,10 +12,10 @@ const createPlug = (req, res) => {
 const getAllPlugs = async (req, res) => {
   try {
     const plugs = await plugInstance.getAllPlugs();
-    
+
     res.json(plugs);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ msg: "Internal Server Error" });
   }
 };
 
