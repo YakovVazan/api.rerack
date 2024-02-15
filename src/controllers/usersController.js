@@ -65,13 +65,13 @@ const getUser = async (req, res) => {
       return res.status(403).json({ msg: "Forbidden: Missing token" });
     }
 
-    const userIdFromToken = usersServices.getUserIdFromToken(token);
-
     const userIdFromParams = req.params.userId;
+    const userIdFromToken = usersServices.getUserIdFromToken(token);
     if (userIdFromToken !== parseInt(userIdFromParams)) {
-      return res
-        .status(403)
-        .json({ msg: "Forbidden: Token does not match user ID" });
+      return res.status(403).json({
+        msg:
+          userIdFromToken?.message || "Forbidden: Token does not match user ID",
+      });
     }
 
     const user = await usersServices.getUser("id", userIdFromToken);
