@@ -8,7 +8,7 @@ const userInstance = new User();
 const secretKey = crypto.randomBytes(64).toString("hex");
 
 const emailExists = async (email) => {
-  const users = await userInstance.getAllUsers();
+  const users = await getAllUsers();
 
   return users.some((user) => user.email === email);
 };
@@ -68,17 +68,30 @@ const comparePasswords = async (plainPassword, hashedPassword) => {
   }
 };
 
-const generateUserToken = (userId) => {
-  return jwt.sign({ userId: userId }, secretKey, { expiresIn: "1h" });
+const generateUserToken = (userId, isOwner) => {
+  const payload = {
+    userId,
+    isOwner,
+  };
+
+  return jwt.sign(payload, secretKey, { expiresIn: "1h" });
 };
 
 const createUser = async (email, name, password) => {
   return await userInstance.createUser(email, name, password);
 };
 
+const verifyToken = (token) => {
+  try {
+    return jwt.verify(token, secretKey);
+  } catch (error) {
+    return "Invalid token";
+  }
+};
+
 const getUserIdFromToken = (token) => {
   try {
-    const decodedToken = jwt.verify(token, secretKey);
+    const decodedToken = verifyToken(token);
 
     return decodedToken.userId;
   } catch (error) {
@@ -90,13 +103,33 @@ const getUser = async (factor, identifier) => {
   return await userInstance.getUser(factor, identifier);
 };
 
+const getAllUsers = async () => {
+  return await userInstance.getAllUsers();
+};
+
+const deleteUser = async (userId) => {
+  const users = await getAllUsers();
+  const userFound =
+    Object.values(users).filter((user) => user.id === parseInt(userId))
+      .length !== 0;
+
+  if (!userFound) {
+    return "No user found with that ID.";
+  }
+
+  return await userInstance.deleteUser(userId);
+};
+
 export default {
   emailExists,
   validateAndSanitizeUserInput,
   hashPassword,
   comparePasswords,
   createUser,
+  verifyToken,
   generateUserToken,
   getUserIdFromToken,
   getUser,
+  getAllUsers,
+  deleteUser,
 };

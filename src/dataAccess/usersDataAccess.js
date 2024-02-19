@@ -42,4 +42,16 @@ const selectAllUsers = () => {
   });
 };
 
-export { insertNewUser, selectUser, selectAllUsers };
+const dropUser = async (userId) => {
+  return new Promise((resolve, reject) => {
+    db.run("DELETE FROM users WHERE id = ?", [userId], (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(`User with ID ${userId} deleted successfully.`);
+      }
+    });
+  });
+};
+
+export { insertNewUser, selectUser, selectAllUsers, dropUser };

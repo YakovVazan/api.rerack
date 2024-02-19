@@ -2,6 +2,7 @@ import {
   insertNewUser,
   selectUser,
   selectAllUsers,
+  dropUser,
 } from "../dataAccess/usersDataAccess.js";
 
 export default class User {
@@ -15,5 +16,9 @@ export default class User {
 
   getAllUsers = () => {
     return selectAllUsers();
+  };
+
+  deleteUser = (userId) => {
+    return dropUser(userId);
   };
 }
