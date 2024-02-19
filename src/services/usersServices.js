@@ -74,7 +74,7 @@ const generateUserToken = (userId, isOwner) => {
     isOwner,
   };
 
-  return jwt.sign(payload, secretKey, { expiresIn: "1h" });
+  return jwt.sign(payload, secretKey, { expiresIn: "7h" });
 };
 
 const createUser = async (email, name, password) => {
