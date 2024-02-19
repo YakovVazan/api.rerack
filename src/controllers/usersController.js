@@ -49,13 +49,17 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ error: "Wrong password." });
     }
 
-    const token = usersServices.generateUserToken(
-      user.id,
-      authorizedEmailAddresses.includes(user.email)
-    );
+    const isOwner = authorizedEmailAddresses.includes(user.email);
+    const token = usersServices.generateUserToken(user.id, isOwner);
     res
       .status(200)
-      .json({ token: token, id: user.id, name: user.name, email: user.email });
+      .json({
+        token: token,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        isOwner: isOwner,
+      });
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ error: "Internal Server Error" });
