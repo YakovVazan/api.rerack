@@ -69,16 +69,24 @@ const getUser = async (req, res) => {
       return res.status(403).json({ msg: "Forbidden: Missing token" });
     }
 
+    const decodedToken = usersServices.verifyToken(token);
     const userIdFromParams = req.params.userId;
     const userIdFromToken = usersServices.getUserIdFromToken(token);
-    if (userIdFromToken !== parseInt(userIdFromParams)) {
+    if (
+      !decodedToken.isOwner &&
+      userIdFromToken !== parseInt(userIdFromParams)
+    ) {
       return res.status(403).json({
         msg:
           userIdFromToken?.message || "Forbidden: Token does not match user ID",
       });
     }
 
-    const user = await usersServices.getUser("id", userIdFromToken);
+    const user = await usersServices.getUser("id", userIdFromParams);
+    if (!user) {
+      return res.json({ msg: "User not found." });
+    }
+
     res.json(user);
   } catch (error) {
     console.error(error);
