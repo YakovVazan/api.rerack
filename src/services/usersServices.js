@@ -69,16 +69,6 @@ const createUser = async (email, name, password) => {
   return await userInstance.createUser(email, name, password);
 };
 
-const getUserIdFromToken = (token) => {
-  try {
-    const decodedToken = verifyToken(token);
-
-    return decodedToken.userId;
-  } catch (error) {
-    return error;
-  }
-};
-
 const getUser = async (factor, identifier) => {
   return await userInstance.getUser(factor, identifier);
 };

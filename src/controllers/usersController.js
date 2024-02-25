@@ -105,8 +105,6 @@ const getAllUsers = async (req, res) => {
 
   const decodedToken = JWTServices.verifyToken(token);
 
-  // console.log(token, decodedToken);
-
   if (decodedToken.isOwner) {
     res.json(await usersServices.getAllUsers());
   } else {
