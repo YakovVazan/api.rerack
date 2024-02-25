@@ -21,7 +21,9 @@ const db = new sqliteInstance.Database(
         company TEXT NOT NULL,
         name TEXT NOT NULL,
         src TEXT NOT NULL,
-        type TEXT DEFAULT 'Unknown'
+        type TEXT DEFAULT 'Unknown',
+        userId INTEGER,
+        FOREIGN KEY(userId) REFERENCES users(id)
       )
     `,
       (err) => {

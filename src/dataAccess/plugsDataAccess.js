@@ -1,10 +1,10 @@
 import db from "../config/dbConfig.js";
 
-const insertNewPlug = (company, name, src, type) => {
+const insertNewPlug = (company, name, src, type, userId) => {
   return new Promise((resolve, reject) => {
     db.run(
-      "INSERT INTO plugins (company, name, src, type) VALUES (?, ?, ?, ?)",
-      [company, name, src, type],
+      "INSERT INTO plugins (company, name, src, type, userId) VALUES (?, ?, ?, ?, ?)",
+      [company, name, src, type, userId],
       (err) => {
         if (err) {
           reject(err);

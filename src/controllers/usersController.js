@@ -1,5 +1,6 @@
 import authorizedEmailAddresses from "../consts/emails.js";
 import usersServices from "../services/usersServices.js";
+import JWTServices from "../services/JWTServices.js";
 
 const createUser = async (req, res) => {
   try {
@@ -50,16 +51,14 @@ const loginUser = async (req, res) => {
     }
 
     const isOwner = authorizedEmailAddresses.includes(user.email);
-    const token = usersServices.generateUserToken(user.id, isOwner);
-    res
-      .status(200)
-      .json({
-        token: token,
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        isOwner: isOwner,
-      });
+    const token = JWTServices.generateUserToken(user.id, isOwner);
+    res.status(200).json({
+      token: token,
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      isOwner: isOwner,
+    });
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -73,9 +72,9 @@ const getUser = async (req, res) => {
       return res.status(403).json({ msg: "Forbidden: Missing token" });
     }
 
-    const decodedToken = usersServices.verifyToken(token);
+    const decodedToken = JWTServices.verifyToken(token);
     const userIdFromParams = req.params.userId;
-    const userIdFromToken = usersServices.getUserIdFromToken(token);
+    const userIdFromToken = JWTServices.getUserIdFromToken(token);
     if (
       !decodedToken.isOwner &&
       userIdFromToken !== parseInt(userIdFromParams)
@@ -104,7 +103,10 @@ const getAllUsers = async (req, res) => {
     return res.status(403).json({ msg: "Forbidden: Missing token" });
   }
 
-  const decodedToken = usersServices.verifyToken(token);
+  const decodedToken = JWTServices.verifyToken(token);
+
+  // console.log(token, decodedToken);
+
   if (decodedToken.isOwner) {
     res.json(await usersServices.getAllUsers());
   } else {
@@ -118,9 +120,9 @@ const deleteUser = async (req, res) => {
     return res.status(403).json({ msg: "Forbidden: Missing token" });
   }
 
-  const decodedToken = usersServices.verifyToken(token);
+  const decodedToken = JWTServices.verifyToken(token);
   const userIdFromParams = req.params.userId;
-  const userIdFromToken = usersServices.getUserIdFromToken(token);
+  const userIdFromToken = JWTServices.getUserIdFromToken(token);
   if (!decodedToken.isOwner && userIdFromToken !== parseInt(userIdFromParams)) {
     return res.status(403).json({
       msg:

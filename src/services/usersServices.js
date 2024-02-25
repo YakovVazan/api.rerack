@@ -1,11 +1,8 @@
-import crypto from "crypto";
-import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import { body, validationResult } from "express-validator";
 import User from "../models/usersModel.js";
 
 const userInstance = new User();
-const secretKey = crypto.randomBytes(64).toString("hex");
 
 const emailExists = async (email) => {
   const users = await getAllUsers();
@@ -68,25 +65,8 @@ const comparePasswords = async (plainPassword, hashedPassword) => {
   }
 };
 
-const generateUserToken = (userId, isOwner) => {
-  const payload = {
-    userId,
-    isOwner,
-  };
-
-  return jwt.sign(payload, secretKey, { expiresIn: "7h" });
-};
-
 const createUser = async (email, name, password) => {
   return await userInstance.createUser(email, name, password);
-};
-
-const verifyToken = (token) => {
-  try {
-    return jwt.verify(token, secretKey);
-  } catch (error) {
-    return "Invalid token";
-  }
 };
 
 const getUserIdFromToken = (token) => {
@@ -126,9 +106,6 @@ export default {
   hashPassword,
   comparePasswords,
   createUser,
-  verifyToken,
-  generateUserToken,
-  getUserIdFromToken,
   getUser,
   getAllUsers,
   deleteUser,

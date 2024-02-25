@@ -4,8 +4,8 @@ import {
 } from "../dataAccess/plugsDataAccess.js";
 
 export default class Plug {
-  createPlug = (company, name, src, type) => {
-    return insertNewPlug(company, name, src, type);
+  createPlug = (company, name, src, type, userId) => {
+    return insertNewPlug(company, name, src, type, userId);
   };
 
   getAllPlugs = () => {
