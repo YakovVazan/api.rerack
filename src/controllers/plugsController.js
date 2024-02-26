@@ -6,12 +6,12 @@ const createPlug = (req, res) => {
   if (!token) {
     return res.status(403).json({ msg: "Forbidden: Missing token" });
   }
-  
+
   if (JWTServices.verifyToken(token) === "Invalid token") {
     return res.status(403).json({ msg: "Invalid token" });
   }
 
-  
+
   const { company, name, src, type } = req.body;
   const userId = JWTServices.getUserIdFromToken(token);
   const newPlug = plugsServices.createPlug(company, name, src, type, userId);
@@ -29,4 +29,22 @@ const getAllPlugs = async (req, res) => {
   }
 };
 
-export default { createPlug, getAllPlugs };
+const updatePlug = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(403).json({ msg: "Forbidden: Missing token" });
+  }
+
+  if (JWTServices.verifyToken(token) === "Invalid token") {
+    return res.status(403).json({ msg: "Invalid token" });
+  }
+
+  const plugId = req.params.id;
+  const { company, name, src, type } = req.body;
+  const userId = JWTServices.getUserIdFromToken(token);
+  const editedPlug = plugsServices.updatePlug(plugId, company, name, src, type, userId);
+
+  res.status(201).json(editedPlug);
+}
+
+export default { createPlug, getAllPlugs, updatePlug };

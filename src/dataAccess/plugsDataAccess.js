@@ -28,4 +28,20 @@ const selectAllPlugs = () => {
   });
 };
 
-export { insertNewPlug, selectAllPlugs };
+const alterPlug = (id, company, name, src, type, userId) => {
+  return new Promise((resolve, reject) => {
+    db.run(
+      "UPDATE plugins SET company = ?, name = ?, src = ?, type = ?, userId = ? WHERE id =?",
+      [company, name, src, type, userId, id],
+      (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({ company, name, src, type });
+        }
+      }
+    );
+  });
+}
+
+export { insertNewPlug, selectAllPlugs, alterPlug };
