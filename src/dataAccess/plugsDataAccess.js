@@ -44,4 +44,16 @@ const alterPlug = (id, company, name, src, type, userId) => {
   });
 }
 
-export { insertNewPlug, selectAllPlugs, alterPlug };
+const dropPlug = (id) => {
+  return new Promise((resolve, reject) => {
+    db.run("DELETE FROM plugins WHERE id = ?", [id], (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ id });
+      }
+    });
+  });
+}
+
+export { insertNewPlug, selectAllPlugs, alterPlug, dropPlug };

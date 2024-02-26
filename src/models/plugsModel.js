@@ -2,6 +2,7 @@ import {
   insertNewPlug,
   selectAllPlugs,
   alterPlug,
+  dropPlug,
 } from "../dataAccess/plugsDataAccess.js";
 
 export default class Plug {
@@ -15,5 +16,9 @@ export default class Plug {
 
   setPlug = (company, name, src, type, userId) => {
     return alterPlug(company, name, src, type, userId);
+  }
+
+  deletePlug = (id) => {
+    return dropPlug(id);
   }
 }

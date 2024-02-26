@@ -47,4 +47,21 @@ const updatePlug = async (req, res) => {
   res.status(201).json(editedPlug);
 }
 
-export default { createPlug, getAllPlugs, updatePlug };
+const deletePlug = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(403).json({ msg: "Forbidden: Missing token" });
+  }
+
+  const verifyToken = JWTServices.verifyToken(token);
+  if (verifyToken === "Invalid token" || !verifyToken.isOwner) {
+    return res.status(403).json({ msg: "Unauthorized" });
+  }
+
+  const plugId = req.params.id;
+  const deletedPlug = plugsServices.deletePlug(plugId);
+
+  res.status(201).json(deletedPlug);
+}
+
+export default { createPlug, getAllPlugs, updatePlug, deletePlug };

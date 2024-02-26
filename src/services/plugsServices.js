@@ -14,4 +14,8 @@ const updatePlug = (plugId, company, name, src, type, userId) => {
   return plugInstance.setPlug(plugId, company, name, src, type, userId);
 }
 
-export default { createPlug, getAllPlugs, updatePlug };
+const deletePlug = (plugId) => {
+  return plugInstance.deletePlug(plugId);
+}
+
+export default { createPlug, getAllPlugs, updatePlug, deletePlug };
