@@ -9,7 +9,13 @@ const insertNewPlug = (company, name, src, type, userId) => {
         if (err) {
           reject(err);
         } else {
-          resolve({ company, name, src, type });
+          db.run("COMMIT", (commitErr) => {
+            if (commitErr) {
+              reject(commitErr);
+            } else {
+              resolve({ company, name, src, type });
+            }
+          });
         }
       }
     );
@@ -37,7 +43,13 @@ const alterPlug = (id, company, name, src, type, userId) => {
         if (err) {
           reject(err);
         } else {
-          resolve({ company, name, src, type });
+          db.run("COMMIT", (commitErr) => {
+            if (commitErr) {
+              reject(commitErr);
+            } else {
+              resolve({ company, name, src, type });
+            }
+          });
         }
       }
     );

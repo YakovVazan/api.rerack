@@ -14,8 +14,8 @@ export default class Plug {
     return selectAllPlugs();
   };
 
-  setPlug = (company, name, src, type, userId) => {
-    return alterPlug(company, name, src, type, userId);
+  setPlug = (plugId, company, name, src, type, userId) => {
+    return alterPlug(plugId, company, name, src, type, userId);
   }
 
   deletePlug = (id) => {
