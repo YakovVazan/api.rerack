@@ -1,57 +1,42 @@
-import db from "../config/dbConfig.js";
+import dbActions from "../config/dbConfig.js";
 
-const insertNewUser = (email, name, hash) => {
-  return new Promise((resolve, reject) => {
-    db.run(
-      "INSERT INTO users (email, name, hash) VALUES (?, ?, ?)",
-      [email, name, hash],
-      (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ email, name, hash });
-        }
-      }
-    );
-  });
+const insertNewUser = async (data) => {
+  const query = 'INSERT INTO users SET ?';
+  try {
+    const result = await dbActions.executeQuery(query, data);
+    return result.insertId;
+  } catch (error) {
+    throw error;
+  }
 };
 
-const selectUser = (factor, identifier) => {
-  const query = `SELECT * FROM users WHERE ${factor}  = ?`;
-
-  return new Promise((resolve, reject) => {
-    db.get(query, [identifier], (err, row) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(row);
-      }
-    });
-  });
+const selectUser = async (factor, identifier) => {
+  const query = `SELECT * FROM users WHERE ${factor} = ?`;
+  try {
+    const [result] = await dbActions.executeQuery(query, [identifier]);
+    return result;
+  } catch (error) {
+    throw error;
+  }
 };
 
-const selectAllUsers = () => {
-  return new Promise((resolve, reject) => {
-    db.all("SELECT * FROM users", (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
+const selectAllUsers = async () => {
+  const query = 'SELECT * FROM users';
+  try {
+    const results = await dbActions.executeQuery(query);
+    return results;
+  } catch (error) {
+    throw error;
+  }
 };
 
-const dropUser = async (userId) => {
-  return new Promise((resolve, reject) => {
-    db.run("DELETE FROM users WHERE id = ?", [userId], (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(`User with ID ${userId} deleted successfully.`);
-      }
-    });
-  });
+const dropUser = async (id) => {
+  const query = 'DELETE FROM users WHERE id = ?';
+  try {
+    await dbActions.executeQuery(query, [id]);
+  } catch (error) {
+    throw error;
+  }
 };
 
 export { insertNewUser, selectUser, selectAllUsers, dropUser };

@@ -1,61 +1,29 @@
-import sqlite3 from "sqlite3";
-import path from "path";
+/********************************  
+the DB is hosted on https://www.freemysqlhosting.net/
+ ********************************/
 
-const absolutePath = "src" + "/db/data.db";
-const dbPath = path.resolve(absolutePath);
+import mysql from 'mysql2'
 
-const sqliteInstance = sqlite3.verbose();
-const db = new sqliteInstance.Database(
-  dbPath,
-  sqliteInstance.OPEN_READWRITE | sqliteInstance.OPEN_CREATE,
-  (err) => {
-    if (err) {
-      return console.error(err.message);
-    }
+const pool = mysql.createPool({
+  host: 'sql8.freemysqlhosting.net',
+  user: 'sql8687586',
+  password: 'irxtmXVJak',
+  database: 'sql8687586',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
-    // initialize plugins table
-    db.run(
-      `
-      CREATE TABLE IF NOT EXISTS plugins (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        company TEXT NOT NULL,
-        name TEXT NOT NULL,
-        src TEXT NOT NULL,
-        type TEXT DEFAULT 'Unknown',
-        userId INTEGER,
-        FOREIGN KEY(userId) REFERENCES users(id)
-      )
-    `,
-      (err) => {
-        if (err) {
-          console.error("Error creating plugins table:", err.message);
-        } else {
-          console.log(
-            "Table 'plugins' created successfully or already exists."
-          );
-        }
+const executeQuery = async (query, values = []) => {
+  return new Promise((resolve, reject) => {
+    pool.query(query, values, (err, results) => {
+      if (err) {
+        reject(err);
+        return;
       }
-    );
+      resolve(results);
+    });
+  });
+};
 
-    // initialize users table
-    db.run(
-      `
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        email TEXT NOT NULL,
-        name TEXT NOT NULL,
-        hash TEXT NOT NULL
-      )
-    `,
-      (err) => {
-        if (err) {
-          console.error("Error creating users table:", err.message);
-        } else {
-          console.log("Table 'users' created successfully or already exists.");
-        }
-      }
-    );
-  }
-);
-
-export default db;
+export default { pool, executeQuery };

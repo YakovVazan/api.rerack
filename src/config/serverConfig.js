@@ -1,6 +1,6 @@
 import cors from "cors";
 import express from "express";
-import db from "./dbConfig.js";
+import dbActions from '../config/dbConfig.js'
 import plugsRoutes from "../routes/plugsRoutes.js";
 import usersRoutes from "../routes/usersRoutes.js";
 
@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 
 app.get("/*", (req, res) => {
   const payload = { code: 404, msg: "not found" };
-  
+
   res.send(payload);
 });
 
@@ -37,8 +37,12 @@ process.on("SIGINT", () => {
   });
 
   // Close the database connection
-  db.close(() => {
-    console.log("...Database connection closed");
+  dbActions.pool.end((err) => {
+    if (err) {
+      console.error('Error closing MySQL pool:', err);
+      process.exit(1);
+    }
+    console.log('MySQL pool closed');
     process.exit(0);
   });
 });

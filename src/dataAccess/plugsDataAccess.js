@@ -1,59 +1,41 @@
-import db from "../config/dbConfig.js";
+import dbActions from "../config/dbConfig.js";
 
-const insertNewPlug = (company, name, src, type, userId) => {
-  return new Promise((resolve, reject) => {
-    db.run(
-      "INSERT INTO plugins (company, name, src, type, userId) VALUES (?, ?, ?, ?, ?)",
-      [company, name, src, type, userId],
-      (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ company, name, src, type });
-        }
-      }
-    );
-  });
+const insertNewPlug = async (data) => {
+  const query = `INSERT INTO plugins SET ?`;
+  try {
+    const result = await dbActions.executeQuery(query, data);
+    return result.insertId;
+  } catch (error) {
+    throw error;
+  }
 };
 
-const selectAllPlugs = () => {
-  return new Promise((resolve, reject) => {
-    db.all("SELECT * FROM plugins", (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
+const selectAllPlugs = async () => {
+  const query = 'SELECT * FROM plugins';
+  try {
+    const results = await dbActions.executeQuery(query);
+    return results;
+  } catch (error) {
+    throw error;
+  }
 };
 
-const alterPlug = (id, company, name, src, type, userId) => {
-  return new Promise((resolve, reject) => {
-    db.run(
-      "UPDATE plugins SET company = ?, name = ?, src = ?, type = ?, userId = ? WHERE id =?",
-      [company, name, src, type, userId, id],
-      (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({ company, name, src, type });
-        }
-      }
-    );
-  });
-}
+const alterPlug = async (id, data) => {
+  const query = 'UPDATE plugins SET ? WHERE id = ?';
+  try {
+    await dbActions.executeQuery(query, [data, id]);
+  } catch (error) {
+    throw error;
+  }
+};
 
-const dropPlug = (id) => {
-  return new Promise((resolve, reject) => {
-    db.run("DELETE FROM plugins WHERE id = ?", [id], (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve({ id });
-      }
-    });
-  });
-}
+const dropPlug = async (id) => {
+  const query = 'DELETE FROM plugins WHERE id = ?';
+  try {
+    await dbActions.executeQuery(query, [id]);
+  } catch (error) {
+    throw error;
+  }
+};
 
 export { insertNewPlug, selectAllPlugs, alterPlug, dropPlug };

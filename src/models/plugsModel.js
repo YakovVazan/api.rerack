@@ -7,7 +7,7 @@ import {
 
 export default class Plug {
   createPlug = (company, name, src, type, userId) => {
-    return insertNewPlug(company, name, src, type, userId);
+    return insertNewPlug({ company: company, name: name, src: src, type: type, userId: userId });
   };
 
   getAllPlugs = () => {
@@ -15,7 +15,7 @@ export default class Plug {
   };
 
   setPlug = (plugId, company, name, src, type, userId) => {
-    return alterPlug(plugId, company, name, src, type, userId);
+    return alterPlug(plugId, { company: company, name: name, src: src, type: type, userId: userId });
   }
 
   deletePlug = (id) => {

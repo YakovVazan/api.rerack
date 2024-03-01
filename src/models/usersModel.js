@@ -7,7 +7,7 @@ import {
 
 export default class User {
   createUser = (company, name, hash) => {
-    return insertNewUser(company, name, hash);
+    return insertNewUser({ company: company, name: name, hash: hash });
   };
 
   getUser = (factor, identifier) => {
