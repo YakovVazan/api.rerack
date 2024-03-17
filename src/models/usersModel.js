@@ -6,8 +6,8 @@ import {
 } from "../dataAccess/usersDataAccess.js";
 
 export default class User {
-  createUser = (company, name, hash) => {
-    return insertNewUser({ company: company, name: name, hash: hash });
+  createUser = (email, name, hash) => {
+    return insertNewUser({ email: email, name: name, hash: hash });
   };
 
   getUser = (factor, identifier) => {

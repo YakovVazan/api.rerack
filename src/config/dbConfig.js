@@ -1,16 +1,17 @@
 /********************************  
-the DB is hosted on https://www.freemysqlhosting.net/
+the DB is hosted on https://freedb.tech/
+available on https://phpmyadmin.freedb.tech/index.php
  ********************************/
 
 import mysql from 'mysql2'
 
 const pool = mysql.createPool({
-  host: 'sql8.freemysqlhosting.net',
-  user: 'sql8687586',
-  password: 'irxtmXVJak',
-  database: 'sql8687586',
+  host: 'sql.freedb.tech',
+  user: 'freedb_YkvVzn',
+  password: 'jnY29TaN%QDWhca',
+  database: 'freedb_Rerack',
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit: 5,
   queueLimit: 0
 });
 
