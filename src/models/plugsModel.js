@@ -18,6 +18,10 @@ export default class Plug {
     return alterPlug(plugId, { company: company, name: name, src: src, type: type, userId: userId });
   }
 
+  addAiGenerateDescription = (plugId, description, userId) => {
+    return alterPlug(plugId, { description: description, userId: userId });
+  };
+
   deletePlug = (id) => {
     return dropPlug(id);
   }

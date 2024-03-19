@@ -1,5 +1,5 @@
 import archiver from 'archiver';
-import JWTServices from '../services/JWTServices.js';
+import JwtServices from '../services/JwtServices.js';
 import dataServices from "../services/dataServices.js";
 
 const downloadDb = async (req, res) => {
@@ -8,7 +8,7 @@ const downloadDb = async (req, res) => {
         return res.status(403).json({ msg: "Forbidden: Missing token" });
     }
 
-    const decodedToken = JWTServices.verifyToken(token);
+    const decodedToken = JwtServices.verifyToken(token);
 
     if (decodedToken.isOwner) {
         const { users, plugs } = await dataServices.getUsersAndPlugs();

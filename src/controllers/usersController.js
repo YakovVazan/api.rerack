@@ -1,6 +1,6 @@
 import authorizedEmailAddresses from "../consts/emails.js";
 import usersServices from "../services/usersServices.js";
-import JWTServices from "../services/JWTServices.js";
+import JwtServices from "../services/JwtServices.js";
 
 const createUser = async (req, res) => {
   try {
@@ -51,7 +51,7 @@ const loginUser = async (req, res) => {
     }
 
     const isOwner = authorizedEmailAddresses.includes(user.email);
-    const token = JWTServices.generateUserToken(user.id, isOwner);
+    const token = JwtServices.generateUserToken(user.id, isOwner);
     res.status(200).json({
       token: token,
       id: user.id,
@@ -72,9 +72,9 @@ const getUser = async (req, res) => {
       return res.status(403).json({ msg: "Forbidden: Missing token" });
     }
 
-    const decodedToken = JWTServices.verifyToken(token);
+    const decodedToken = JwtServices.verifyToken(token);
     const userIdFromParams = req.params.userId;
-    const userIdFromToken = JWTServices.getUserIdFromToken(token);
+    const userIdFromToken = JwtServices.getUserIdFromToken(token);
     if (
       !decodedToken.isOwner &&
       userIdFromToken !== parseInt(userIdFromParams)
@@ -103,7 +103,7 @@ const getAllUsers = async (req, res) => {
     return res.status(403).json({ msg: "Forbidden: Missing token" });
   }
 
-  const decodedToken = JWTServices.verifyToken(token);
+  const decodedToken = JwtServices.verifyToken(token);
 
   if (decodedToken.isOwner) {
     res.json(await usersServices.getAllUsers());
@@ -118,9 +118,9 @@ const deleteUser = async (req, res) => {
     return res.status(403).json({ msg: "Forbidden: Missing token" });
   }
 
-  const decodedToken = JWTServices.verifyToken(token);
+  const decodedToken = JwtServices.verifyToken(token);
   const userIdFromParams = req.params.userId;
-  const userIdFromToken = JWTServices.getUserIdFromToken(token);
+  const userIdFromToken = JwtServices.getUserIdFromToken(token);
   if (!decodedToken.isOwner && userIdFromToken !== parseInt(userIdFromParams)) {
     return res.status(403).json({
       msg:

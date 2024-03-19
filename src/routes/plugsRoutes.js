@@ -6,6 +6,7 @@ const router = express.Router();
 router.get("/plugs", plugsController.getAllPlugs);
 router.post("/plugs/add", plugsController.createPlug);
 router.put("/plugs/edit/:id", plugsController.updatePlug);
+router.put("/plugs/edit/description/generate/:id", plugsController.addDescription)
 router.delete("/plugs/delete/:id", plugsController.deletePlug);
 
 export default router;

@@ -1,5 +1,6 @@
 import plugsServices from "../services/plugsServices.js";
-import JWTServices from "../services/JWTServices.js";
+import JwtServices from "../services/JwtServices.js";
+import AiService from "../services/AiService.js";
 
 const createPlug = (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
@@ -7,13 +8,13 @@ const createPlug = (req, res) => {
     return res.status(403).json({ msg: "Forbidden: Missing token" });
   }
 
-  if (JWTServices.verifyToken(token) === "Invalid token") {
+  if (JwtServices.verifyToken(token) === "Invalid token") {
     return res.status(403).json({ msg: "Invalid token" });
   }
 
 
   const { company, name, src, type } = req.body;
-  const userId = JWTServices.getUserIdFromToken(token);
+  const userId = JwtServices.getUserIdFromToken(token);
   const newPlug = plugsServices.createPlug(company, name, src, type, userId);
 
   res.status(201).json(newPlug);
@@ -35,16 +36,35 @@ const updatePlug = async (req, res) => {
     return res.status(403).json({ msg: "Forbidden: Missing token" });
   }
 
-  if (JWTServices.verifyToken(token) === "Invalid token") {
+  if (JwtServices.verifyToken(token) === "Invalid token") {
     return res.status(403).json({ msg: "Invalid token" });
   }
 
   const plugId = req.params.id;
   const { company, name, src, type } = req.body;
-  const userId = JWTServices.getUserIdFromToken(token);
+  const userId = JwtServices.getUserIdFromToken(token);
   const editedPlug = plugsServices.updatePlug(plugId, company, name, src, type, userId);
 
   res.status(201).json(editedPlug);
+}
+
+const addDescription = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(403).json({ msg: "Forbidden: Missing token" });
+  }
+
+  if (JwtServices.verifyToken(token) === "Invalid token") {
+    return res.status(403).json({ msg: "Invalid token" });
+  }
+
+  const { company, name, type } = req.body;
+  const plugId = req.params.id;
+  const userId = JwtServices.getUserIdFromToken(token);
+  const description = await AiService.askGemini(name, type, company)
+  const descriptedPlug = plugsServices.addAiGenerateDescription(plugId, description, userId);
+
+  res.status(201).json(descriptedPlug);
 }
 
 const deletePlug = async (req, res) => {
@@ -53,7 +73,7 @@ const deletePlug = async (req, res) => {
     return res.status(403).json({ msg: "Forbidden: Missing token" });
   }
 
-  const verifyToken = JWTServices.verifyToken(token);
+  const verifyToken = JwtServices.verifyToken(token);
   if (verifyToken === "Invalid token" || !verifyToken.isOwner) {
     return res.status(403).json({ msg: "Unauthorized" });
   }
@@ -64,4 +84,4 @@ const deletePlug = async (req, res) => {
   res.status(201).json(deletedPlug);
 }
 
-export default { createPlug, getAllPlugs, updatePlug, deletePlug };
+export default { createPlug, getAllPlugs, updatePlug, addDescription, deletePlug };
