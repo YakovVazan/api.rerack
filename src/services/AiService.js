@@ -41,9 +41,14 @@ async function askGemini(name, type, company) {
         generationConfig,
         safetySettings,
     });
-    const result = await chat.sendMessage(`Provide a proffesional explanation about ${company}'s audio plugin named ${name} of type ${type}. Reply in an HTML format, cleaned from any unnecessary characters, with appropriate tags (you can omit any html tags that are not wrapping the data itself) instead of keywords marks. Don't leave any word untagged.`);
-    const response = result.response;
-    return response.text();
+
+    try {
+        const result = await chat.sendMessage(`Provide a proffesional article with many details about ${company}'s audio plugin named ${name} of type ${type}.`);
+        const response = result.response;
+        return response.text();
+    } catch (error) {
+        throw new Error(error);
+    }
 }
 
 export default { askGemini }

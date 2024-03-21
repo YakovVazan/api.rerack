@@ -14,12 +14,8 @@ const updatePlug = (plugId, company, name, src, type, userId) => {
   return plugInstance.setPlug(plugId, company, name, src, type, userId);
 }
 
-const addAiGenerateDescription = (plugId, description, userId) => {
-  return plugInstance.addAiGenerateDescription(plugId, description, userId);
-}
-
 const deletePlug = (plugId) => {
   return plugInstance.deletePlug(plugId);
 }
 
-export default { createPlug, getAllPlugs, updatePlug, addAiGenerateDescription, deletePlug };
+export default { createPlug, getAllPlugs, updatePlug, deletePlug };

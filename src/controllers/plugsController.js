@@ -48,7 +48,7 @@ const updatePlug = async (req, res) => {
   res.status(201).json(editedPlug);
 }
 
-const addDescription = async (req, res) => {
+const generateDescription = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
     return res.status(403).json({ msg: "Forbidden: Missing token" });
@@ -59,12 +59,9 @@ const addDescription = async (req, res) => {
   }
 
   const { company, name, type } = req.body;
-  const plugId = req.params.id;
-  const userId = JwtServices.getUserIdFromToken(token);
-  const description = await AiService.askGemini(name, type, company)
-  const descriptedPlug = plugsServices.addAiGenerateDescription(plugId, description, userId);
+  const generatedDescription = await AiService.askGemini(name, type, company)
 
-  res.status(201).json(descriptedPlug);
+  res.status(201).json(generatedDescription);
 }
 
 const deletePlug = async (req, res) => {
@@ -84,4 +81,4 @@ const deletePlug = async (req, res) => {
   res.status(201).json(deletedPlug);
 }
 
-export default { createPlug, getAllPlugs, updatePlug, addDescription, deletePlug };
+export default { createPlug, getAllPlugs, updatePlug, generateDescription, deletePlug };
