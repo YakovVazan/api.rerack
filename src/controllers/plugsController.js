@@ -59,9 +59,14 @@ const generateDescription = async (req, res) => {
   }
 
   const { company, name, type } = req.body;
-  const generatedDescription = await AiService.askGemini(name, type, company)
 
-  res.status(201).json(generatedDescription);
+  try {
+    const generatedDescription = await AiService.askGemini(name, type, company)
+
+    res.status(201).json({msg: generatedDescription});
+  } catch (error) {
+    res.status(403).json({ msg: error });
+  }
 }
 
 const deletePlug = async (req, res) => {
