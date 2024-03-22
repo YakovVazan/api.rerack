@@ -8,11 +8,7 @@ import dataRoutes from '../routes/dataRoutes.js'
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.use(cors({
-  origin: '*',
-  methods: '*',
-  allowedHeaders: '*',
-}));
+app.use(cors());
 app.use(express.json());
 app.use("/", plugsRoutes);
 app.use("/", usersRoutes);
