@@ -12,7 +12,6 @@ const createPlug = (req, res) => {
     return res.status(403).json({ msg: "Invalid token" });
   }
 
-
   const { company, name, src, type } = req.body;
   const userId = JwtServices.getUserIdFromToken(token);
   const newPlug = plugsServices.createPlug(company, name, src, type, userId);
@@ -43,10 +42,17 @@ const updatePlug = async (req, res) => {
   const plugId = req.params.id;
   const { company, name, src, type } = req.body;
   const userId = JwtServices.getUserIdFromToken(token);
-  const editedPlug = plugsServices.updatePlug(plugId, company, name, src, type, userId);
+  const editedPlug = plugsServices.updatePlug(
+    plugId,
+    company,
+    name,
+    src,
+    type,
+    userId
+  );
 
   res.status(201).json(editedPlug);
-}
+};
 
 const generateDescription = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
@@ -63,14 +69,14 @@ const generateDescription = async (req, res) => {
 
   try {
     console.log(1);
-    const generatedDescription = await AiService.askGemini(name, type, company)
+    const generatedDescription = await AiService.askGemini(name, type, company);
     console.log(generatedDescription);
 
     res.status(201).json({ msg: generatedDescription });
   } catch (error) {
     res.status(403).json({ msg: error });
   }
-}
+};
 
 const deletePlug = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
@@ -87,6 +93,12 @@ const deletePlug = async (req, res) => {
   const deletedPlug = plugsServices.deletePlug(plugId);
 
   res.status(201).json(deletedPlug);
-}
+};
 
-export default { createPlug, getAllPlugs, updatePlug, generateDescription, deletePlug };
+export default {
+  createPlug,
+  getAllPlugs,
+  updatePlug,
+  generateDescription,
+  deletePlug,
+};
