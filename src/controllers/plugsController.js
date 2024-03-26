@@ -62,7 +62,9 @@ const generateDescription = async (req, res) => {
   const { company, name, type } = req.body;
 
   try {
+    console.log(1);
     const generatedDescription = await AiService.askGemini(name, type, company)
+    console.log(generatedDescription);
 
     res.status(201).json({ msg: generatedDescription });
   } catch (error) {

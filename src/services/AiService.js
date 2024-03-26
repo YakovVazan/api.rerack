@@ -10,7 +10,7 @@ const MODEL_NAME = process.env.GEMINI_MODEL_NAME;
 const askGemini = async (name, type, company) => {
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-
+    console.log(name, type, company);
     const generationConfig = {
         temperature: 0.9,
         topK: 1,
@@ -44,7 +44,9 @@ const askGemini = async (name, type, company) => {
 
     try {
         const result = await chat.sendMessage(`Provide a proffesional article with many details about ${company}'s audio plugin named ${name} of type ${type}.`);
+        console.log("result: " + result);
         const response = result.response;
+        console.log("response: " + response);
         return response.text();
     } catch (error) {
         throw new Error(error);
