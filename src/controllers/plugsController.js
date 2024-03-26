@@ -50,13 +50,12 @@ const updatePlug = async (req, res) => {
 
 const generateDescription = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
+  console.log(token);
   if (!token) {
-    console.log(1);
     return res.status(403).json({ msg: "Forbidden: Missing token" });
   }
 
   if (JwtServices.verifyToken(token) === "Invalid token") {
-    console.log(2);
     return res.status(403).json({ msg: "Invalid token" });
   }
 
@@ -64,10 +63,10 @@ const generateDescription = async (req, res) => {
 
   try {
     const generatedDescription = await AiService.askGemini(name, type, company)
+    console.log(generatedDescription);
 
-    res.status(201).json({msg: generatedDescription});
+    res.status(201).json({ msg: generatedDescription });
   } catch (error) {
-    console.log(3);
     res.status(403).json({ msg: error });
   }
 }

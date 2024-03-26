@@ -14,11 +14,8 @@ const generateUserToken = (userId, isOwner) => {
 
 const verifyToken = (token) => {
   try {
-    const x = jwt.verify(token, secretKey)
-    console.log(x);
-    return x;
+    return jwt.verify(token, secretKey);
   } catch (error) {
-    console.log(error);
     return "Invalid token";
   }
 };
