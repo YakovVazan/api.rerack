@@ -50,7 +50,7 @@ const updatePlug = async (req, res) => {
 
 const generateDescription = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
-  console.log(token);
+
   if (!token) {
     return res.status(403).json({ msg: "Forbidden: Missing token" });
   }
