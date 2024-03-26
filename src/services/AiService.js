@@ -7,7 +7,7 @@ import {
 const MODEL_NAME = process.env.GEMINI_MODEL_NAME;
 const API_KEY = process.env.GEMINI_API_KEY;
 
-async function askGemini(name, type, company) {
+const askGemini = async (name, type, company) => {
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: MODEL_NAME });
     console.log(name, type, company);
