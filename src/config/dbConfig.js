@@ -1,10 +1,10 @@
 /********************************  
 the DB is hosted on https://freedb.tech/
-available on https://phpmyadmin.freedb.tech/index.php
+available on https://phpmyadmin.freedb.tech/index.php/
  ********************************/
 
-import mysql from 'mysql2'
-import dotenv from 'dotenv'
+import mysql from "mysql2";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -15,7 +15,7 @@ const pool = mysql.createPool({
   database: process.env.DB_DATABASE,
   waitForConnections: true,
   connectionLimit: 5,
-  queueLimit: 0
+  queueLimit: 0,
 });
 
 const executeQuery = async (query, values = []) => {
