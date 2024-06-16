@@ -87,13 +87,34 @@ const getUser = async (req, res) => {
 
     const user = await usersServices.getUser("id", userIdFromParams);
     if (!user) {
-      return res.json({ msg: "User not found." });
+      return res.status(404).json({ msg: "User not found." });
     }
 
     res.json(user);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error?.message });
+  }
+};
+
+const getUserContributions = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(403).json({ msg: "Forbidden: Missing token" });
+  }
+
+  if (JwtServices.verifyToken(token) === "Invalid token") {
+    return res.status(403).json({ msg: "Invalid token" });
+  }
+
+  try {
+    const userId = req.params.userId;
+    const plugs = await usersServices.getUserContributions(userId);
+
+    res.json(plugs);
+  } catch (error) {
+    res.status(500).json({ msg: "Internal Server Error" });
   }
 };
 
@@ -137,4 +158,11 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export default { createUser, loginUser, getUser, getAllUsers, deleteUser };
+export default {
+  createUser,
+  loginUser,
+  getUser,
+  getUserContributions,
+  getAllUsers,
+  deleteUser,
+};

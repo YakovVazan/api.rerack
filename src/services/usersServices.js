@@ -73,6 +73,10 @@ const getUser = async (factor, identifier) => {
   return await userInstance.getUser(factor, identifier);
 };
 
+const getUserContributions = async (userId) => {
+  return await userInstance.getUserContributions(userId);
+};
+
 const getAllUsers = async () => {
   return await userInstance.getAllUsers();
 };
@@ -97,6 +101,7 @@ export default {
   comparePasswords,
   createUser,
   getUser,
+  getUserContributions,
   getAllUsers,
   deleteUser,
 };

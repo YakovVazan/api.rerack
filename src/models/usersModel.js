@@ -1,6 +1,7 @@
 import {
   insertNewUser,
   selectUser,
+  selectUserContributions,
   selectAllUsers,
   dropUser,
 } from "../dataAccess/usersDataAccess.js";
@@ -12,6 +13,10 @@ export default class User {
 
   getUser = (factor, identifier) => {
     return selectUser(factor, identifier);
+  };
+
+  getUserContributions = (userId) => {
+    return selectUserContributions(userId);
   };
 
   getAllUsers = () => {
