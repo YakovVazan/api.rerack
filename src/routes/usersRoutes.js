@@ -10,6 +10,7 @@ router.get(
   "/users/:userId/contributions",
   usersController.getUserContributions
 );
+router.post("/users/:userId/verify", usersController.verifyUser)
 router.post("/users/register", usersController.createUser);
 router.post("/users/login", usersController.loginUser);
 router.delete("/users/:userId/delete", usersController.deleteUser);

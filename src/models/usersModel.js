@@ -16,8 +16,8 @@ export default class User {
     return selectUser(factor, identifier);
   };
 
-  updateUser = (id, name, email, hash) => {
-    return alterUser(id, name, email, hash);
+  updateUser = (id, name, email, hash, isVerified) => {
+    return alterUser(id, name, email, hash, isVerified);
   }
 
   getUserContributions = (userId) => {

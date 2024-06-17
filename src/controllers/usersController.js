@@ -1,6 +1,7 @@
 import authorizedEmailAddresses from "../consts/emails.js";
 import usersServices from "../services/usersServices.js";
 import JwtServices from "../services/JwtServices.js";
+import emailService from "../services/emailService.js";
 
 const createUser = async (req, res) => {
   try {
@@ -51,13 +52,19 @@ const loginUser = async (req, res) => {
     }
 
     const isOwner = authorizedEmailAddresses.includes(user.email);
-    const token = JwtServices.generateUserToken(user.id, isOwner);
+    const token = JwtServices.generateUserToken(
+      user.id,
+      isOwner,
+      user.isVerified
+    );
+
     res.status(200).json({
       token: token,
       id: user.id,
       name: user.name,
       email: user.email,
       isOwner: isOwner,
+      isVerified: user.isVerified,
     });
   } catch (error) {
     console.error("Error logging in:", error);
@@ -94,6 +101,40 @@ const getUser = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error?.message });
+  }
+};
+
+const verifyUser = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(403).json({ msg: "Forbidden: Missing token" });
+    }
+
+    const userIdFromParams = req.params.userId;
+    const userIdFromToken = JwtServices.getUserIdFromToken(token);
+    if (userIdFromToken !== parseInt(userIdFromParams)) {
+      return res.status(403).json({
+        msg:
+          userIdFromToken?.message || "Forbidden: Token does not match user ID",
+      });
+    }
+
+    const user = await usersServices.getUser("id", userIdFromParams);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found." });
+    }
+
+    const newToken = JwtServices.updateToken(token);
+    const verificationCode = JwtServices.getVerificationCodeFromToken(newToken);
+
+    emailService.sendEmail(user.email, verificationCode);
+
+    res.status(200).json({
+      token: newToken,
+    });
+  } catch (err) {
+    console.error(err);
   }
 };
 
@@ -134,11 +175,13 @@ const updateUser = async (req, res) => {
       hashedPassword = user.hash;
     }
 
+    const verificationCode = JwtServices.getVerificationCodeFromToken(token);
     const alteredUser = await usersServices.updateUser(
       userIdFromParams,
       name,
       email,
-      hashedPassword
+      hashedPassword,
+      verificationCode ? 1 : user.isVerified
     );
 
     res.status(201).json(alteredUser);
@@ -213,6 +256,7 @@ export default {
   createUser,
   loginUser,
   getUser,
+  verifyUser,
   updateUser,
   getUserContributions,
   getAllUsers,

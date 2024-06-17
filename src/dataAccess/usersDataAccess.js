@@ -20,10 +20,12 @@ const selectUser = async (factor, identifier) => {
   }
 };
 
-const alterUser = async (id, name, email, hash) => {
-  const query = "UPDATE users SET name =?, email =?, hash =? WHERE id =?";
+const alterUser = async (id, name, email, hash, isVerified) => {
+  const query =
+    "UPDATE users SET name =?, email =?, hash =?, isVerified =? WHERE id =?";
   try {
-    await dbActions.executeQuery(query, [name, email, hash, id]);
+    await dbActions.executeQuery(query, [name, email, hash, isVerified, id]);
+    return selectUser("id", id);
   } catch (error) {
     throw error;
   }

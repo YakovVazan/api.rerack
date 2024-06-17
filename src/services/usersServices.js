@@ -73,9 +73,9 @@ const getUser = async (factor, identifier) => {
   return await userInstance.getUser(factor, identifier);
 };
 
-const updateUser = async (id, name, email, hash) => {
-  return await userInstance.updateUser(id, name, email, hash);
-}
+const updateUser = async (id, name, email, hash, isVerified) => {
+  return await userInstance.updateUser(id, name, email, hash, isVerified);
+};
 
 const getUserContributions = async (userId) => {
   return await userInstance.getUserContributions(userId);
