@@ -1,6 +1,7 @@
 import {
   insertNewUser,
   selectUser,
+  alterUser,
   selectUserContributions,
   selectAllUsers,
   dropUser,
@@ -14,6 +15,10 @@ export default class User {
   getUser = (factor, identifier) => {
     return selectUser(factor, identifier);
   };
+
+  updateUser = (id, name, email, hash) => {
+    return alterUser(id, name, email, hash);
+  }
 
   getUserContributions = (userId) => {
     return selectUserContributions(userId);

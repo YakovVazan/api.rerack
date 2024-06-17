@@ -97,6 +97,57 @@ const getUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(403).json({ msg: "Forbidden: Missing token" });
+    }
+
+    const decodedToken = JwtServices.verifyToken(token);
+    const userIdFromParams = req.params.userId;
+    const userIdFromToken = JwtServices.getUserIdFromToken(token);
+    if (
+      !decodedToken.isOwner &&
+      userIdFromToken !== parseInt(userIdFromParams)
+    ) {
+      return res.status(403).json({
+        msg:
+          userIdFromToken?.message || "Forbidden: Token does not match user ID",
+      });
+    }
+
+    let hashedPassword;
+    const { id, name, email, password } = req.body;
+    const user = await usersServices.getUser("id", id);
+    const passwordMatches = await usersServices.comparePasswords(
+      password,
+      user.hash
+    );
+    const emailExists = await usersServices.emailExists(email);
+    if (user.email !== email && emailExists) {
+      return res.status(400).json({ error: "Email already in use" });
+    }
+    if (!passwordMatches) {
+      hashedPassword = await usersServices.hashPassword(password);
+    } else {
+      hashedPassword = user.hash;
+    }
+
+    const alteredUser = await usersServices.updateUser(
+      userIdFromParams,
+      name,
+      email,
+      hashedPassword
+    );
+
+    res.status(201).json(alteredUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error?.message });
+  }
+};
+
 const getUserContributions = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
 
@@ -162,6 +213,7 @@ export default {
   createUser,
   loginUser,
   getUser,
+  updateUser,
   getUserContributions,
   getAllUsers,
   deleteUser,

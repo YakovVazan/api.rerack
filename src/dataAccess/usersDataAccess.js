@@ -10,22 +10,31 @@ const insertNewUser = async (data) => {
   }
 };
 
-const updateUserContribution = async (action, userId, plugId) => {
-  const query = `UPDATE users
-                  SET contributions = JSON_ARRAY_APPEND(IFNULL(contributions, '[]'), '$', JSON_OBJECT('action', ?, 'plugId', ?))
-                  WHERE id = ?;`;
-  try {
-    await dbActions.executeQuery(query, [action, plugId, userId]);
-  } catch (error) {
-    throw error;
-  }
-};
-
 const selectUser = async (factor, identifier) => {
   const query = `SELECT * FROM users WHERE ${factor} = ?`;
   try {
     const [result] = await dbActions.executeQuery(query, [identifier]);
     return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const alterUser = async (id, name, email, hash) => {
+  const query = "UPDATE users SET name =?, email =?, hash =? WHERE id =?";
+  try {
+    await dbActions.executeQuery(query, [name, email, hash, id]);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateUserContribution = async (action, userId, plugId) => {
+  const query = `UPDATE users
+                  SET contributions = JSON_ARRAY_APPEND(IFNULL(contributions, '[]'), '$', JSON_OBJECT('action', ?, 'plugId', ?))
+                  WHERE id = ?;`;
+  try {
+    await dbActions.executeQuery(query, [action, +plugId, +userId]);
   } catch (error) {
     throw error;
   }
@@ -76,6 +85,7 @@ const dropUser = async (id) => {
 export {
   insertNewUser,
   selectUser,
+  alterUser,
   updateUserContribution,
   selectUserContributions,
   selectAllUsers,
