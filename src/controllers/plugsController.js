@@ -1,6 +1,6 @@
-import plugsServices from "../services/plugsServices.js";
-import JwtServices from "../services/JwtServices.js";
 import AiService from "../services/AiService.js";
+import JwtServices from "../services/JwtServices.js";
+import plugsServices from "../services/plugsServices.js";
 
 const createPlug = (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
@@ -54,6 +54,43 @@ const updatePlug = async (req, res) => {
   res.status(201).json(editedPlug);
 };
 
+const favorePlug = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(403).json({ msg: "Forbidden: Missing token" });
+  }
+
+  if (JwtServices.verifyToken(token) === "Invalid token") {
+    return res.status(403).json({ msg: "Invalid token" });
+  }
+
+  const plugId = req.params.id;
+  const { needsToBeAdded } = req.body;
+  const userId = JwtServices.getUserIdFromToken(token);
+
+  await plugsServices.favorePlug(userId, plugId);
+
+  res.status(200).json({ msg: "Plug added to wishlist" });
+};
+
+const savePlug = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(403).json({ msg: "Forbidden: Missing token" });
+  }
+
+  if (JwtServices.verifyToken(token) === "Invalid token") {
+    return res.status(403).json({ msg: "Invalid token" });
+  }
+
+  const plugId = req.params.id;
+  const userId = JwtServices.getUserIdFromToken(token);
+
+  await plugsServices.savePlug(userId, plugId);
+
+  res.status(200).json({ msg: "Plug saved" });
+};
+
 const generateDescription = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
 
@@ -97,6 +134,8 @@ export default {
   createPlug,
   getAllPlugs,
   updatePlug,
+  favorePlug,
+  savePlug,
   generateDescription,
   deletePlug,
 };

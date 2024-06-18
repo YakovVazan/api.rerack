@@ -42,6 +42,28 @@ const updateUserContribution = async (action, userId, plugId) => {
   }
 };
 
+const updateUserFavorites = async (userId, plugId) => {
+  const query = `UPDATE users
+                  SET favorites = JSON_ARRAY_APPEND(IFNULL(favorites, '[]'), '$',JSON_OBJECT('plugId', ?))
+                  WHERE id =?;`;
+  try {
+    await dbActions.executeQuery(query, [plugId, +userId]);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateUserSaved = async (userId, plugId) => {
+  const query = `UPDATE users
+                  SET saved = JSON_ARRAY_APPEND(IFNULL(saved, '[]'), '$',JSON_OBJECT('plugId',?))
+                  WHERE id =?;`;
+  try {
+    await dbActions.executeQuery(query, [plugId, +userId]);
+  } catch (error) {
+    throw error;
+  }
+};
+
 const selectUserContributions = async (userId) => {
   const query = `SELECT p.name, 
                   GROUP_CONCAT(DISTINCT JSON_OBJECT('action', jt.action, 'plugId', jt.plugId) ORDER BY jt.plugId SEPARATOR ', ') AS actions
@@ -60,6 +82,26 @@ const selectUserContributions = async (userId) => {
     const contributions = await dbActions.executeQuery(query, [userId]);
 
     return contributions;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const selectFavoritePlugs = async (userId) => {
+  const query = "SELECT favorites FROM users WHERE id = ?";
+  try {
+    const results = await dbActions.executeQuery(query, [userId]);
+    return results;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const selectSavedPlugs = async (userId) => {
+  const query = "SELECT saved FROM users WHERE id = ?";
+  try {
+    const results = await dbActions.executeQuery(query, [userId]);
+    return results;
   } catch (error) {
     throw error;
   }
@@ -88,8 +130,12 @@ export {
   insertNewUser,
   selectUser,
   alterUser,
+  updateUserFavorites,
+  updateUserSaved,
   updateUserContribution,
   selectUserContributions,
+  selectFavoritePlugs,
+  selectSavedPlugs,
   selectAllUsers,
   dropUser,
 };

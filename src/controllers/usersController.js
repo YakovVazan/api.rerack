@@ -212,6 +212,46 @@ const getUserContributions = async (req, res) => {
   }
 };
 
+const getFavorites = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(403).json({ msg: "Forbidden: Missing token" });
+    }
+
+    if (JwtServices.verifyToken(token) === "Invalid token") {
+      return res.status(403).json({ msg: "Invalid token" });
+    }
+
+    const userId = JwtServices.getUserIdFromToken(token);
+    const favoritePlugs = await usersServices.getFavoritePlugs(userId);
+
+    return res.status(200).json(favoritePlugs[0]["favorites"]);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
+};
+
+const getSaved = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(403).json({ msg: "Forbidden: Missing token" });
+    }
+
+    if (JwtServices.verifyToken(token) === "Invalid token") {
+      return res.status(403).json({ msg: "Invalid token" });
+    }
+
+    const userId = JwtServices.getUserIdFromToken(token);
+    const savedPlugs = await usersServices.getSavedPlugs(userId);
+
+    return res.status(200).json(savedPlugs[0]["saved"]);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
+};
+
 const getAllUsers = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
@@ -259,6 +299,8 @@ export default {
   verifyUser,
   updateUser,
   getUserContributions,
+  getFavorites,
+  getSaved,
   getAllUsers,
   deleteUser,
 };

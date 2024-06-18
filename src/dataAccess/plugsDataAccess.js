@@ -41,4 +41,9 @@ const dropPlug = async (id) => {
   }
 };
 
-export { insertNewPlug, selectAllPlugs, alterPlug, dropPlug };
+export {
+  insertNewPlug,
+  selectAllPlugs,
+  alterPlug,
+  dropPlug,
+};

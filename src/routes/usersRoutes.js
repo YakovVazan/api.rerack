@@ -10,6 +10,8 @@ router.get(
   "/users/:userId/contributions",
   usersController.getUserContributions
 );
+router.get("/users/:userId/favorites", usersController.getFavorites);
+router.get("/users/:userId/saved", usersController.getSaved);
 router.post("/users/:userId/verify", usersController.verifyUser)
 router.post("/users/register", usersController.createUser);
 router.post("/users/login", usersController.loginUser);

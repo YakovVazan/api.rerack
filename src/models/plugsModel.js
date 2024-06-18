@@ -4,6 +4,10 @@ import {
   alterPlug,
   dropPlug,
 } from "../dataAccess/plugsDataAccess.js";
+import {
+  updateUserFavorites,
+  updateUserSaved,
+} from "../dataAccess/usersDataAccess.js";
 
 export default class Plug {
   createPlug = (company, name, src, type, userId) => {
@@ -28,6 +32,14 @@ export default class Plug {
       type: type,
       userId: userId,
     });
+  };
+
+  favorePlug = (userId, plugId) => {
+    return updateUserFavorites(userId, plugId);
+  };
+
+  savePlug = (userId, plugId) => {
+    return updateUserSaved(userId, plugId);
   };
 
   deletePlug = (id) => {

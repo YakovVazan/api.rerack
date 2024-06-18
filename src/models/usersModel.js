@@ -3,6 +3,8 @@ import {
   selectUser,
   alterUser,
   selectUserContributions,
+  selectFavoritePlugs,
+  selectSavedPlugs,
   selectAllUsers,
   dropUser,
 } from "../dataAccess/usersDataAccess.js";
@@ -18,10 +20,18 @@ export default class User {
 
   updateUser = (id, name, email, hash, isVerified) => {
     return alterUser(id, name, email, hash, isVerified);
-  }
+  };
 
   getUserContributions = (userId) => {
     return selectUserContributions(userId);
+  };
+
+  getFavoritePlugs = (userId) => {
+    return selectFavoritePlugs(userId);
+  };
+
+  getSavedPlugs = (userId) => {
+    return selectSavedPlugs(userId);
   };
 
   getAllUsers = () => {

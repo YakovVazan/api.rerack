@@ -14,6 +14,14 @@ const updatePlug = (plugId, company, name, src, type, userId) => {
   return plugInstance.setPlug(plugId, company, name, src, type, userId);
 };
 
+const favorePlug = (userId, plugId) => {
+  return plugInstance.favorePlug(userId, plugId);
+};
+
+const savePlug = (userId, plugId) => {
+  return plugInstance.savePlug(userId, plugId);
+};
+
 const deletePlug = (plugId) => {
   return plugInstance.deletePlug(plugId);
 };
@@ -22,5 +30,7 @@ export default {
   createPlug,
   getAllPlugs,
   updatePlug,
+  favorePlug,
+  savePlug,
   deletePlug,
 };
