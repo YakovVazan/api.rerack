@@ -12,6 +12,16 @@ const insertNewPlug = async (data) => {
   }
 };
 
+const selectPlug = async (id) => {
+  const query = `SELECT * FROM plugins WHERE id =?`;
+  try {
+    const [result] = await dbActions.executeQuery(query, [id]);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const selectAllPlugs = async () => {
   const query = "SELECT * FROM plugins";
   try {
@@ -41,9 +51,4 @@ const dropPlug = async (id) => {
   }
 };
 
-export {
-  insertNewPlug,
-  selectAllPlugs,
-  alterPlug,
-  dropPlug,
-};
+export { insertNewPlug, selectPlug, selectAllPlugs, alterPlug, dropPlug };

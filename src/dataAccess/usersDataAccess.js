@@ -1,3 +1,4 @@
+import { selectPlug } from "../dataAccess/plugsDataAccess.js";
 import dbActions from "../config/dbConfig.js";
 
 const insertNewUser = async (data) => {
@@ -57,10 +58,12 @@ const removeUserFavorite = async (userId, plugId) => {
   const query = `UPDATE users SET favorites = ? WHERE id = ?;`;
   try {
     const favortiePlugs = await selectFavoritePlugs(userId);
-    let favorties = JSON.parse(JSON.stringify(favortiePlugs[0]["favorites"])) || [];
+    let favorties =
+      JSON.parse(JSON.stringify(favortiePlugs[0]["favorites"])) || [];
 
     favorties = favorties.filter(
-      (favortiePlug) => !(favortiePlug["plugId"] && favortiePlug["plugId"] === plugId)
+      (favortiePlug) =>
+        !(favortiePlug["plugId"] && favortiePlug["plugId"] === plugId)
     );
 
     const updatedFavorites = JSON.stringify(favorties);
@@ -127,7 +130,13 @@ const selectFavoritePlugs = async (userId) => {
   const query = "SELECT favorites FROM users WHERE id = ?";
   try {
     const results = await dbActions.executeQuery(query, [userId]);
-    return results;
+    let savedPlugs = [];
+
+    for (let item of results[0]["favorites"]) {
+      savedPlugs.push(await selectPlug(item["plugId"]));
+    }
+
+    return savedPlugs;
   } catch (error) {
     throw error;
   }
@@ -137,7 +146,13 @@ const selectSavedPlugs = async (userId) => {
   const query = "SELECT saved FROM users WHERE id = ?";
   try {
     const results = await dbActions.executeQuery(query, [userId]);
-    return results;
+    let fullSavedPlugs = [];
+
+    for (let item of results[0]["saved"]) {
+      fullSavedPlugs.push(await selectPlug(item["plugId"]));
+    }
+
+    return fullSavedPlugs;
   } catch (error) {
     throw error;
   }

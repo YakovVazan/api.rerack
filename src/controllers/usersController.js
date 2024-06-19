@@ -226,7 +226,7 @@ const getFavorites = async (req, res) => {
     const userId = JwtServices.getUserIdFromToken(token);
     const favoritePlugs = await usersServices.getFavoritePlugs(userId);
 
-    return res.status(200).json(favoritePlugs[0]["favorites"]);
+    return res.status(200).json(favoritePlugs);
   } catch (error) {
     return res.status(500).json({ msg: error });
   }
@@ -246,7 +246,7 @@ const getSaved = async (req, res) => {
     const userId = JwtServices.getUserIdFromToken(token);
     const savedPlugs = await usersServices.getSavedPlugs(userId);
 
-    return res.status(200).json(savedPlugs[0]["saved"]);
+    return res.status(200).json(savedPlugs);
   } catch (error) {
     return res.status(500).json({ msg: error });
   }
