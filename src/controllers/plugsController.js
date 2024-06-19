@@ -54,7 +54,7 @@ const updatePlug = async (req, res) => {
   res.status(201).json(editedPlug);
 };
 
-const favorePlug = async (req, res) => {
+const favorPlug = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
     return res.status(403).json({ msg: "Forbidden: Missing token" });
@@ -68,7 +68,7 @@ const favorePlug = async (req, res) => {
   const { needsToBeAdded } = req.body;
   const userId = JwtServices.getUserIdFromToken(token);
   if (needsToBeAdded) {
-    await plugsServices.favorePlug(userId, plugId);
+    await plugsServices.favorPlug(userId, plugId);
     res.status(200).json({ msg: "Plug added to wishlist" });
   } else {
     await plugsServices.unfavorPlug(userId, plugId);
@@ -142,7 +142,7 @@ export default {
   createPlug,
   getAllPlugs,
   updatePlug,
-  favorePlug,
+  favorPlug,
   savePlug,
   generateDescription,
   deletePlug,

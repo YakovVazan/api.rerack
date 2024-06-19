@@ -14,8 +14,8 @@ const updatePlug = (plugId, company, name, src, type, userId) => {
   return plugInstance.setPlug(plugId, company, name, src, type, userId);
 };
 
-const favorePlug = (userId, plugId) => {
-  return plugInstance.favorePlug(userId, plugId);
+const favorPlug = (userId, plugId) => {
+  return plugInstance.favorPlug(userId, plugId);
 };
 
 const unfavorPlug = (userId, plugId) => {
@@ -38,7 +38,7 @@ export default {
   createPlug,
   getAllPlugs,
   updatePlug,
-  favorePlug,
+  favorPlug,
   unfavorPlug,
   savePlug,
   unsavePlug,

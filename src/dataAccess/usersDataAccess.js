@@ -59,7 +59,8 @@ const removeUserFavorite = async (userId, plugId) => {
   try {
     const favortiePlugs = await selectFavoritePlugs(userId);
     let favorties =
-      (favortiePlugs[0]["favorites"] &&
+      (favortiePlugs.length > 0 &&
+        favortiePlugs[0]["favorites"] &&
         JSON.parse(JSON.stringify(favortiePlugs[0]["favorites"]))) ||
       [];
 
@@ -92,7 +93,8 @@ const removeUserSaved = async (userId, plugId) => {
   try {
     const savedPlugs = await selectSavedPlugs(userId);
     let saved =
-      (savedPlugs[0]["saved"] &&
+      (savedPlugs.length > 0 &&
+        savedPlugs[0]["saved"] &&
         JSON.parse(JSON.stringify(savedPlugs[0]["saved"]))) ||
       [];
 

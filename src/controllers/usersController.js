@@ -161,15 +161,16 @@ const updateUser = async (req, res) => {
     let hashedPassword;
     const { id, name, email, password } = req.body;
     const user = await usersServices.getUser("id", id);
+    const emailExists = await usersServices.emailExists(email);
     const passwordMatches = await usersServices.comparePasswords(
       password,
       user.hash
     );
-    const emailExists = await usersServices.emailExists(email);
+
     if (user.email !== email && emailExists) {
       return res.status(400).json({ error: "Email already in use" });
     }
-    if (!passwordMatches) {
+    if (password && !passwordMatches) {
       hashedPassword = await usersServices.hashPassword(password);
     } else {
       hashedPassword = user.hash;
@@ -192,23 +193,38 @@ const updateUser = async (req, res) => {
 };
 
 const getUserContributions = async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(403).json({ msg: "Forbidden: Missing token" });
-  }
-
-  if (JwtServices.verifyToken(token) === "Invalid token") {
-    return res.status(403).json({ msg: "Invalid token" });
-  }
-
   try {
-    const userId = req.params.userId;
-    const plugs = await usersServices.getUserContributions(userId);
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(403).json({ msg: "Forbidden: Missing token" });
+    }
 
-    res.json(plugs);
+    if (JwtServices.verifyToken(token) === "Invalid token") {
+      return res.status(403).json({ msg: "Invalid token" });
+    }
+
+    const userIdFromParams = req.params.userId;
+    const decodedToken = JwtServices.verifyToken(token);
+    const userIdFromToken = JwtServices.getUserIdFromToken(token);
+    if (
+      !decodedToken.isOwner &&
+      userIdFromToken !== parseInt(userIdFromParams)
+    ) {
+      return res.status(403).json({
+        msg: userIdFromToken?.message || "Unauthorized",
+      });
+    }
+
+    const user = await usersServices.getUser("id", userIdFromParams);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found." });
+    }
+
+    const plugs = await usersServices.getUserContributions(userIdFromParams);
+
+    return res.status(200).json(plugs);
   } catch (error) {
-    res.status(500).json({ msg: "Internal Server Error" });
+    return res.status(500).json({ msg: error });
   }
 };
 
@@ -231,9 +247,13 @@ const getFavorites = async (req, res) => {
       userIdFromToken !== parseInt(userIdFromParams)
     ) {
       return res.status(403).json({
-        msg:
-          userIdFromToken?.message || "Forbidden: Token does not match user ID",
+        msg: userIdFromToken?.message || "Unauthorized",
       });
+    }
+
+    const user = await usersServices.getUser("id", userIdFromParams);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found." });
     }
 
     const favoritePlugs = await usersServices.getFavoritePlugs(
@@ -265,9 +285,13 @@ const getSaved = async (req, res) => {
       userIdFromToken !== parseInt(userIdFromParams)
     ) {
       return res.status(403).json({
-        msg:
-          userIdFromToken?.message || "Forbidden: Token does not match user ID",
+        msg: userIdFromToken?.message || "Unauthorized",
       });
+    }
+
+    const user = await usersServices.getUser("id", userIdFromParams);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found." });
     }
 
     const savedPlugs = await usersServices.getSavedPlugs(userIdFromParams);

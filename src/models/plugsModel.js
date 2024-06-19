@@ -36,7 +36,7 @@ export default class Plug {
     });
   };
 
-  favorePlug = (userId, plugId) => {
+  favorPlug = (userId, plugId) => {
     return addUserFavorite(userId, plugId);
   };
 
