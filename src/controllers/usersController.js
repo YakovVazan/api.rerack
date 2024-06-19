@@ -223,8 +223,22 @@ const getFavorites = async (req, res) => {
       return res.status(403).json({ msg: "Invalid token" });
     }
 
-    const userId = JwtServices.getUserIdFromToken(token);
-    const favoritePlugs = await usersServices.getFavoritePlugs(userId);
+    const userIdFromParams = req.params.userId;
+    const decodedToken = JwtServices.verifyToken(token);
+    const userIdFromToken = JwtServices.getUserIdFromToken(token);
+    if (
+      !decodedToken.isOwner &&
+      userIdFromToken !== parseInt(userIdFromParams)
+    ) {
+      return res.status(403).json({
+        msg:
+          userIdFromToken?.message || "Forbidden: Token does not match user ID",
+      });
+    }
+
+    const favoritePlugs = await usersServices.getFavoritePlugs(
+      userIdFromParams
+    );
 
     return res.status(200).json(favoritePlugs);
   } catch (error) {
@@ -243,8 +257,20 @@ const getSaved = async (req, res) => {
       return res.status(403).json({ msg: "Invalid token" });
     }
 
-    const userId = JwtServices.getUserIdFromToken(token);
-    const savedPlugs = await usersServices.getSavedPlugs(userId);
+    const userIdFromParams = req.params.userId;
+    const decodedToken = JwtServices.verifyToken(token);
+    const userIdFromToken = JwtServices.getUserIdFromToken(token);
+    if (
+      !decodedToken.isOwner &&
+      userIdFromToken !== parseInt(userIdFromParams)
+    ) {
+      return res.status(403).json({
+        msg:
+          userIdFromToken?.message || "Forbidden: Token does not match user ID",
+      });
+    }
+
+    const savedPlugs = await usersServices.getSavedPlugs(userIdFromParams);
 
     return res.status(200).json(savedPlugs);
   } catch (error) {
