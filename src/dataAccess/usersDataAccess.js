@@ -59,7 +59,9 @@ const removeUserFavorite = async (userId, plugId) => {
   try {
     const favortiePlugs = await selectFavoritePlugs(userId);
     let favorties =
-      JSON.parse(JSON.stringify(favortiePlugs[0]["favorites"])) || [];
+      (favortiePlugs[0]["favorites"] &&
+        JSON.parse(JSON.stringify(favortiePlugs[0]["favorites"]))) ||
+      [];
 
     favorties = favorties.filter(
       (favortiePlug) =>
@@ -89,7 +91,10 @@ const removeUserSaved = async (userId, plugId) => {
   const query = `UPDATE users SET saved = ? WHERE id = ?;`;
   try {
     const savedPlugs = await selectSavedPlugs(userId);
-    let saved = JSON.parse(JSON.stringify(savedPlugs[0]["saved"])) || [];
+    let saved =
+      (savedPlugs[0]["saved"] &&
+        JSON.parse(JSON.stringify(savedPlugs[0]["saved"]))) ||
+      [];
 
     saved = saved.filter(
       (savedPlug) => !(savedPlug["plugId"] && savedPlug["plugId"] === plugId)
@@ -132,8 +137,10 @@ const selectFavoritePlugs = async (userId) => {
     const results = await dbActions.executeQuery(query, [userId]);
     let savedPlugs = [];
 
-    for (let item of results[0]["favorites"]) {
-      savedPlugs.push(await selectPlug(item["plugId"]));
+    if (results[0]["favorites"]) {
+      for (let item of results[0]["favorites"]) {
+        savedPlugs.push(await selectPlug(item["plugId"]));
+      }
     }
 
     return savedPlugs;
@@ -148,8 +155,10 @@ const selectSavedPlugs = async (userId) => {
     const results = await dbActions.executeQuery(query, [userId]);
     let fullSavedPlugs = [];
 
-    for (let item of results[0]["saved"]) {
-      fullSavedPlugs.push(await selectPlug(item["plugId"]));
+    if (results[0]["saved"]) {
+      for (let item of results[0]["saved"]) {
+        fullSavedPlugs.push(await selectPlug(item["plugId"]));
+      }
     }
 
     return fullSavedPlugs;
