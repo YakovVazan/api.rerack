@@ -67,10 +67,13 @@ const favorePlug = async (req, res) => {
   const plugId = req.params.id;
   const { needsToBeAdded } = req.body;
   const userId = JwtServices.getUserIdFromToken(token);
-
-  await plugsServices.favorePlug(userId, plugId);
-
-  res.status(200).json({ msg: "Plug added to wishlist" });
+  if (needsToBeAdded) {
+    await plugsServices.favorePlug(userId, plugId);
+    res.status(200).json({ msg: "Plug added to wishlist" });
+  } else {
+    await plugsServices.unfavorPlug(userId, plugId);
+    res.status(200).json({ msg: "Plug removed from wishlist" });
+  }
 };
 
 const savePlug = async (req, res) => {
@@ -84,11 +87,16 @@ const savePlug = async (req, res) => {
   }
 
   const plugId = req.params.id;
+  const { needsToBeAdded } = req.body;
   const userId = JwtServices.getUserIdFromToken(token);
 
-  await plugsServices.savePlug(userId, plugId);
-
-  res.status(200).json({ msg: "Plug saved" });
+  if (needsToBeAdded) {
+    await plugsServices.savePlug(userId, plugId);
+    res.status(200).json({ msg: "Plug saved" });
+  } else {
+    await plugsServices.unsavePlug(userId, plugId);
+    res.status(200).json({ msg: "Plug unsaved" });
+  }
 };
 
 const generateDescription = async (req, res) => {

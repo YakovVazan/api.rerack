@@ -18,8 +18,16 @@ const favorePlug = (userId, plugId) => {
   return plugInstance.favorePlug(userId, plugId);
 };
 
+const unfavorPlug = (userId, plugId) => {
+  return plugInstance.unfavorPlug(userId, plugId);
+};
+
 const savePlug = (userId, plugId) => {
   return plugInstance.savePlug(userId, plugId);
+};
+
+const unsavePlug = (userId, plugId) => {
+  return plugInstance.unsavePlug(userId, plugId);
 };
 
 const deletePlug = (plugId) => {
@@ -31,6 +39,8 @@ export default {
   getAllPlugs,
   updatePlug,
   favorePlug,
+  unfavorPlug,
   savePlug,
+  unsavePlug,
   deletePlug,
 };

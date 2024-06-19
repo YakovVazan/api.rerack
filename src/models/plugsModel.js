@@ -5,8 +5,10 @@ import {
   dropPlug,
 } from "../dataAccess/plugsDataAccess.js";
 import {
-  updateUserFavorites,
-  updateUserSaved,
+  addUserFavorite,
+  removeUserFavorite,
+  addUserSaved,
+  removeUserSaved,
 } from "../dataAccess/usersDataAccess.js";
 
 export default class Plug {
@@ -35,11 +37,19 @@ export default class Plug {
   };
 
   favorePlug = (userId, plugId) => {
-    return updateUserFavorites(userId, plugId);
+    return addUserFavorite(userId, plugId);
+  };
+
+  unfavorPlug = (userId, plugId) => {
+    return removeUserFavorite(userId, plugId);
   };
 
   savePlug = (userId, plugId) => {
-    return updateUserSaved(userId, plugId);
+    return addUserSaved(userId, plugId);
+  };
+
+  unsavePlug = (userId, plugId) => {
+    return removeUserSaved(userId, plugId);
   };
 
   deletePlug = (id) => {

@@ -42,7 +42,7 @@ const updateUserContribution = async (action, userId, plugId) => {
   }
 };
 
-const updateUserFavorites = async (userId, plugId) => {
+const addUserFavorite = async (userId, plugId) => {
   const query = `UPDATE users
                   SET favorites = JSON_ARRAY_APPEND(IFNULL(favorites, '[]'), '$',JSON_OBJECT('plugId', ?))
                   WHERE id =?;`;
@@ -53,12 +53,48 @@ const updateUserFavorites = async (userId, plugId) => {
   }
 };
 
-const updateUserSaved = async (userId, plugId) => {
+const removeUserFavorite = async (userId, plugId) => {
+  const query = `UPDATE users SET favorites = ? WHERE id = ?;`;
+  try {
+    const favortiePlugs = await selectFavoritePlugs(userId);
+    let favorties = JSON.parse(JSON.stringify(favortiePlugs[0]["favorites"])) || [];
+
+    favorties = favorties.filter(
+      (favortiePlug) => !(favortiePlug["plugId"] && favortiePlug["plugId"] === plugId)
+    );
+
+    const updatedFavorites = JSON.stringify(favorties);
+
+    await dbActions.executeQuery(query, [updatedFavorites, userId]);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const addUserSaved = async (userId, plugId) => {
   const query = `UPDATE users
                   SET saved = JSON_ARRAY_APPEND(IFNULL(saved, '[]'), '$',JSON_OBJECT('plugId',?))
                   WHERE id =?;`;
   try {
     await dbActions.executeQuery(query, [plugId, +userId]);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const removeUserSaved = async (userId, plugId) => {
+  const query = `UPDATE users SET saved = ? WHERE id = ?;`;
+  try {
+    const savedPlugs = await selectSavedPlugs(userId);
+    let saved = JSON.parse(JSON.stringify(savedPlugs[0]["saved"])) || [];
+
+    saved = saved.filter(
+      (savedPlug) => !(savedPlug["plugId"] && savedPlug["plugId"] === plugId)
+    );
+
+    const updatedSaved = JSON.stringify(saved);
+
+    await dbActions.executeQuery(query, [updatedSaved, userId]);
   } catch (error) {
     throw error;
   }
@@ -130,8 +166,10 @@ export {
   insertNewUser,
   selectUser,
   alterUser,
-  updateUserFavorites,
-  updateUserSaved,
+  addUserFavorite,
+  removeUserFavorite,
+  addUserSaved,
+  removeUserSaved,
   updateUserContribution,
   selectUserContributions,
   selectFavoritePlugs,
