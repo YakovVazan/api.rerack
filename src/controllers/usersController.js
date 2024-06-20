@@ -228,6 +228,42 @@ const getUserContributions = async (req, res) => {
   }
 };
 
+const getUsersActivity = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(403).json({ msg: "Forbidden: Missing token" });
+  }
+
+  const decodedToken = JwtServices.verifyToken(token);
+
+  if (decodedToken.isOwner) {
+    let activity = [];
+    const users = await usersServices.getAllUsers();
+
+    for (const user of users) {
+      const contribution = await usersServices.getUserContributions(user.id);
+
+      contribution.forEach((contribution) => {
+        if (contribution["contributions"] !== null) {
+          contribution["contributions"].forEach((userContribution) => {
+            activity.push({
+              userId: user.id,
+              username: user.name,
+              plugId: userContribution.id,
+              plugName: userContribution.name,
+              actions: userContribution.actions,
+            });
+          });
+        }
+      });
+    }
+
+    return res.status(200).json(activity);
+  } else {
+    res.status(403).json({ msg: "Forbidden: Not Authorized" });
+  }
+};
+
 const getFavorites = async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
@@ -349,6 +385,7 @@ export default {
   verifyUser,
   updateUser,
   getUserContributions,
+  getUsersActivity,
   getFavorites,
   getSaved,
   getAllUsers,

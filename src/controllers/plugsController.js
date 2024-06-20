@@ -67,6 +67,7 @@ const favorPlug = async (req, res) => {
   const plugId = req.params.id;
   const { needsToBeAdded } = req.body;
   const userId = JwtServices.getUserIdFromToken(token);
+
   if (needsToBeAdded) {
     await plugsServices.favorPlug(userId, plugId);
     res.status(200).json({ msg: "Plug added to wishlist" });

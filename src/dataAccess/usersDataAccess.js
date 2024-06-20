@@ -33,101 +33,128 @@ const alterUser = async (id, name, email, hash, isVerified) => {
 };
 
 const updateUserContribution = async (action, userId, plugId) => {
-  const query = `UPDATE users
-                  SET contributions = JSON_ARRAY_APPEND(IFNULL(contributions, '[]'), '$', JSON_OBJECT('action', ?, 'plugId', ?))
-                  WHERE id = ?;`;
   try {
-    await dbActions.executeQuery(query, [action, +plugId, +userId]);
+    let newContributions = [];
+    const newAction = action;
+    let alreadyContributedTo = false;
+    const plugDetails = await selectPlug(plugId);
+    let oldContributions = await selectUserContributions(userId);
+    const query = `UPDATE users SET contributions = ? WHERE id = ?;`; // [{id: id, name: name, actions: ['action', 'action']}, {...}]
+
+    // initialize the data
+    oldContributions =
+      oldContributions[0]["contributions"] === null
+        ? []
+        : oldContributions[0]["contributions"];
+
+    oldContributions.forEach((oldContribution) => {
+      if (oldContribution.id == plugId) {
+        alreadyContributedTo = true;
+        oldContribution.actions.push(action);
+      }
+
+      newContributions.push(oldContribution);
+    });
+
+    if (!alreadyContributedTo) {
+      newContributions.push({
+        id: plugDetails.id,
+        name: plugDetails.name,
+        actions: [newAction],
+      });
+    }
+
+    await dbActions.executeQuery(query, [
+      JSON.stringify(newContributions),
+      +userId,
+    ]);
   } catch (error) {
     throw error;
   }
 };
 
 const addUserFavorite = async (userId, plugId) => {
-  const query = `UPDATE users
-                  SET favorites = JSON_ARRAY_APPEND(IFNULL(favorites, '[]'), '$',JSON_OBJECT('plugId', ?))
-                  WHERE id =?;`;
   try {
-    await dbActions.executeQuery(query, [plugId, +userId]);
-  } catch (error) {
-    throw error;
-  }
-};
+    let newFavorites = [];
+    const newFavorite = { plugId: plugId };
+    const oldFavorites = await selectFavoritePlugs(userId);
+    const query = `UPDATE users SET favorites = ? WHERE id = ?;`;
 
-const removeUserFavorite = async (userId, plugId) => {
-  const query = `UPDATE users SET favorites = ? WHERE id = ?;`;
-  try {
-    const favortiePlugs = await selectFavoritePlugs(userId);
-    let favorties =
-      (favortiePlugs.length > 0 &&
-        favortiePlugs[0]["favorites"] &&
-        JSON.parse(JSON.stringify(favortiePlugs[0]["favorites"]))) ||
-      [];
+    oldFavorites.forEach((oldFavorite) => {
+      newFavorites.push({ plugId: "" + oldFavorite.id });
+    });
 
-    favorties = favorties.filter(
-      (favortiePlug) =>
-        !(favortiePlug["plugId"] && favortiePlug["plugId"] === plugId)
-    );
+    newFavorites.push(newFavorite);
 
-    const updatedFavorites = JSON.stringify(favorties);
-
-    await dbActions.executeQuery(query, [updatedFavorites, userId]);
+    await dbActions.executeQuery(query, [
+      JSON.stringify(newFavorites),
+      +userId,
+    ]);
   } catch (error) {
     throw error;
   }
 };
 
 const addUserSaved = async (userId, plugId) => {
-  const query = `UPDATE users
-                  SET saved = JSON_ARRAY_APPEND(IFNULL(saved, '[]'), '$',JSON_OBJECT('plugId',?))
-                  WHERE id =?;`;
   try {
-    await dbActions.executeQuery(query, [plugId, +userId]);
+    let newSaves = [];
+    const newSaved = { plugId: plugId };
+    const oldSaves = await selectFavoritePlugs(userId);
+    const query = `UPDATE users SET saved = ? WHERE id = ?;`;
+
+    oldSaves.forEach((oldSaved) => {
+      newSaves.push({ plugId: "" + oldSaved.id });
+    });
+
+    newSaves.push(newSaved);
+
+    await dbActions.executeQuery(query, [JSON.stringify(newSaves), +userId]);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const removeUserFavorite = async (userId, plugId) => {
+  try {
+    let newFavorites = [];
+    const oldFavorites = await selectFavoritePlugs(userId);
+    const query = `UPDATE users SET favorites = ? WHERE id = ?;`;
+
+    oldFavorites.forEach((oldFavorite) => {
+      if (oldFavorite.id != plugId)
+        newFavorites.push({ plugId: "" + oldFavorite.id });
+    });
+
+    await dbActions.executeQuery(query, [
+      JSON.stringify(newFavorites),
+      +userId,
+    ]);
   } catch (error) {
     throw error;
   }
 };
 
 const removeUserSaved = async (userId, plugId) => {
-  const query = `UPDATE users SET saved = ? WHERE id = ?;`;
   try {
-    const savedPlugs = await selectSavedPlugs(userId);
-    let saved =
-      (savedPlugs.length > 0 &&
-        savedPlugs[0]["saved"] &&
-        JSON.parse(JSON.stringify(savedPlugs[0]["saved"]))) ||
-      [];
+    let newSaves = [];
+    const oldsaves = await selectSavedPlugs(userId);
+    const query = `UPDATE users SET saved = ? WHERE id = ?;`;
 
-    saved = saved.filter(
-      (savedPlug) => !(savedPlug["plugId"] && savedPlug["plugId"] === plugId)
-    );
+    oldsaves.forEach((oldSaved) => {
+      if (oldSaved.id != plugId) newSaves.push({ plugId: "" + oldSaved.id });
+    });
 
-    const updatedSaved = JSON.stringify(saved);
-
-    await dbActions.executeQuery(query, [updatedSaved, userId]);
+    await dbActions.executeQuery(query, [JSON.stringify(newSaves), +userId]);
   } catch (error) {
     throw error;
   }
 };
 
 const selectUserContributions = async (userId) => {
-  const query = `SELECT p.name, 
-                  GROUP_CONCAT(DISTINCT JSON_OBJECT('action', jt.action, 'plugId', jt.plugId) ORDER BY jt.plugId SEPARATOR ', ') AS actions
-                  FROM users
-                  JOIN JSON_TABLE(users.contributions, '$[*]' COLUMNS (
-                      action VARCHAR(100) PATH '$.action',
-                      plugId INT PATH '$.plugId'
-                  )) AS jt ON TRUE
-                  JOIN plugins p ON jt.plugId = p.id
-                  WHERE users.id = ?
-                  GROUP BY p.name
-                  ORDER BY p.name ASC;
-                `;
-
   try {
-    const contributions = await dbActions.executeQuery(query, [userId]);
+    const query = `SELECT contributions FROM users WHERE id = ?`; // [{id: id, name: name, actions: ['action', 'action']}, {...}]
 
-    return contributions;
+    return await dbActions.executeQuery(query, [userId]);
   } catch (error) {
     throw error;
   }
