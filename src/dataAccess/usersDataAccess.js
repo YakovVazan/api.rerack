@@ -99,7 +99,7 @@ const addUserSaved = async (userId, plugId) => {
   try {
     let newSaves = [];
     const newSaved = { plugId: plugId };
-    const oldSaves = await selectFavoritePlugs(userId);
+    const oldSaves = await selectSavedPlugs(userId);
     const query = `UPDATE users SET saved = ? WHERE id = ?;`;
 
     oldSaves.forEach((oldSaved) => {
