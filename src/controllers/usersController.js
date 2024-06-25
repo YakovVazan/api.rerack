@@ -125,7 +125,7 @@ const verifyUser = async (req, res) => {
       return res.status(404).json({ msg: "User not found." });
     }
 
-    const newToken = JwtServices.updateToken(token);
+    const newToken = JwtServices.addVerificationCodeToToken(token);
     const verificationCode = JwtServices.getVerificationCodeFromToken(newToken);
 
     emailService.sendEmail(user.email, verificationCode);
@@ -176,16 +176,39 @@ const updateUser = async (req, res) => {
       hashedPassword = user.hash;
     }
 
+    console.log(token);
     const verificationCode = JwtServices.getVerificationCodeFromToken(token);
-    const alteredUser = await usersServices.updateUser(
+    const isVerified =
+      verificationCode && verificationCode == password
+        ? 1
+        : email == user.email
+        ? user.isVerified
+        : 0;
+
+    await usersServices.updateUser(
       userIdFromParams,
-      name,
-      email,
+      name || user.name,
+      email || user.email,
       hashedPassword,
-      verificationCode ? 1 : user.isVerified
+      isVerified
     );
 
-    res.status(201).json(alteredUser);
+    console.log(verificationCode, password, email, user.email, isVerified);
+
+    const newToken = JwtServices.generateUserToken(
+      user.id,
+      decodedToken.isOwner,
+      isVerified
+    );
+
+    res.status(201).json({
+      token: newToken,
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      isOwner: decodedToken.isOwner,
+      isVerified: isVerified,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error?.message });

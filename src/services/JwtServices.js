@@ -13,13 +13,17 @@ const generateUserToken = (userId, isOwner, isVerified) => {
   return jwt.sign(payload, secretKey);
 };
 
-const updateToken = (oldToken) => {
+const addVerificationCodeToToken = (oldToken) => {
   const updatedPayload = {
     ...verifyToken(oldToken),
     verificationCode: generate6DigitCode(),
   };
 
-  return jwt.sign(updatedPayload, secretKey, { expiresIn: "7h" });
+  return jwt.sign(updatedPayload, secretKey);
+};
+
+const removeVerificationCodeToToken = (userId, isOwner, isVerified) => {
+  return generateUserToken(userId, isOwner, isVerified);
 };
 
 const generate6DigitCode = () => {
@@ -56,7 +60,8 @@ const getVerificationCodeFromToken = (token) => {
 
 export default {
   generateUserToken,
-  updateToken,
+  addVerificationCodeToToken,
+  removeVerificationCodeToToken,
   verifyToken,
   getUserIdFromToken,
   getVerificationCodeFromToken,
