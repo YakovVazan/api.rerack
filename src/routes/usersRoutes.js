@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.get("/users", usersController.getAllUsers);
 router.get("/users/activity", usersController.getUsersActivity);
+router.post("/users/get_new_password", usersController.getNewPassword);
+router.post("/users/reset_password", usersController.resetPassword);
 router.get("/users/:userId", usersController.getUser);
 router.put("/users/:userId/edit", usersController.updateUser);
 router.get(

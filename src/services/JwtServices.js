@@ -22,10 +22,6 @@ const addVerificationCodeToToken = (oldToken) => {
   return jwt.sign(updatedPayload, secretKey);
 };
 
-const removeVerificationCodeToToken = (userId, isOwner, isVerified) => {
-  return generateUserToken(userId, isOwner, isVerified);
-};
-
 const generate6DigitCode = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
@@ -61,7 +57,7 @@ const getVerificationCodeFromToken = (token) => {
 export default {
   generateUserToken,
   addVerificationCodeToToken,
-  removeVerificationCodeToToken,
+  generate6DigitCode,
   verifyToken,
   getUserIdFromToken,
   getVerificationCodeFromToken,

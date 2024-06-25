@@ -104,6 +104,58 @@ const getUser = async (req, res) => {
   }
 };
 
+const getNewPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: "Email is required." });
+    }
+
+    const emailExists = await usersServices.emailExists(email);
+    if (!emailExists) {
+      return res.status(400).json({ error: "Email not registered" });
+    }
+
+    const newPassword = JwtServices.generate6DigitCode();
+    const hash = await usersServices.hashPassword(newPassword);
+
+    emailService.sendEmail(email, newPassword);
+
+    return res.status(200).json({ msg: "Email sent successfully", hash: hash });
+  } catch (error) {
+    return res.status(400).json({ error: err });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email, password, hash } = req.body;
+
+    if (!email || !password || !hash) {
+      return res.status(400).json({ error: "Password is required." });
+    }
+
+    const emailExists = await usersServices.emailExists(email);
+    if (!emailExists) {
+      return res.status(400).json({ error: "Email not registered" });
+    }
+
+    const passwordMatches = await usersServices.comparePasswords(
+      password,
+      hash
+    );
+    if (!passwordMatches) {
+      return res.status(401).json({ error: "Wrong password." });
+    }
+
+    await usersServices.resetPassword(email, hash);
+
+    return res.status(200).json({ msg: "Password updated successfully" });
+  } catch (err) {
+    return res.status(400).json({ error: err });
+  }
+};
+
 const verifyUser = async (req, res) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
@@ -167,17 +219,19 @@ const updateUser = async (req, res) => {
       user.hash
     );
 
+    // prevent updating email into an already existing one
     if (user.email !== email && emailExists) {
       return res.status(400).json({ error: "Email already in use" });
     }
+    // create a new hash only if a new password was provided
     if (password && !passwordMatches) {
       hashedPassword = await usersServices.hashPassword(password);
     } else {
       hashedPassword = user.hash;
     }
 
-    console.log(token);
     const verificationCode = JwtServices.getVerificationCodeFromToken(token);
+    // declare as verified only if a verification code is still stored in the token and equals to the given one
     const isVerified =
       verificationCode && verificationCode == password
         ? 1
@@ -187,20 +241,20 @@ const updateUser = async (req, res) => {
 
     await usersServices.updateUser(
       userIdFromParams,
-      name || user.name,
-      email || user.email,
+      name || user.name, // update name only if was provided
+      email || user.email, // update email only if was provided
       hashedPassword,
       isVerified
     );
 
-    console.log(verificationCode, password, email, user.email, isVerified);
-
+    // renew token to remove verification code from it
     const newToken = JwtServices.generateUserToken(
       user.id,
       decodedToken.isOwner,
       isVerified
     );
 
+    // similar logics from logging in
     res.status(201).json({
       token: newToken,
       id: user.id,
@@ -405,6 +459,8 @@ export default {
   createUser,
   loginUser,
   getUser,
+  getNewPassword,
+  resetPassword,
   verifyUser,
   updateUser,
   getUserContributions,

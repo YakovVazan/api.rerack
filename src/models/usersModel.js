@@ -1,6 +1,7 @@
 import {
   insertNewUser,
   selectUser,
+  alterHash,
   alterUser,
   selectUserContributions,
   selectFavoritePlugs,
@@ -17,6 +18,10 @@ export default class User {
   getUser = (factor, identifier) => {
     return selectUser(factor, identifier);
   };
+
+  resetPassword = (email, newHash) => {
+    return alterHash(email, newHash);
+  }
 
   updateUser = (id, name, email, hash, isVerified) => {
     return alterUser(id, name, email, hash, isVerified);

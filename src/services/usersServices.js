@@ -73,6 +73,10 @@ const getUser = async (factor, identifier) => {
   return await userInstance.getUser(factor, identifier);
 };
 
+const resetPassword = async (email, newHash) => {
+  return await userInstance.resetPassword(email, newHash);
+}
+
 const updateUser = async (id, name, email, hash, isVerified) => {
   return await userInstance.updateUser(id, name, email, hash, isVerified);
 };
@@ -113,6 +117,7 @@ export default {
   comparePasswords,
   createUser,
   getUser,
+  resetPassword,
   updateUser,
   getUserContributions,
   getFavoritePlugs,

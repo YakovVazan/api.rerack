@@ -21,6 +21,15 @@ const selectUser = async (factor, identifier) => {
   }
 };
 
+const alterHash = async (email, newHash) => {
+  const query = "UPDATE users SET hash =? WHERE email =?";
+  try {
+    return await dbActions.executeQuery(query, [newHash, email]);
+  } catch (error) {
+    throw error;
+  }
+};
+
 const alterUser = async (id, name, email, hash, isVerified) => {
   const query =
     "UPDATE users SET name =?, email =?, hash =?, isVerified =? WHERE id =?";
@@ -218,6 +227,7 @@ const dropUser = async (id) => {
 export {
   insertNewUser,
   selectUser,
+  alterHash,
   alterUser,
   addUserFavorite,
   removeUserFavorite,
