@@ -12,8 +12,8 @@ import {
 } from "../dataAccess/usersDataAccess.js";
 
 export default class Plug {
-  createPlug = (company, name, src, type, userId) => {
-    return insertNewPlug({
+  createPlug = async (company, name, src, type, userId) => {
+    return await insertNewPlug({
       company: company,
       name: name,
       src: src,
