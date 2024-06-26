@@ -59,7 +59,7 @@ const updateUserContribution = async (action, userId, plugId) => {
     oldContributions.forEach((oldContribution) => {
       if (oldContribution.id == plugId) {
         alreadyContributedTo = true;
-        oldContribution.actions.push(action);
+        oldContribution.actions.push({ action: action, time: new Date() });
       }
 
       newContributions.push(oldContribution);
@@ -69,7 +69,7 @@ const updateUserContribution = async (action, userId, plugId) => {
       newContributions.push({
         id: plugDetails.id,
         name: plugDetails.name,
-        actions: [newAction],
+        actions: [{ action: newAction, time: new Date() }],
       });
     }
 
