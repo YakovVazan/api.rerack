@@ -42,10 +42,11 @@ const alterPlug = async (id, data) => {
   }
 };
 
-const dropPlug = async (id) => {
+const dropPlug = async (userId, plugId) => {
   const query = "DELETE FROM plugins WHERE id = ?";
   try {
-    await dbActions.executeQuery(query, [id]);
+    await updateUserContribution("Delete", userId, plugId);
+    await dbActions.executeQuery(query, [plugId]);
   } catch (error) {
     throw error;
   }

@@ -57,7 +57,7 @@ export default class Plug {
     return removeUserSaved(userId, plugId);
   };
 
-  deletePlug = (id) => {
-    return dropPlug(id);
+  deletePlug = (userId, plugId) => {
+    return dropPlug(userId, plugId);
   };
 }

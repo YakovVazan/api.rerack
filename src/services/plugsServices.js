@@ -34,8 +34,8 @@ const unsavePlug = (userId, plugId) => {
   return plugInstance.unsavePlug(userId, plugId);
 };
 
-const deletePlug = (plugId) => {
-  return plugInstance.deletePlug(plugId);
+const deletePlug = (userId, plugId) => {
+  return plugInstance.deletePlug(userId, plugId);
 };
 
 export default {

@@ -156,7 +156,8 @@ const deletePlug = async (req, res) => {
   }
 
   const plugId = req.params.id;
-  const deletedPlug = plugsServices.deletePlug(plugId);
+  const userId = JwtServices.getUserIdFromToken(token);
+  const deletedPlug = plugsServices.deletePlug(userId, plugId);
 
   res.status(201).json(deletedPlug);
 };
