@@ -6,6 +6,10 @@ const createPlug = async (company, name, src, type, userId) => {
   return await plugInstance.createPlug(company, name, src, type, userId);
 };
 
+const getPlug = async (factor, identifier) => {
+  return await plugInstance.getPlug(factor, identifier);
+};
+
 const getAllPlugs = async () => {
   return await plugInstance.getAllPlugs();
 };
@@ -36,6 +40,7 @@ const deletePlug = (plugId) => {
 
 export default {
   createPlug,
+  getPlug,
   getAllPlugs,
   updatePlug,
   favorPlug,

@@ -1,5 +1,6 @@
 import {
   insertNewPlug,
+  selectPlug,
   selectAllPlugs,
   alterPlug,
   dropPlug,
@@ -20,6 +21,10 @@ export default class Plug {
       type: type,
       userId: userId,
     });
+  };
+
+  getPlug = async (factor, identifier) => {
+    return await selectPlug(factor, identifier);
   };
 
   getAllPlugs = () => {

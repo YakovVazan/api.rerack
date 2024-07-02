@@ -13,6 +13,14 @@ const createPlug = async (req, res) => {
   }
 
   const { company, name, src, type } = req.body;
+
+  const anotherPlug = await plugsServices.getPlug("name", name);
+  if (anotherPlug && anotherPlug["name"] === name) {
+    return res
+      .status(409)
+      .json({ msg: "Plug with the same name already exists" });
+  }
+
   const userId = JwtServices.getUserIdFromToken(token);
   const newPlug = await plugsServices.createPlug(
     company,
@@ -47,6 +55,14 @@ const updatePlug = async (req, res) => {
 
   const plugId = req.params.id;
   const { company, name, src, type } = req.body;
+
+  const anotherPlug = await plugsServices.getPlug("name", name);
+  if (anotherPlug && anotherPlug["name"] === name) {
+    return res
+      .status(409)
+      .json({ msg: "Plug with the same name already exists" });
+  }
+
   const userId = JwtServices.getUserIdFromToken(token);
   const editedPlug = plugsServices.updatePlug(
     plugId,

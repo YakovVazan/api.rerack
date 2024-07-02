@@ -46,7 +46,7 @@ const updateUserContribution = async (action, userId, plugId) => {
     let newContributions = [];
     const newAction = action;
     let alreadyContributedTo = false;
-    const plugDetails = await selectPlug(plugId);
+    const plugDetails = await selectPlug("id", plugId);
     let oldContributions = await selectUserContributions(userId);
     const query = `UPDATE users SET contributions = ? WHERE id = ?;`;
 
@@ -177,7 +177,7 @@ const selectFavoritePlugs = async (userId) => {
 
     if (results[0]["favorites"]) {
       for (let item of results[0]["favorites"]) {
-        savedPlugs.push(await selectPlug(item["plugId"]));
+        savedPlugs.push(await selectPlug("id", item["plugId"]));
       }
     }
 
@@ -195,7 +195,7 @@ const selectSavedPlugs = async (userId) => {
 
     if (results[0]["saved"]) {
       for (let item of results[0]["saved"]) {
-        fullSavedPlugs.push(await selectPlug(item["plugId"]));
+        fullSavedPlugs.push(await selectPlug("id", item["plugId"]));
       }
     }
 

@@ -12,10 +12,10 @@ const insertNewPlug = async (data) => {
   }
 };
 
-const selectPlug = async (id) => {
-  const query = `SELECT * FROM plugins WHERE id =?`;
+const selectPlug = async (factor, identifier) => {
+  const query = `SELECT * FROM plugins WHERE ${factor} =?`;
   try {
-    const [result] = await dbActions.executeQuery(query, [id]);
+    const [result] = await dbActions.executeQuery(query, [identifier]);
     return result;
   } catch (error) {
     throw error;
