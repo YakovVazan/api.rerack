@@ -48,7 +48,7 @@ const updateUserContribution = async (action, userId, plugId) => {
     let alreadyContributedTo = false;
     const plugDetails = await selectPlug(plugId);
     let oldContributions = await selectUserContributions(userId);
-    const query = `UPDATE users SET contributions = ? WHERE id = ?;`; // [{id: id, name: name, actions: ['action', 'action']}, {...}]
+    const query = `UPDATE users SET contributions = ? WHERE id = ?;`;
 
     // initialize the data
     oldContributions =
@@ -161,7 +161,7 @@ const removeUserSaved = async (userId, plugId) => {
 
 const selectUserContributions = async (userId) => {
   try {
-    const query = `SELECT contributions FROM users WHERE id = ?`; // [{id: id, name: name, actions: ['action', 'action']}, {...}]
+    const query = `SELECT contributions FROM users WHERE id = ?`;
 
     return await dbActions.executeQuery(query, [userId]);
   } catch (error) {
