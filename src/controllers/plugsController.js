@@ -15,7 +15,11 @@ const createPlug = async (req, res) => {
   const { company, name, src, type } = req.body;
 
   const anotherPlug = await plugsServices.getPlug("name", name);
-  if (anotherPlug && anotherPlug["name"] === name) {
+  if (
+    anotherPlug &&
+    anotherPlug["name"].toLowerCase() === name.toLowerCase() &&
+    anotherPlug["id"] != plugId
+  ) {
     return res
       .status(409)
       .json({ msg: "Plug with the same name already exists" });
@@ -57,7 +61,11 @@ const updatePlug = async (req, res) => {
   const { company, name, src, type } = req.body;
 
   const anotherPlug = await plugsServices.getPlug("name", name);
-  if (anotherPlug && anotherPlug["name"] === name) {
+  if (
+    anotherPlug &&
+    anotherPlug["name"].toLowerCase() === name.toLowerCase() &&
+    anotherPlug["id"] != plugId
+  ) {
     return res
       .status(409)
       .json({ msg: "Plug with the same name already exists" });
