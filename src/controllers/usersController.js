@@ -29,7 +29,7 @@ const loginUser = async (req, res) => {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ error: "Email and password are required." });
+        .json({ error: "Email and password are required" });
     }
 
     const emailExists = await usersServices.emailExists(email);
@@ -39,7 +39,7 @@ const loginUser = async (req, res) => {
 
     const user = await usersServices.getUser("email", email);
     if (!user) {
-      return res.status(401).json({ error: "User not found." });
+      return res.status(401).json({ error: "User not found" });
     }
 
     const passwordMatches = await usersServices.comparePasswords(
@@ -47,7 +47,7 @@ const loginUser = async (req, res) => {
       user.hash
     );
     if (!passwordMatches) {
-      return res.status(401).json({ error: "Wrong password." });
+      return res.status(401).json({ error: "Wrong password" });
     }
 
     const isOwner = authorizedEmailAddresses.includes(user.email);
