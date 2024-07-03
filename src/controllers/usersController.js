@@ -322,6 +322,11 @@ const getUsersActivity = async (req, res) => {
       contribution.forEach((contribution) => {
         if (contribution["contributions"] !== null) {
           contribution["contributions"].forEach((userContribution) => {
+            // Sort user's actions array by time before pushing
+            userContribution.actions.sort(
+              (a, b) => new Date(a.time) - new Date(b.time)
+            );
+
             activity.push({
               userId: user.id,
               username: user.name,
@@ -333,6 +338,13 @@ const getUsersActivity = async (req, res) => {
         }
       });
     }
+
+    // Sort all users' activity array by the earliest action time
+    activity.sort((a, b) => {
+      const firstActionTimeA = new Date(a.actions[0].time);
+      const firstActionTimeB = new Date(b.actions[0].time);
+      return firstActionTimeA - firstActionTimeB;
+    });
 
     return res.status(200).json(activity);
   } else {
