@@ -27,9 +27,7 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res
-        .status(400)
-        .json({ error: "Email and password are required" });
+      return res.status(400).json({ error: "Email and password are required" });
     }
 
     const emailExists = await usersServices.emailExists(email);
@@ -100,6 +98,17 @@ const getUser = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error?.message });
+  }
+};
+
+const checkUserSession = (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  const decodedToken = JwtServices.verifyToken(token);
+  
+  if (!token || decodedToken === "Invalid token") {
+    return res.status(401).json({ msg: "Session expired" });
+  } else {
+    return res.status(200).json({ msg: "User session is valid" });
   }
 };
 
@@ -470,6 +479,7 @@ export default {
   createUser,
   loginUser,
   getUser,
+  checkUserSession,
   getNewPassword,
   resetPassword,
   verifyUser,
