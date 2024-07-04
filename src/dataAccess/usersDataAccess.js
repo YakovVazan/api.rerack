@@ -44,7 +44,6 @@ const alterUser = async (id, name, email, hash, isVerified) => {
 const updateUserContribution = async (action, userId, plugId) => {
   try {
     let newContributions = [];
-    const newAction = action;
     let alreadyContributedTo = false;
     const plugDetails = await selectPlug("id", plugId);
     let oldContributions = await selectUserContributions(userId);
@@ -69,7 +68,7 @@ const updateUserContribution = async (action, userId, plugId) => {
       newContributions.push({
         id: plugDetails.id,
         name: plugDetails.name,
-        actions: [{ action: newAction, time: new Date() }],
+        actions: [{ action: action, time: new Date() }],
       });
     }
 
