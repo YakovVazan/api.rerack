@@ -100,10 +100,10 @@ const favorPlug = async (req, res) => {
 
   if (needsToBeAdded) {
     await plugsServices.favorPlug(userId, plugId);
-    res.status(200).json({ msg: "Plug added to wishlist" });
+    res.status(200).json({ msg: "favored" });
   } else {
     await plugsServices.unfavorPlug(userId, plugId);
-    res.status(200).json({ msg: "Plug removed from wishlist" });
+    res.status(200).json({ msg: "unfavored" });
   }
 };
 
@@ -123,10 +123,10 @@ const savePlug = async (req, res) => {
 
   if (needsToBeAdded) {
     await plugsServices.savePlug(userId, plugId);
-    res.status(200).json({ msg: "Plug saved" });
+    res.status(200).json({ msg: "saved" });
   } else {
     await plugsServices.unsavePlug(userId, plugId);
-    res.status(200).json({ msg: "Plug unsaved" });
+    res.status(200).json({ msg: "unsaved" });
   }
 };
 
