@@ -100,10 +100,10 @@ const favorPlug = async (req, res) => {
 
   if (needsToBeAdded) {
     await plugsServices.favorPlug(userId, plugId);
-    res.status(200).json({ msg: "favored" });
+    res.status(200).json({ msg: "favored" });// DO NOT CHANGE MSG CONTENT, THE FRONT IS RELYING ON IT
   } else {
     await plugsServices.unfavorPlug(userId, plugId);
-    res.status(200).json({ msg: "unfavored" });
+    res.status(200).json({ msg: "unfavored" });// DO NOT CHANGE MSG CONTENT, THE FRONT IS RELYING ON IT
   }
 };
 
@@ -123,10 +123,10 @@ const savePlug = async (req, res) => {
 
   if (needsToBeAdded) {
     await plugsServices.savePlug(userId, plugId);
-    res.status(200).json({ msg: "saved" });
+    res.status(200).json({ msg: "saved" });// DO NOT CHANGE MSG CONTENT, THE FRONT IS RELYING ON IT
   } else {
     await plugsServices.unsavePlug(userId, plugId);
-    res.status(200).json({ msg: "unsaved" });
+    res.status(200).json({ msg: "unsaved" });// DO NOT CHANGE MSG CONTENT, THE FRONT IS RELYING ON IT
   }
 };
 
