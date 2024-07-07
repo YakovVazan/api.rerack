@@ -16,7 +16,7 @@ export const scrapeData = async (
   nextPageSelector
 ) => {
   try {
-    const browser = await launch(); // { headless: false }
+    const browser = await launch({ headless: false }); // { headless: false }
     const page = await browser.newPage();
     await page.goto(url, {
       waitUntil: "networkidle2",
