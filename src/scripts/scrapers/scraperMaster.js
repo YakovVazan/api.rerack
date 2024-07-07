@@ -11,12 +11,12 @@ export const scrapeData = async (
   nameElementSelector,
   linkElementSelector,
   companyName,
-  plugType = "Unknown",
+  plugType,
   userId,
-  nextPageSelector = null
+  nextPageSelector
 ) => {
   try {
-    const browser = await launch({ headless: false });
+    const browser = await launch(); // { headless: false }
     const page = await browser.newPage();
     await page.goto(url, {
       waitUntil: "networkidle2",
