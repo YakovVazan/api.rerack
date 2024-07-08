@@ -2,25 +2,27 @@ import { launch } from "puppeteer";
 import plugsServices from "../../services/plugsServices.js";
 import { insertNewPlug } from "../../dataAccess/plugsDataAccess.js";
 
-export const scrapeData = async (
-  url,
-  pageSelector,
-  paginationNumber,
-  productContainerSelector,
-  imgElementSelector,
-  nameElementSelector,
-  linkElementSelector,
-  companyName,
-  plugType,
-  userId,
-  nextPageSelector
-) => {
+export const scrapeData = async (selectors) => {
+  const {
+    url,
+    pageSelector,
+    paginationNumber,
+    productContainerSelector,
+    imgElementSelector,
+    nameElementSelector,
+    linkElementSelector,
+    priceElementSelector,
+    companyName,
+    plugType,
+    userId,
+    nextPageSelector,
+  } = selectors;
+
+  let browser;
   try {
-    const browser = await launch({ headless: false }); // { headless: false }
+    browser = await launch({ headless: false });
     const page = await browser.newPage();
-    await page.goto(url, {
-      waitUntil: "networkidle2",
-    });
+    await page.goto(url, { waitUntil: "networkidle2" });
 
     // Wait for the main content to load
     await page.waitForSelector(pageSelector);
@@ -32,6 +34,7 @@ export const scrapeData = async (
         imgElementSelector,
         nameElementSelector,
         linkElementSelector,
+        priceElementSelector,
         companyName,
         plugType,
         userId,
@@ -53,6 +56,7 @@ export const scrapeData = async (
             const imgElement = element.querySelector(imgElementSelector);
             const nameElement = element.querySelector(nameElementSelector);
             const linkElement = element.querySelector(linkElementSelector);
+            const priceElement = element.querySelector(priceElementSelector);
 
             if (imgElement && nameElement) {
               const plugin = {
@@ -62,6 +66,10 @@ export const scrapeData = async (
                   imgElement.src ||
                   imgElement.style.background.replace(/url\(|\)|"|'/g, ""),
                 type: plugType,
+                link: linkElement ? linkElement.href : "",
+                price: priceElement
+                  ? priceElement.textContent.split(" ")[0].trim()
+                  : "",
                 userId: userId,
               };
 
@@ -76,9 +84,11 @@ export const scrapeData = async (
             const lastNextPageButton =
               nextButtonSelectors[nextButtonSelectors.length - 1];
 
-            if (lastNextPageButton && page < paginationNumber - 1)
+            if (lastNextPageButton && page < paginationNumber - 1) {
               await lastNextPageButton.click();
-            else break;
+            } else {
+              break;
+            }
           }
         }
 
@@ -89,6 +99,7 @@ export const scrapeData = async (
       imgElementSelector,
       nameElementSelector,
       linkElementSelector,
+      priceElementSelector,
       companyName,
       plugType,
       userId,
@@ -99,16 +110,18 @@ export const scrapeData = async (
     return plugins;
   } catch (error) {
     console.error("Error scraping data:", error);
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
   }
 };
 
 export const insertScrapedDataIntoDatabase = async (data) => {
-  // Keep track of the amount of new plugins
   let counter = 0;
 
   for (const plugin of data) {
     try {
-      // Prevent duplications
       const anotherPlug = await plugsServices.getPlug("name", plugin.name);
       if (!anotherPlug) {
         await insertNewPlug({
@@ -116,6 +129,8 @@ export const insertScrapedDataIntoDatabase = async (data) => {
           name: plugin.name,
           src: plugin.src,
           type: plugin.type,
+          link: plugin.link,
+          price: plugin.price,
           userId: plugin.userId,
         });
         counter++;
@@ -130,5 +145,27 @@ export const insertScrapedDataIntoDatabase = async (data) => {
   console.log("Added " + counter + " plugin(s)");
 };
 
-// TODO: Implement this function
-export const updatedPrices = () => {};
+export const updatePrices = async (selectors) => {
+  for (const companySelectors of selectors) {
+    await scrapeData(companySelectors)
+      .then(async (companyData) => {
+        for (const plugin of companyData) {
+          try {
+            const plugDetails = await plugsServices.getPlug(
+              "name",
+              plugin.name
+            );
+            await alterPrice(plugDetails.id, plugin.price);
+          } catch (error) {
+            console.error(
+              `Error updating price for plugin ${plugin.name}:`,
+              error
+            );
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error scraping prices:", error);
+      });
+  }
+};

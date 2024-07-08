@@ -32,6 +32,15 @@ const selectAllPlugs = async () => {
   }
 };
 
+const alterPrice = async (id, price) => {
+  const query = "UPDATE plugins SET price =? WHERE id =?";
+  try {
+    await dbActions.executeQuery(query, [price, id]);
+  } catch (error) {
+    throw error;
+  }
+};
+
 const alterPlug = async (id, data) => {
   const query = "UPDATE plugins SET ? WHERE id = ?";
   try {
@@ -52,4 +61,11 @@ const dropPlug = async (userId, plugId) => {
   }
 };
 
-export { insertNewPlug, selectPlug, selectAllPlugs, alterPlug, dropPlug };
+export {
+  insertNewPlug,
+  selectPlug,
+  selectAllPlugs,
+  alterPrice,
+  alterPlug,
+  dropPlug,
+};
