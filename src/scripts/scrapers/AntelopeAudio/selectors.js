@@ -6,6 +6,7 @@ export default {
   imgElementSelector: ".software-image-card",
   nameElementSelector: ".software-title",
   linkElementSelector: "a",
+  priceElementSelector: ".software-price",
   companyName: "Antelope",
   plugType: "Unkonwn",
   userId: 1,

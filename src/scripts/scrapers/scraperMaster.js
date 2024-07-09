@@ -1,6 +1,6 @@
 import { launch } from "puppeteer";
 import plugsServices from "../../services/plugsServices.js";
-import { insertNewPlug } from "../../dataAccess/plugsDataAccess.js";
+import { alterPrice, insertNewPlug } from "../../dataAccess/plugsDataAccess.js";
 
 export const scrapeData = async (selectors) => {
   const {
@@ -68,7 +68,10 @@ export const scrapeData = async (selectors) => {
                 type: plugType,
                 link: linkElement ? linkElement.href : "",
                 price: priceElement
-                  ? priceElement.textContent.split(" ")[0].trim()
+                  ? priceElement.textContent.split(" ")[0].trim() ||
+                    priceElement.childNodes[
+                      priceElement.childNodes.length - 1
+                    ].textContent.trim()
                   : "",
                 userId: userId,
               };
@@ -105,8 +108,7 @@ export const scrapeData = async (selectors) => {
       userId,
       nextPageSelector
     );
-
-    await browser.close();
+``
     return plugins;
   } catch (error) {
     console.error("Error scraping data:", error);

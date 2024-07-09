@@ -5,9 +5,10 @@ export default {
   productContainerSelector: ".col-12.col-md-6.col-lg-4",
   imgElementSelector: "img",
   nameElementSelector: "h3",
-  linkElementSelector: "a",
+  linkElementSelector: "a.product-card",
+  priceElementSelector: ".product-card__price-sale", // note some prices has different class
   companyName: "Apogee",
-  plugType: "Unkonwn",
+  plugType: "Unknown",
   userId: 1,
   nextPageSelector: null,
 };
