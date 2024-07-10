@@ -1,11 +1,16 @@
 import dbActions from "../config/dbConfig.js";
-import { updateUserContribution } from "./usersDataAccess.js";
+import { insertContribution } from "./contributionsDataAccess.js";
 
-const insertNewPlug = async (data) => {
-  const query = `INSERT INTO plugins SET ?`;
+const insertNewPlug = async (company, name, src, type, userId) => {
+  const query = `INSERT INTO plugins (company, name, src, type) VALUES (?, ?, ?, ?)`;
   try {
-    const result = await dbActions.executeQuery(query, data);
-    await updateUserContribution("Add", data["userId"], result["insertId"]);
+    const result = await dbActions.executeQuery(query, [
+      company,
+      name,
+      src,
+      type,
+    ]);
+    await insertContribution("Add", name, result["insertId"], userId);
     return result.insertId;
   } catch (error) {
     throw error;
@@ -41,11 +46,11 @@ const alterPrice = async (id, price) => {
   }
 };
 
-const alterPlug = async (id, data) => {
-  const query = "UPDATE plugins SET ? WHERE id = ?";
+const alterPlug = async (plugId, company, name, src, type, userId) => {
+  const query = `UPDATE plugins SET company =?, name =?, src =?, type =? WHERE id = ${plugId}`;
   try {
-    await dbActions.executeQuery(query, [data, id]);
-    await updateUserContribution("Edit", data["userId"], id);
+    await dbActions.executeQuery(query, [company, name, src, type]);
+    await insertContribution("Edit", name, plugId, userId);
   } catch (error) {
     throw error;
   }
@@ -54,8 +59,9 @@ const alterPlug = async (id, data) => {
 const dropPlug = async (userId, plugId) => {
   const query = "DELETE FROM plugins WHERE id = ?";
   try {
-    await updateUserContribution("Delete", userId, plugId);
+    const plug = await selectPlug("id", plugId);
     await dbActions.executeQuery(query, [plugId]);
+    await insertContribution("Delete", plug.name, plugId, userId);
   } catch (error) {
     throw error;
   }

@@ -1,5 +1,5 @@
-import { selectPlug } from "../dataAccess/plugsDataAccess.js";
 import dbActions from "../config/dbConfig.js";
+import { selectPlug } from "../dataAccess/plugsDataAccess.js";
 
 const insertNewUser = async (data) => {
   const query = "INSERT INTO users SET ?";
@@ -36,46 +36,6 @@ const alterUser = async (id, name, email, hash, isVerified) => {
   try {
     await dbActions.executeQuery(query, [name, email, hash, isVerified, id]);
     return selectUser("id", id);
-  } catch (error) {
-    throw error;
-  }
-};
-
-const updateUserContribution = async (action, userId, plugId) => {
-  try {
-    let newContributions = [];
-    let alreadyContributedTo = false;
-    const plugDetails = await selectPlug("id", plugId);
-    let oldContributions = await selectUserContributions(userId);
-    const query = `UPDATE users SET contributions = ? WHERE id = ?;`;
-
-    // initialize the data
-    oldContributions =
-      oldContributions[0]["contributions"] === null
-        ? []
-        : oldContributions[0]["contributions"];
-
-    oldContributions.forEach((oldContribution) => {
-      if (oldContribution.id == plugId) {
-        alreadyContributedTo = true;
-        oldContribution.actions.push({ action: action, time: new Date() });
-      }
-
-      newContributions.push(oldContribution);
-    });
-
-    if (!alreadyContributedTo) {
-      newContributions.push({
-        id: plugDetails.id,
-        name: plugDetails.name,
-        actions: [{ action: action, time: new Date() }],
-      });
-    }
-
-    await dbActions.executeQuery(query, [
-      JSON.stringify(newContributions),
-      +userId,
-    ]);
   } catch (error) {
     throw error;
   }
@@ -153,16 +113,6 @@ const removeUserSaved = async (userId, plugId) => {
     });
 
     await dbActions.executeQuery(query, [JSON.stringify(newSaves), +userId]);
-  } catch (error) {
-    throw error;
-  }
-};
-
-const selectUserContributions = async (userId) => {
-  try {
-    const query = `SELECT contributions FROM users WHERE id = ?`;
-
-    return await dbActions.executeQuery(query, [userId]);
   } catch (error) {
     throw error;
   }
@@ -250,8 +200,6 @@ export {
   removeUserFavorite,
   addUserSaved,
   removeUserSaved,
-  updateUserContribution,
-  selectUserContributions,
   selectFavoritePlugs,
   selectSavedPlugs,
   selectAllUsers,

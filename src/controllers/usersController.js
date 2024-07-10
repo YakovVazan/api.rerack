@@ -1,7 +1,8 @@
-import authorizedEmailAddresses from "../consts/emails.js";
-import usersServices from "../services/usersServices.js";
 import JwtServices from "../services/JwtServices.js";
 import emailService from "../services/emailService.js";
+import usersServices from "../services/usersServices.js";
+import authorizedEmailAddresses from "../consts/emails.js";
+import { selectUser } from "../dataAccess/usersDataAccess.js";
 
 const createUser = async (req, res) => {
   try {
@@ -104,7 +105,7 @@ const getUser = async (req, res) => {
 const checkUserSession = (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
   const decodedToken = JwtServices.verifyToken(token);
-  
+
   if (!token || decodedToken === "Invalid token") {
     return res.status(401).json({ msg: "Session expired" });
   } else {
@@ -323,35 +324,24 @@ const getUsersActivity = async (req, res) => {
 
   if (decodedToken.isOwner) {
     let activity = [];
-    const users = await usersServices.getAllUsers();
+    const userContributions = await usersServices.getAllUsersContributions();
 
-    for (const user of users) {
-      const contribution = await usersServices.getUserContributions(user.id);
-
-      contribution.forEach((contribution) => {
-        if (contribution["contributions"] !== null) {
-          contribution["contributions"].forEach((userContribution) => {
-            // Sort user's actions array by time before pushing
-            userContribution.actions.sort(
-              (a, b) => new Date(a.time) - new Date(b.time)
-            );
-
-            activity.push({
-              userId: user.id,
-              username: user.name,
-              plugId: userContribution.id,
-              plugName: userContribution.name,
-              actions: userContribution.actions,
-            });
-          });
-        }
+    for (const contribution of userContributions) {
+      const user = await selectUser("id", contribution.userId);
+      activity.push({
+        userId: contribution.userId,
+        username: user?.name,
+        time: contribution.time,
+        plugId: contribution.plugId,
+        plugName: contribution.plugName,
+        type: contribution.type,
       });
     }
 
     // Sort all users' activity array by the earliest action time
     activity.sort((a, b) => {
-      const firstActionTimeA = new Date(a.actions[0].time);
-      const firstActionTimeB = new Date(b.actions[0].time);
+      const firstActionTimeA = new Date(a.time);
+      const firstActionTimeB = new Date(b.time);
       return firstActionTimeA - firstActionTimeB;
     });
 

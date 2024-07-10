@@ -14,13 +14,7 @@ import {
 
 export default class Plug {
   createPlug = async (company, name, src, type, userId) => {
-    return await insertNewPlug({
-      company: company,
-      name: name,
-      src: src,
-      type: type,
-      userId: userId,
-    });
+    return await insertNewPlug(company, name, src, type, userId);
   };
 
   getPlug = async (factor, identifier) => {
@@ -32,13 +26,7 @@ export default class Plug {
   };
 
   setPlug = (plugId, company, name, src, type, userId) => {
-    return alterPlug(plugId, {
-      company: company,
-      name: name,
-      src: src,
-      type: type,
-      userId: userId,
-    });
+    return alterPlug(plugId, company, name, src, type, userId);
   };
 
   favorPlug = (userId, plugId) => {

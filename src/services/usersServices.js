@@ -85,6 +85,10 @@ const getUserContributions = async (userId) => {
   return await userInstance.getUserContributions(userId);
 };
 
+const getAllUsersContributions = async () => {
+  return await userInstance.getAllUsersContributions();
+};
+
 const getFavoritePlugs = async (userId) => {
   return await userInstance.getFavoritePlugs(userId);
 };
@@ -120,6 +124,7 @@ export default {
   resetPassword,
   updateUser,
   getUserContributions,
+  getAllUsersContributions,
   getFavoritePlugs,
   getSavedPlugs,
   getAllUsers,

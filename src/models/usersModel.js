@@ -3,47 +3,54 @@ import {
   selectUser,
   alterHash,
   alterUser,
-  selectUserContributions,
   selectFavoritePlugs,
   selectSavedPlugs,
   selectAllUsers,
   dropUser,
 } from "../dataAccess/usersDataAccess.js";
+import {
+  selectUserContributions,
+  selectAllUsersContributions,
+} from "../dataAccess/contributionsDataAccess.js";
 
 export default class User {
-  createUser = (email, name, hash) => {
-    return insertNewUser({ email: email, name: name, hash: hash });
+  createUser = async (email, name, hash) => {
+    return await insertNewUser({ email: email, name: name, hash: hash });
   };
 
-  getUser = (factor, identifier) => {
-    return selectUser(factor, identifier);
+  getUser = async (factor, identifier) => {
+    return await selectUser(factor, identifier);
   };
 
-  resetPassword = (email, newHash) => {
-    return alterHash(email, newHash);
-  }
-
-  updateUser = (id, name, email, hash, isVerified) => {
-    return alterUser(id, name, email, hash, isVerified);
+  resetPassword = async (email, newHash) => {
+    return await alterHash(email, newHash);
   };
 
-  getUserContributions = (userId) => {
-    return selectUserContributions(userId);
+  updateUser = async (id, name, email, hash, isVerified) => {
+    return await alterUser(id, name, email, hash, isVerified);
   };
 
-  getFavoritePlugs = (userId) => {
-    return selectFavoritePlugs(userId);
+  getUserContributions = async (userId) => {
+    return await selectUserContributions(userId);
   };
 
-  getSavedPlugs = (userId) => {
-    return selectSavedPlugs(userId);
+  getAllUsersContributions = async () => {
+    return await selectAllUsersContributions();
   };
 
-  getAllUsers = () => {
-    return selectAllUsers();
+  getFavoritePlugs = async (userId) => {
+    return await selectFavoritePlugs(userId);
   };
 
-  deleteUser = (userId) => {
-    return dropUser(userId);
+  getSavedPlugs = async (userId) => {
+    return await selectSavedPlugs(userId);
+  };
+
+  getAllUsers = async () => {
+    return await selectAllUsers();
+  };
+
+  deleteUser = async (userId) => {
+    return await dropUser(userId);
   };
 }
