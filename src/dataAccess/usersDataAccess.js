@@ -172,15 +172,24 @@ const selectFavoritePlugs = async (userId) => {
   const query = "SELECT favorites FROM users WHERE id = ?";
   try {
     const results = await dbActions.executeQuery(query, [userId]);
-    let savedPlugs = [];
+    let fullFavoritedPlugs = [];
+    let toBeRemoved = [];
 
     if (results[0]["favorites"]) {
       for (let item of results[0]["favorites"]) {
-        savedPlugs.push(await selectPlug("id", item["plugId"]));
+        const plugDetails = await selectPlug("id", item["plugId"]);
+        plugDetails
+          ? fullFavoritedPlugs.push(plugDetails)
+          : toBeRemoved.push({ userId: userId, plugId: item["plugId"] });
       }
     }
 
-    return savedPlugs;
+    // remove deleted plugs from user's lists
+    toBeRemoved.forEach(async (item) => {
+      await removeUserFavorite(item.userId, item.plugId);
+    });
+
+    return fullFavoritedPlugs;
   } catch (error) {
     throw error;
   }
@@ -191,12 +200,21 @@ const selectSavedPlugs = async (userId) => {
   try {
     const results = await dbActions.executeQuery(query, [userId]);
     let fullSavedPlugs = [];
+    let toBeRemoved = [];
 
     if (results[0]["saved"]) {
       for (let item of results[0]["saved"]) {
-        fullSavedPlugs.push(await selectPlug("id", item["plugId"]));
+        const plugDetails = await selectPlug("id", item["plugId"]);
+        plugDetails
+          ? fullSavedPlugs.push(plugDetails)
+          : toBeRemoved.push({ userId: userId, plugId: item["plugId"] });
       }
     }
+
+    // remove deleted plugs from user's lists
+    toBeRemoved.forEach(async (item) => {
+      await removeUserSaved(item.userId, item.plugId);
+    });
 
     return fullSavedPlugs;
   } catch (error) {
