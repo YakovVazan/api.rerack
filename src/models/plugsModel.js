@@ -1,16 +1,15 @@
 import {
+  deleteFavorite,
+  insertFavorite,
+} from "../dataAccess/favoritesDataAccess.js";
+import {
   insertNewPlug,
   selectPlug,
   selectAllPlugs,
   alterPlug,
   dropPlug,
 } from "../dataAccess/plugsDataAccess.js";
-import {
-  addUserFavorite,
-  removeUserFavorite,
-  addUserSaved,
-  removeUserSaved,
-} from "../dataAccess/usersDataAccess.js";
+import { deleteSaved, insertSaved } from "../dataAccess/savedDataAccess.js";
 
 export default class Plug {
   createPlug = async (company, name, src, type, userId) => {
@@ -30,19 +29,19 @@ export default class Plug {
   };
 
   favorPlug = (userId, plugId) => {
-    return addUserFavorite(userId, plugId);
+    return insertFavorite(plugId, userId);
   };
 
   unfavorPlug = (userId, plugId) => {
-    return removeUserFavorite(userId, plugId);
+    return deleteFavorite(plugId, userId);
   };
 
   savePlug = (userId, plugId) => {
-    return addUserSaved(userId, plugId);
+    return insertSaved(plugId, userId);
   };
 
   unsavePlug = (userId, plugId) => {
-    return removeUserSaved(userId, plugId);
+    return deleteSaved(plugId, userId);
   };
 
   deletePlug = (userId, plugId) => {
