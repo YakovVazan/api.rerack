@@ -128,7 +128,15 @@ const getNewPassword = async (req, res) => {
     const newPassword = JwtServices.generate6DigitCode();
     const hash = await usersServices.hashPassword(newPassword);
 
-    emailService.sendEmail(email, newPassword);
+    const emailSubject = "Reset Rerack's Password";
+    const emailContent = `Hello
+      \nWe recently received a request to reset your password. If it wasn't requested by you, you could just ignore this email.
+      \nYour new password for Rerack is ${newPassword}.
+      \nNote: though you may use it as your permanent password, you're encouraged to pick a stronger one.
+      \n\nRerack team.
+    `;
+
+    emailService.sendEmail(email, emailSubject, emailContent);
 
     return res.status(200).json({ msg: "Email sent successfully", hash: hash });
   } catch (error) {
@@ -189,7 +197,16 @@ const verifyUser = async (req, res) => {
     const newToken = JwtServices.addVerificationCodeToToken(token);
     const verificationCode = JwtServices.getVerificationCodeFromToken(newToken);
 
-    emailService.sendEmail(user.email, verificationCode);
+    const emailSubject = "Verification Code from Rerack";
+    const emailContent = `Hello ${user.name}
+      \n\nYour verification code for Rerack is ${verificationCode}.
+      \nPlease go to the settings page. Then, under Account tab, you should find the edit section.
+      \nPlease enter the code in the 'new password' field and click 'Save'.
+      \nNote: though you may use it as your permanent password, you're encouraged to pick a stronger one.
+      \n\nRerack team.
+    `;
+
+    emailService.sendEmail(user.email, emailSubject, emailContent);
 
     res.status(200).json({
       token: newToken,
