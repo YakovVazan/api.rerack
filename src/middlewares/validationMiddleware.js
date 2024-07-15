@@ -17,6 +17,20 @@ const tokenRequired = async (req, res, next) => {
   }
 };
 
+const tokenShouldBeValid = async (req, res, next) => {
+  try {
+    if (JwtServices.verifyToken(req.token) === "Invalid token")
+      return res.status(403).json({ msg: "Invalid token" });
+
+    next();
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Token should be valid related error",
+      error: error.message,
+    });
+  }
+};
+
 const administrationRequired = async (req, res, next) => {
   try {
     const decodedToken = JwtServices.verifyToken(req.token);
@@ -96,8 +110,7 @@ const emailShouldNotExist = async (req, res, next) => {
 
 const emailShouldExist = async (req, res, next) => {
   try {
-    const { email } = req.body;
-    const emailExists = await usersServices.emailExists(email);
+    const emailExists = await usersServices.emailExists(req.email);
 
     if (!emailExists)
       return res.status(400).json({ error: "Email not registered" });
@@ -115,6 +128,8 @@ const emailRequired = async (req, res, next) => {
     const { email } = req.body;
 
     if (!email) return res.status(400).json({ error: "Email required" });
+
+    req.email = email;
 
     next();
   } catch (error) {
@@ -149,12 +164,10 @@ const userShouldExistByEmail = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        msg: "User not existing by email related error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      msg: "User not existing by email related error",
+      error: error.message,
+    });
   }
 };
 
@@ -168,12 +181,10 @@ const userShouldExistById = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        msg: "User not existing by ID related error",
-        error: error.message,
-      });
+    return res.status(500).json({
+      msg: "User not existing by ID related error",
+      error: error.message,
+    });
   }
 };
 
@@ -213,6 +224,7 @@ const hashRequired = async (req, res, next) => {
 
 export default {
   tokenRequired,
+  tokenShouldBeValid,
   administrationRequired,
   administrationOrOwnershipRequired,
   idsFromTokenAndParamsShouldMatch,

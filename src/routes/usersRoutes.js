@@ -23,14 +23,14 @@ router.get(
 );
 router.post(
   "/users/get_new_password",
-  validationMiddleware.emailShouldExist,
   validationMiddleware.emailRequired,
+  validationMiddleware.emailShouldExist,
   usersController.getNewPassword
 );
 router.post(
   "/users/reset_password",
-  validationMiddleware.emailShouldExist,
   validationMiddleware.emailRequired,
+  validationMiddleware.emailShouldExist,
   validationMiddleware.passwordRequired,
   validationMiddleware.hashRequired,
   validationMiddleware.passwordShouldMatch,
@@ -52,6 +52,7 @@ router.put(
 router.get(
   "/users/:userId/contributions",
   validationMiddleware.tokenRequired,
+  validationMiddleware.tokenShouldBeValid,
   validationMiddleware.administrationOrOwnershipRequired,
   validationMiddleware.userShouldExistById,
   usersController.getUserContributions
@@ -59,6 +60,7 @@ router.get(
 router.get(
   "/users/:userId/favorites",
   validationMiddleware.tokenRequired,
+  validationMiddleware.tokenShouldBeValid,
   validationMiddleware.administrationOrOwnershipRequired,
   validationMiddleware.userShouldExistById,
   usersController.getFavorites
@@ -66,6 +68,7 @@ router.get(
 router.get(
   "/users/:userId/saved",
   validationMiddleware.tokenRequired,
+  validationMiddleware.tokenShouldBeValid,
   validationMiddleware.administrationOrOwnershipRequired,
   validationMiddleware.userShouldExistById,
   usersController.getSaved

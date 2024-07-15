@@ -3,10 +3,6 @@ import JwtServices from "../services/JwtServices.js";
 import plugsServices from "../services/plugsServices.js";
 
 const createPlug = async (req, res) => {
-  if (JwtServices.verifyToken(req.token) === "Invalid token") {
-    return res.status(403).json({ msg: "Invalid token" });
-  }
-
   const { company, name, src, type } = req.body;
 
   const anotherPlug = await plugsServices.getPlug("name", name);
@@ -43,10 +39,6 @@ const getAllPlugs = async (req, res) => {
 };
 
 const updatePlug = async (req, res) => {
-  if (JwtServices.verifyToken(req.token) === "Invalid token") {
-    return res.status(403).json({ msg: "Invalid token" });
-  }
-
   const plugId = req.params.id;
   const { company, name, src, type } = req.body;
 
@@ -75,10 +67,6 @@ const updatePlug = async (req, res) => {
 };
 
 const favorPlug = async (req, res) => {
-  if (JwtServices.verifyToken(req.token) === "Invalid token") {
-    return res.status(403).json({ msg: "Invalid token" });
-  }
-
   const plugId = req.params.id;
   const { needsToBeAdded } = req.body;
   const userId = JwtServices.getUserIdFromToken(req.token);
@@ -93,10 +81,6 @@ const favorPlug = async (req, res) => {
 };
 
 const savePlug = async (req, res) => {
-  if (JwtServices.verifyToken(req.token) === "Invalid token") {
-    return res.status(403).json({ msg: "Invalid token" });
-  }
-
   const plugId = req.params.id;
   const { needsToBeAdded } = req.body;
   const userId = JwtServices.getUserIdFromToken(req.token);
@@ -111,10 +95,6 @@ const savePlug = async (req, res) => {
 };
 
 const generateDescription = async (req, res) => {
-  if (JwtServices.verifyToken(req.token) === "Invalid token") {
-    return res.status(403).json({ msg: "Invalid token" });
-  }
-
   const { company, name, type } = req.body;
 
   try {
@@ -127,11 +107,6 @@ const generateDescription = async (req, res) => {
 };
 
 const deletePlug = async (req, res) => {
-  const verifyToken = JwtServices.verifyToken(req.token);
-  if (verifyToken === "Invalid token" || !verifyToken.isOwner) {
-    return res.status(403).json({ msg: "Unauthorized" });
-  }
-
   const plugId = req.params.id;
   const userId = JwtServices.getUserIdFromToken(req.token);
   const deletedPlug = plugsServices.deletePlug(userId, plugId);

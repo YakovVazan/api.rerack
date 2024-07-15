@@ -183,10 +183,6 @@ const updateUser = async (req, res) => {
 
 const getUserContributions = async (req, res) => {
   try {
-    if (JwtServices.verifyToken(req.token) === "Invalid token") {
-      return res.status(403).json({ msg: "Invalid token" });
-    }
-
     const plugs = await usersServices.getUserContributions(req.userId);
 
     return res.status(200).json(plugs);
@@ -223,10 +219,6 @@ const getUsersActivity = async (req, res) => {
 
 const getFavorites = async (req, res) => {
   try {
-    if (JwtServices.verifyToken(req.token) === "Invalid token") {
-      return res.status(403).json({ msg: "Invalid token" });
-    }
-
     const favoritePlugs = await usersServices.getFavoritePlugs(req.userId);
 
     return res.status(200).json(favoritePlugs);
@@ -237,10 +229,6 @@ const getFavorites = async (req, res) => {
 
 const getSaved = async (req, res) => {
   try {
-    if (JwtServices.verifyToken(req.token) === "Invalid token") {
-      return res.status(403).json({ msg: "Invalid token" });
-    }
-
     const savedPlugs = await usersServices.getSavedPlugs(req.userId);
 
     return res.status(200).json(savedPlugs);
