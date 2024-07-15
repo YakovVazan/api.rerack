@@ -1,19 +1,14 @@
+import { selectUser } from "../dao/usersDao.js";
 import JwtServices from "../services/JwtServices.js";
 import emailService from "../services/emailService.js";
 import usersServices from "../services/usersServices.js";
 import authorizedEmailAddresses from "../consts/emails.js";
-import { selectUser } from "../dataAccess/usersDataAccess.js";
 
 const createUser = async (req, res) => {
   try {
     await usersServices.validateAndSanitizeUserInput(req);
 
     const { email, name, password } = req.body;
-
-    const emailExists = await usersServices.emailExists(email);
-    if (emailExists) {
-      return res.status(400).json({ error: "Email already in use" });
-    }
 
     const hashedPassword = await usersServices.hashPassword(password);
     const newUser = await usersServices.createUser(email, name, hashedPassword);
@@ -26,43 +21,20 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email and password are required" });
-    }
-
-    const emailExists = await usersServices.emailExists(email);
-    if (!emailExists) {
-      return res.status(400).json({ error: "Email not registered" });
-    }
-
-    const user = await usersServices.getUser("email", email);
-    if (!user) {
-      return res.status(401).json({ error: "User not found" });
-    }
-
-    const passwordMatches = await usersServices.comparePasswords(
-      password,
-      user.hash
-    );
-    if (!passwordMatches) {
-      return res.status(401).json({ error: "Wrong password" });
-    }
-
-    const isOwner = authorizedEmailAddresses.includes(user.email);
+    const isOwner = authorizedEmailAddresses.includes(req.user.email);
     const token = JwtServices.generateUserToken(
-      user.id,
+      req.user.id,
       isOwner,
-      user.isVerified
+      req.user.isVerified
     );
 
     res.status(200).json({
       token: token,
-      id: user.id,
-      name: user.name,
-      email: user.email,
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email,
       isOwner: isOwner,
-      isVerified: user.isVerified,
+      isVerified: req.user.isVerified,
     });
   } catch (error) {
     console.error("Error logging in:", error);
@@ -72,30 +44,7 @@ const loginUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-      return res.status(403).json({ msg: "Forbidden: Missing token" });
-    }
-
-    const decodedToken = JwtServices.verifyToken(token);
-    const userIdFromParams = req.params.userId;
-    const userIdFromToken = JwtServices.getUserIdFromToken(token);
-    if (
-      !decodedToken.isOwner &&
-      userIdFromToken !== parseInt(userIdFromParams)
-    ) {
-      return res.status(403).json({
-        msg:
-          userIdFromToken?.message || "Forbidden: Token does not match user ID",
-      });
-    }
-
-    const user = await usersServices.getUser("id", userIdFromParams);
-    if (!user) {
-      return res.status(404).json({ msg: "User not found." });
-    }
-
-    res.json(user);
+    res.json(req.user);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error?.message });
@@ -103,27 +52,16 @@ const getUser = async (req, res) => {
 };
 
 const checkUserSession = (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  const decodedToken = JwtServices.verifyToken(token);
+  const decodedToken = JwtServices.verifyToken(req.token);
 
-  if (!token || decodedToken === "Invalid token") {
+  if (decodedToken === "Invalid token")
     return res.status(401).json({ msg: "Session expired" });
-  } else {
-    return res.status(200).json({ msg: "User session is valid" });
-  }
+  else return res.status(200).json({ msg: "User session is valid" });
 };
 
 const getNewPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    if (!email) {
-      return res.status(400).json({ error: "Email is required." });
-    }
-
-    const emailExists = await usersServices.emailExists(email);
-    if (!emailExists) {
-      return res.status(400).json({ error: "Email not registered" });
-    }
 
     const newPassword = JwtServices.generate6DigitCode();
     const hash = await usersServices.hashPassword(newPassword);
@@ -146,24 +84,7 @@ const getNewPassword = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   try {
-    const { email, password, hash } = req.body;
-
-    if (!email || !password || !hash) {
-      return res.status(400).json({ error: "Password is required." });
-    }
-
-    const emailExists = await usersServices.emailExists(email);
-    if (!emailExists) {
-      return res.status(400).json({ error: "Email not registered" });
-    }
-
-    const passwordMatches = await usersServices.comparePasswords(
-      password,
-      hash
-    );
-    if (!passwordMatches) {
-      return res.status(401).json({ error: "Wrong password." });
-    }
+    const { email, hash } = req.body;
 
     await usersServices.resetPassword(email, hash);
 
@@ -175,30 +96,11 @@ const resetPassword = async (req, res) => {
 
 const verifyUser = async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-      return res.status(403).json({ msg: "Forbidden: Missing token" });
-    }
-
-    const userIdFromParams = req.params.userId;
-    const userIdFromToken = JwtServices.getUserIdFromToken(token);
-    if (userIdFromToken !== parseInt(userIdFromParams)) {
-      return res.status(403).json({
-        msg:
-          userIdFromToken?.message || "Forbidden: Token does not match user ID",
-      });
-    }
-
-    const user = await usersServices.getUser("id", userIdFromParams);
-    if (!user) {
-      return res.status(404).json({ msg: "User not found." });
-    }
-
-    const newToken = JwtServices.addVerificationCodeToToken(token);
+    const newToken = JwtServices.addVerificationCodeToToken(req.token);
     const verificationCode = JwtServices.getVerificationCodeFromToken(newToken);
 
     const emailSubject = "Verification Code from Rerack";
-    const emailContent = `Hello ${user.name}
+    const emailContent = `Hello ${req.user.name}
       \n\nYour verification code for Rerack is ${verificationCode}.
       \nPlease go to the settings page. Then, under Account tab, you should find the edit section.
       \nPlease enter the code in the 'new password' field and click 'Save'.
@@ -206,7 +108,7 @@ const verifyUser = async (req, res) => {
       \n\nRerack team.
     `;
 
-    emailService.sendEmail(user.email, emailSubject, emailContent);
+    emailService.sendEmail(req.user.email, emailSubject, emailContent);
 
     res.status(200).json({
       token: newToken,
@@ -218,24 +120,6 @@ const verifyUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-      return res.status(403).json({ msg: "Forbidden: Missing token" });
-    }
-
-    const decodedToken = JwtServices.verifyToken(token);
-    const userIdFromParams = req.params.userId;
-    const userIdFromToken = JwtServices.getUserIdFromToken(token);
-    if (
-      !decodedToken.isOwner &&
-      userIdFromToken !== parseInt(userIdFromParams)
-    ) {
-      return res.status(403).json({
-        msg:
-          userIdFromToken?.message || "Forbidden: Token does not match user ID",
-      });
-    }
-
     let hashedPassword;
     const { id, name, email, password } = req.body;
     const user = await usersServices.getUser("id", id);
@@ -256,7 +140,9 @@ const updateUser = async (req, res) => {
       hashedPassword = user.hash;
     }
 
-    const verificationCode = JwtServices.getVerificationCodeFromToken(token);
+    const verificationCode = JwtServices.getVerificationCodeFromToken(
+      req.token
+    );
     // declare as verified only if a verification code is still stored in the token and equals to the given one
     const isVerified =
       verificationCode && verificationCode == password
@@ -266,7 +152,7 @@ const updateUser = async (req, res) => {
         : 0;
 
     await usersServices.updateUser(
-      userIdFromParams,
+      req.userId,
       name || user.name, // update name only if was provided
       email || user.email, // update email only if was provided
       hashedPassword,
@@ -276,7 +162,7 @@ const updateUser = async (req, res) => {
     // renew token to remove verification code from it
     const newToken = JwtServices.generateUserToken(
       user.id,
-      decodedToken.isOwner,
+      req.isOwner,
       isVerified
     );
 
@@ -286,7 +172,7 @@ const updateUser = async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
-      isOwner: decodedToken.isOwner,
+      isOwner: req.isOwner,
       isVerified: isVerified,
     });
   } catch (error) {
@@ -297,33 +183,11 @@ const updateUser = async (req, res) => {
 
 const getUserContributions = async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-      return res.status(403).json({ msg: "Forbidden: Missing token" });
-    }
-
-    if (JwtServices.verifyToken(token) === "Invalid token") {
+    if (JwtServices.verifyToken(req.token) === "Invalid token") {
       return res.status(403).json({ msg: "Invalid token" });
     }
 
-    const userIdFromParams = req.params.userId;
-    const decodedToken = JwtServices.verifyToken(token);
-    const userIdFromToken = JwtServices.getUserIdFromToken(token);
-    if (
-      !decodedToken.isOwner &&
-      userIdFromToken !== parseInt(userIdFromParams)
-    ) {
-      return res.status(403).json({
-        msg: userIdFromToken?.message || "Unauthorized",
-      });
-    }
-
-    const user = await usersServices.getUser("id", userIdFromParams);
-    if (!user) {
-      return res.status(404).json({ msg: "User not found." });
-    }
-
-    const plugs = await usersServices.getUserContributions(userIdFromParams);
+    const plugs = await usersServices.getUserContributions(req.userId);
 
     return res.status(200).json(plugs);
   } catch (error) {
@@ -332,73 +196,38 @@ const getUserContributions = async (req, res) => {
 };
 
 const getUsersActivity = async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    return res.status(403).json({ msg: "Forbidden: Missing token" });
-  }
+  let activity = [];
+  const userContributions = await usersServices.getAllUsersContributions();
 
-  const decodedToken = JwtServices.verifyToken(token);
-
-  if (decodedToken.isOwner) {
-    let activity = [];
-    const userContributions = await usersServices.getAllUsersContributions();
-
-    for (const contribution of userContributions) {
-      const user = await selectUser("id", contribution.userId);
-      activity.push({
-        userId: contribution.userId,
-        username: user?.name,
-        time: contribution.time,
-        plugId: contribution.plugId,
-        plugName: contribution.plugName,
-        type: contribution.type,
-      });
-    }
-
-    // Sort all users' activity array by the earliest action time
-    activity.sort((a, b) => {
-      const firstActionTimeA = new Date(a.time);
-      const firstActionTimeB = new Date(b.time);
-      return firstActionTimeA - firstActionTimeB;
+  for (const contribution of userContributions) {
+    const user = await selectUser("id", contribution.userId);
+    activity.push({
+      userId: contribution.userId,
+      username: user?.name,
+      time: contribution.time,
+      plugId: contribution.plugId,
+      plugName: contribution.plugName,
+      type: contribution.type,
     });
-
-    return res.status(200).json(activity);
-  } else {
-    res.status(403).json({ msg: "Forbidden: Not Authorized" });
   }
+
+  // Sort all users' activity array by the earliest action time
+  activity.sort((a, b) => {
+    const firstActionTimeA = new Date(a.time);
+    const firstActionTimeB = new Date(b.time);
+    return firstActionTimeA - firstActionTimeB;
+  });
+
+  return res.status(200).json(activity);
 };
 
 const getFavorites = async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-      return res.status(403).json({ msg: "Forbidden: Missing token" });
-    }
-
-    if (JwtServices.verifyToken(token) === "Invalid token") {
+    if (JwtServices.verifyToken(req.token) === "Invalid token") {
       return res.status(403).json({ msg: "Invalid token" });
     }
 
-    const userIdFromParams = req.params.userId;
-    const decodedToken = JwtServices.verifyToken(token);
-    const userIdFromToken = JwtServices.getUserIdFromToken(token);
-    if (
-      !decodedToken.isOwner &&
-      userIdFromToken !== parseInt(userIdFromParams)
-    ) {
-      return res.status(403).json({
-        msg: userIdFromToken?.message || "Unauthorized",
-      });
-    }
-
-    const user = await usersServices.getUser("id", userIdFromParams);
-    if (!user) {
-      return res.status(404).json({ msg: "User not found." });
-    }
-
-    const favoritePlugs = await usersServices.getFavoritePlugs(
-      userIdFromParams
-    );
+    const favoritePlugs = await usersServices.getFavoritePlugs(req.userId);
 
     return res.status(200).json(favoritePlugs);
   } catch (error) {
@@ -408,33 +237,11 @@ const getFavorites = async (req, res) => {
 
 const getSaved = async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-      return res.status(403).json({ msg: "Forbidden: Missing token" });
-    }
-
-    if (JwtServices.verifyToken(token) === "Invalid token") {
+    if (JwtServices.verifyToken(req.token) === "Invalid token") {
       return res.status(403).json({ msg: "Invalid token" });
     }
 
-    const userIdFromParams = req.params.userId;
-    const decodedToken = JwtServices.verifyToken(token);
-    const userIdFromToken = JwtServices.getUserIdFromToken(token);
-    if (
-      !decodedToken.isOwner &&
-      userIdFromToken !== parseInt(userIdFromParams)
-    ) {
-      return res.status(403).json({
-        msg: userIdFromToken?.message || "Unauthorized",
-      });
-    }
-
-    const user = await usersServices.getUser("id", userIdFromParams);
-    if (!user) {
-      return res.status(404).json({ msg: "User not found." });
-    }
-
-    const savedPlugs = await usersServices.getSavedPlugs(userIdFromParams);
+    const savedPlugs = await usersServices.getSavedPlugs(req.userId);
 
     return res.status(200).json(savedPlugs);
   } catch (error) {
@@ -443,38 +250,12 @@ const getSaved = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    return res.status(403).json({ msg: "Forbidden: Missing token" });
-  }
-
-  const decodedToken = JwtServices.verifyToken(token);
-
-  if (decodedToken.isOwner) {
-    res.json(await usersServices.getAllUsers());
-  } else {
-    res.status(403).json({ msg: "Forbidden: Not Authorized" });
-  }
+  return res.json(await usersServices.getAllUsers());
 };
 
 const deleteUser = async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    return res.status(403).json({ msg: "Forbidden: Missing token" });
-  }
-
-  const decodedToken = JwtServices.verifyToken(token);
-  const userIdFromParams = req.params.userId;
-  const userIdFromToken = JwtServices.getUserIdFromToken(token);
-  if (!decodedToken.isOwner && userIdFromToken !== parseInt(userIdFromParams)) {
-    return res.status(403).json({
-      msg:
-        userIdFromToken?.message || "Forbidden: Token does not match user ID",
-    });
-  }
-
   try {
-    const response = await usersServices.deleteUser(userIdFromParams);
+    const response = await usersServices.deleteUser(req.userId);
     res.status(200).json({ msg: response });
   } catch (error) {
     console.error(error);

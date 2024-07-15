@@ -1,5 +1,5 @@
 import dbActions from "../config/dbConfig.js";
-import { selectPlug } from "./plugsDataAccess.js";
+import { selectPlug } from "./plugsDao.js";
 
 const validColumnNames = ["type", "time", "userId", "plugId"];
 

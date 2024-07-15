@@ -1,5 +1,5 @@
 import dbActions from "../config/dbConfig.js";
-import { insertContribution } from "./contributionsDataAccess.js";
+import { insertContribution } from "./contributionsDao.js";
 
 const insertNewPlug = async (company, name, src, type, userId) => {
   const query = `INSERT INTO plugins (company, name, src, type) VALUES (?, ?, ?, ?)`;

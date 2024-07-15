@@ -1,15 +1,12 @@
-import {
-  deleteFavorite,
-  insertFavorite,
-} from "../dataAccess/favoritesDataAccess.js";
+import { deleteSaved, insertSaved } from "../dao/savedDao.js";
+import { deleteFavorite, insertFavorite } from "../dao/favoritesDao.js";
 import {
   insertNewPlug,
   selectPlug,
   selectAllPlugs,
   alterPlug,
   dropPlug,
-} from "../dataAccess/plugsDataAccess.js";
-import { deleteSaved, insertSaved } from "../dataAccess/savedDataAccess.js";
+} from "../dao/plugsDao.js";
 
 export default class Plug {
   createPlug = async (company, name, src, type, userId) => {

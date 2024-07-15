@@ -1,6 +1,6 @@
 import { launch } from "puppeteer";
 import plugsServices from "../../services/plugsServices.js";
-import { alterPrice, insertNewPlug } from "../../dataAccess/plugsDataAccess.js";
+import { alterPrice, insertNewPlug } from "../../dao/plugsDao.js";
 
 export const scrapeData = async (selectors) => {
   const {
@@ -108,7 +108,7 @@ export const scrapeData = async (selectors) => {
       userId,
       nextPageSelector
     );
-``
+    ``;
     return plugins;
   } catch (error) {
     console.error("Error scraping data:", error);

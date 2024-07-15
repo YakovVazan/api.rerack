@@ -1,7 +1,7 @@
 import dbActions from "../config/dbConfig.js";
-import { selectPlug } from "../dataAccess/plugsDataAccess.js";
-import { deleteSaved, selectUserSaved } from "./savedDataAccess.js";
-import { deleteFavorite, selectUserFavorites } from "./favoritesDataAccess.js";
+import { selectPlug } from "../dao/plugsDao.js";
+import { deleteSaved, selectUserSaved } from "./savedDao.js";
+import { deleteFavorite, selectUserFavorites } from "./favoritesDao.js";
 
 const insertNewUser = async (data) => {
   const query = "INSERT INTO users SET ?";

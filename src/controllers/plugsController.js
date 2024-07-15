@@ -3,12 +3,7 @@ import JwtServices from "../services/JwtServices.js";
 import plugsServices from "../services/plugsServices.js";
 
 const createPlug = async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    return res.status(403).json({ msg: "Forbidden: Missing token" });
-  }
-
-  if (JwtServices.verifyToken(token) === "Invalid token") {
+  if (JwtServices.verifyToken(req.token) === "Invalid token") {
     return res.status(403).json({ msg: "Invalid token" });
   }
 
@@ -25,7 +20,7 @@ const createPlug = async (req, res) => {
       .json({ msg: "Plug with the same name already exists" });
   }
 
-  const userId = JwtServices.getUserIdFromToken(token);
+  const userId = JwtServices.getUserIdFromToken(req.token);
   const newPlug = await plugsServices.createPlug(
     company,
     name,
@@ -48,12 +43,7 @@ const getAllPlugs = async (req, res) => {
 };
 
 const updatePlug = async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    return res.status(403).json({ msg: "Forbidden: Missing token" });
-  }
-
-  if (JwtServices.verifyToken(token) === "Invalid token") {
+  if (JwtServices.verifyToken(req.token) === "Invalid token") {
     return res.status(403).json({ msg: "Invalid token" });
   }
 
@@ -71,7 +61,7 @@ const updatePlug = async (req, res) => {
       .json({ msg: "Plug with the same name already exists" });
   }
 
-  const userId = JwtServices.getUserIdFromToken(token);
+  const userId = JwtServices.getUserIdFromToken(req.token);
   const editedPlug = plugsServices.updatePlug(
     plugId,
     company,
@@ -85,18 +75,13 @@ const updatePlug = async (req, res) => {
 };
 
 const favorPlug = async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    return res.status(403).json({ msg: "Forbidden: Missing token" });
-  }
-
-  if (JwtServices.verifyToken(token) === "Invalid token") {
+  if (JwtServices.verifyToken(req.token) === "Invalid token") {
     return res.status(403).json({ msg: "Invalid token" });
   }
 
   const plugId = req.params.id;
   const { needsToBeAdded } = req.body;
-  const userId = JwtServices.getUserIdFromToken(token);
+  const userId = JwtServices.getUserIdFromToken(req.token);
 
   if (needsToBeAdded) {
     await plugsServices.favorPlug(userId, plugId);
@@ -108,18 +93,13 @@ const favorPlug = async (req, res) => {
 };
 
 const savePlug = async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    return res.status(403).json({ msg: "Forbidden: Missing token" });
-  }
-
-  if (JwtServices.verifyToken(token) === "Invalid token") {
+  if (JwtServices.verifyToken(req.token) === "Invalid token") {
     return res.status(403).json({ msg: "Invalid token" });
   }
 
   const plugId = req.params.id;
   const { needsToBeAdded } = req.body;
-  const userId = JwtServices.getUserIdFromToken(token);
+  const userId = JwtServices.getUserIdFromToken(req.token);
 
   if (needsToBeAdded) {
     await plugsServices.savePlug(userId, plugId);
@@ -131,13 +111,7 @@ const savePlug = async (req, res) => {
 };
 
 const generateDescription = async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(403).json({ msg: "Forbidden: Missing token" });
-  }
-
-  if (JwtServices.verifyToken(token) === "Invalid token") {
+  if (JwtServices.verifyToken(req.token) === "Invalid token") {
     return res.status(403).json({ msg: "Invalid token" });
   }
 
@@ -153,18 +127,13 @@ const generateDescription = async (req, res) => {
 };
 
 const deletePlug = async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    return res.status(403).json({ msg: "Forbidden: Missing token" });
-  }
-
-  const verifyToken = JwtServices.verifyToken(token);
+  const verifyToken = JwtServices.verifyToken(req.token);
   if (verifyToken === "Invalid token" || !verifyToken.isOwner) {
     return res.status(403).json({ msg: "Unauthorized" });
   }
 
   const plugId = req.params.id;
-  const userId = JwtServices.getUserIdFromToken(token);
+  const userId = JwtServices.getUserIdFromToken(req.token);
   const deletedPlug = plugsServices.deletePlug(userId, plugId);
 
   res.status(201).json(deletedPlug);

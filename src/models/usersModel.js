@@ -1,4 +1,8 @@
 import {
+  selectUserContributions,
+  selectAllUsersContributions,
+} from "../dao/contributionsDao.js";
+import {
   insertNewUser,
   selectUser,
   alterHash,
@@ -7,11 +11,7 @@ import {
   selectSavedPlugs,
   selectAllUsers,
   dropUser,
-} from "../dataAccess/usersDataAccess.js";
-import {
-  selectUserContributions,
-  selectAllUsersContributions,
-} from "../dataAccess/contributionsDataAccess.js";
+} from "../dao/usersDao.js";
 
 export default class User {
   createUser = async (email, name, hash) => {
