@@ -1,5 +1,6 @@
 import express from "express";
 import plugsController from "../controllers/plugsController.js";
+import pluginsMiddleware from "../middlewares/pluginsMiddleware.js";
 import validationMiddleware from "../middlewares/validationMiddleware.js";
 
 const router = express.Router();
@@ -9,12 +10,14 @@ router.post(
   "/plugs/add",
   validationMiddleware.tokenRequired,
   validationMiddleware.tokenShouldBeValid,
+  pluginsMiddleware.plugShouldBeUnique,
   plugsController.createPlug
 );
 router.put(
   "/plugs/edit/:id",
   validationMiddleware.tokenRequired,
   validationMiddleware.tokenShouldBeValid,
+  pluginsMiddleware.plugShouldBeUnique,
   plugsController.updatePlug
 );
 router.post(
