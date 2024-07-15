@@ -1,4 +1,5 @@
 import dbActions from "../config/dbConfig.js";
+import { selectPlug } from "./plugsDataAccess.js";
 
 const validColumnNames = ["type", "time", "userId", "plugId"];
 
@@ -27,6 +28,18 @@ const selectAllUsersContributions = async () => {
   }
 };
 
+const updateContributionedDetails = async (plugName, plugId) => {
+  try {
+    const query = `
+        UPDATE contributions
+        SET plugName =?
+        WHERE plugId =?
+    `;
+
+    await dbActions.executeQuery(query, [plugName, plugId]);
+  } catch (error) {}
+};
+
 const insertContribution = async (type, plugName, plugId, userId) => {
   try {
     const query = `
@@ -34,13 +47,17 @@ const insertContribution = async (type, plugName, plugId, userId) => {
         VALUES (?, ?, ?, ?, ?)
     `;
 
-    return await dbActions.executeQuery(query, [
+    const result = await dbActions.executeQuery(query, [
       type,
       new Date(),
       plugName,
       plugId,
       userId,
     ]);
+
+    await updateContributionedDetails(plugName, plugId);
+
+    return result;
   } catch (error) {
     throw error;
   }
