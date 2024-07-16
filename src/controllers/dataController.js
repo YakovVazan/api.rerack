@@ -2,7 +2,8 @@ import archiver from "archiver";
 import dataServices from "../services/dataServices.js";
 
 const downloadDb = async (req, res) => {
-  const { users, plugs } = await dataServices.getUsersAndPlugs();
+  const { users, plugs, saved, favorites, contributions } =
+    await dataServices.getDB();
 
   try {
     const zip = archiver("zip");
@@ -10,6 +11,9 @@ const downloadDb = async (req, res) => {
     zip.pipe(res);
     zip.append(users, { name: "users.csv" });
     zip.append(plugs, { name: "plugs.csv" });
+    zip.append(saved, { name: "saved.csv" });
+    zip.append(favorites, { name: "favorites.csv" });
+    zip.append(contributions, { name: "contributions.csv" });
     zip.finalize();
   } catch (error) {
     console.error("Error generating files:", error);

@@ -22,6 +22,15 @@ const selectUserSaved = async (userId) => {
   }
 };
 
+const selectAllSaved = async () => {
+  try {
+    const query = "SELECT * FROM saved";
+    return await dbActions.executeQuery(query);
+  } catch (error) {
+    throw error;
+  }
+};
+
 const deleteSaved = async (plugId, userId) => {
   try {
     const query = `DELETE FROM saved WHERE plugId =? AND userId =?`;
@@ -31,4 +40,4 @@ const deleteSaved = async (plugId, userId) => {
   }
 };
 
-export { insertSaved, selectUserSaved, deleteSaved };
+export { insertSaved, selectUserSaved, selectAllSaved, deleteSaved };

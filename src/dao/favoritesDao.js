@@ -22,6 +22,15 @@ const selectUserFavorites = async (userId) => {
   }
 };
 
+const selectAllFavorites = async () => {
+  try {
+    const query = "SELECT * FROM favorites";
+    return await dbActions.executeQuery(query);
+  } catch (error) {
+    throw error;
+  }
+};
+
 const deleteFavorite = async (plugId, userId) => {
   try {
     const query = `DELETE FROM favorites WHERE plugId =? AND userId =?`;
@@ -31,4 +40,9 @@ const deleteFavorite = async (plugId, userId) => {
   }
 };
 
-export { insertFavorite, selectUserFavorites, deleteFavorite };
+export {
+  insertFavorite,
+  selectUserFavorites,
+  selectAllFavorites,
+  deleteFavorite,
+};

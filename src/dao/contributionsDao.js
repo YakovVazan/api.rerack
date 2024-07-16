@@ -1,5 +1,4 @@
 import dbActions from "../config/dbConfig.js";
-import { selectPlug } from "./plugsDao.js";
 
 const validColumnNames = ["type", "time", "userId", "plugId"];
 
@@ -18,7 +17,7 @@ const selectUserContributions = async (userId) => {
   }
 };
 
-const selectAllUsersContributions = async () => {
+const selectAllContributions = async () => {
   try {
     const query = "SELECT * FROM contributions";
 
@@ -78,7 +77,7 @@ const deleteContribution = async (column, value) => {
 
 export {
   selectUserContributions,
-  selectAllUsersContributions,
+  selectAllContributions,
   insertContribution,
   deleteContribution,
 };

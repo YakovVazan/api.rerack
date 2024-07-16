@@ -2,7 +2,6 @@ import { selectUser } from "../dao/usersDao.js";
 import JwtServices from "../services/JwtServices.js";
 import emailService from "../services/emailService.js";
 import usersServices from "../services/usersServices.js";
-import authorizedEmailAddresses from "../consts/emails.js";
 
 const createUser = async (req, res) => {
   try {
@@ -21,7 +20,9 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const isOwner = authorizedEmailAddresses.includes(req.user.email);
+    const isOwner = (await usersServices.getAllAdmins("email_address"))
+      .map((admin) => admin.email_address)
+      .includes(req.user.email);
     const token = JwtServices.generateUserToken(
       req.user.id,
       isOwner,

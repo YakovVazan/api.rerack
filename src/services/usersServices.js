@@ -1,6 +1,7 @@
 import bcryptjs from "bcryptjs";
 import { body, validationResult } from "express-validator";
 import User from "../models/usersModel.js";
+import { selectAllAdmins } from "../dao/adminsDao.js";
 
 const userInstance = new User();
 
@@ -75,7 +76,7 @@ const getUser = async (factor, identifier) => {
 
 const resetPassword = async (email, newHash) => {
   return await userInstance.resetPassword(email, newHash);
-}
+};
 
 const updateUser = async (id, name, email, hash, isVerified) => {
   return await userInstance.updateUser(id, name, email, hash, isVerified);
@@ -98,7 +99,18 @@ const getSavedPlugs = async (userId) => {
 };
 
 const getAllUsers = async () => {
-  return await userInstance.getAllUsers();
+  const users = await userInstance.getAllUsers();
+  const adminsIds = (await getAllAdmins("userId"))?.map(
+    (admin) => admin.userId
+  );
+
+  for (const user of users) user["isAdmin"] = adminsIds.includes(user.id);
+
+  return users;
+};
+
+const getAllAdmins = async (column) => {
+  return await selectAllAdmins(column);
 };
 
 const deleteUser = async (userId) => {
@@ -128,5 +140,6 @@ export default {
   getFavoritePlugs,
   getSavedPlugs,
   getAllUsers,
+  getAllAdmins,
   deleteUser,
 };

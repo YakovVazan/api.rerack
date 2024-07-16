@@ -1,9 +1,9 @@
 import cors from "cors";
 import express from "express";
-import dbActions from '../config/dbConfig.js'
+import dbActions from "../config/dbConfig.js";
+import dataRoutes from "../routes/dataRoutes.js";
 import plugsRoutes from "../routes/plugsRoutes.js";
 import usersRoutes from "../routes/usersRoutes.js";
-import dataRoutes from '../routes/dataRoutes.js'
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -41,10 +41,10 @@ process.on("SIGINT", () => {
   // Close the database connection
   dbActions.pool.end((err) => {
     if (err) {
-      console.error('Error closing MySQL pool:', err);
+      console.error("Error closing MySQL pool:", err);
       process.exit(1);
     }
-    console.log('MySQL pool closed');
+    console.log("MySQL pool closed");
     process.exit(0);
   });
 });

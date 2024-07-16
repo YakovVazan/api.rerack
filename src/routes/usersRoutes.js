@@ -1,5 +1,6 @@
 import express from "express";
 import usersController from "../controllers/usersController.js";
+import rateLimitMiddleware from "../middlewares/rateLimitMiddleware.js";
 import validationMiddleware from "../middlewares/validationMiddleware.js";
 
 const router = express.Router();
@@ -23,12 +24,14 @@ router.get(
 );
 router.post(
   "/users/get_new_password",
+  rateLimitMiddleware.limiter,
   validationMiddleware.emailRequired,
   validationMiddleware.emailShouldExist,
   usersController.getNewPassword
 );
 router.post(
   "/users/reset_password",
+  rateLimitMiddleware.limiter,
   validationMiddleware.emailRequired,
   validationMiddleware.emailShouldExist,
   validationMiddleware.passwordRequired,
@@ -87,6 +90,7 @@ router.post(
 );
 router.post(
   "/users/login",
+  rateLimitMiddleware.limiter,
   validationMiddleware.emailRequired,
   validationMiddleware.passwordRequired,
   validationMiddleware.emailShouldExist,

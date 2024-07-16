@@ -1,6 +1,6 @@
 import {
   selectUserContributions,
-  selectAllUsersContributions,
+  selectAllContributions,
 } from "../dao/contributionsDao.js";
 import {
   insertNewUser,
@@ -35,7 +35,7 @@ export default class User {
   };
 
   getAllUsersContributions = async () => {
-    return await selectAllUsersContributions();
+    return await selectAllContributions();
   };
 
   getFavoritePlugs = async (userId) => {
