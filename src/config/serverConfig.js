@@ -4,6 +4,7 @@ import dbActions from "../config/dbConfig.js";
 import dataRoutes from "../routes/dataRoutes.js";
 import plugsRoutes from "../routes/plugsRoutes.js";
 import usersRoutes from "../routes/usersRoutes.js";
+import adminsRoutes from "../routes/adminsRoutes.js";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/", plugsRoutes);
 app.use("/", usersRoutes);
 app.use("/", dataRoutes);
+app.use("/", adminsRoutes)
 
 app.get("/", (req, res) => {
   const payload = { code: 200, msg: "Welcome to Rerack's API!" };
