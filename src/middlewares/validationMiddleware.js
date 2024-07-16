@@ -63,6 +63,30 @@ const ownershipRequired = async (req, res, next) => {
   }
 };
 
+const notOwnershipRequired = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const isOwner = (await usersServices.getAllOwners())
+      .map((owner) => +owner.userId)
+      .includes(+userId);
+
+    if (isOwner)
+      return res
+        .status(403)
+        .json({
+          msg: "Forbidden: Cannot perofrm this action on this account",
+        });
+
+    req.userId = userId;
+
+    next();
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ msg: "Not ownership related error", error: error.message });
+  }
+};
+
 const administrationOrAuthenticationRequired = (req, res, next) => {
   try {
     const userIdFromParams = req.params.userId;
@@ -244,6 +268,7 @@ export default {
   tokenShouldBeValid,
   administrationRequired,
   ownershipRequired,
+  notOwnershipRequired,
   administrationOrAuthenticationRequired,
   idsFromTokenAndParamsShouldMatch,
   emailShouldNotExist,

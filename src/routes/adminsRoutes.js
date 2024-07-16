@@ -14,6 +14,7 @@ router.post(
   "/admins/:userId/remove",
   validationMiddleware.tokenRequired,
   validationMiddleware.ownershipRequired,
+  validationMiddleware.notOwnershipRequired,
   adminsController.removeAdmin
 );
 

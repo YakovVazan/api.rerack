@@ -24,8 +24,8 @@ const loginUser = async (req, res) => {
       .map((admin) => admin.email_address)
       .includes(req.user.email);
     const isOwner = (await usersServices.getAllOwners())
-      .map((owner) => owner.userId)
-      .includes(req.user.id);
+      .map((owner) => +owner.userId)
+      .includes(+req.user.id);
     const token = JwtServices.generateUserToken(
       req.user.id,
       isAdmin,

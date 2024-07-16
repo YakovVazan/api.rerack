@@ -102,6 +102,7 @@ router.delete(
   "/users/:userId/delete",
   validationMiddleware.tokenRequired,
   validationMiddleware.administrationOrAuthenticationRequired,
+  validationMiddleware.notOwnershipRequired,
   usersController.deleteUser
 );
 
