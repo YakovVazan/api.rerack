@@ -20,11 +20,15 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const isOwner = (await usersServices.getAllAdmins("email_address"))
+    const isAdmin = (await usersServices.getAllAdmins("email_address"))
       .map((admin) => admin.email_address)
       .includes(req.user.email);
+    const isOwner = (await usersServices.getAllOwners())
+      .map((owner) => owner.userId)
+      .includes(req.user.id);
     const token = JwtServices.generateUserToken(
       req.user.id,
+      isAdmin,
       isOwner,
       req.user.isVerified
     );
@@ -34,6 +38,7 @@ const loginUser = async (req, res) => {
       id: req.user.id,
       name: req.user.name,
       email: req.user.email,
+      isAdmin: isAdmin,
       isOwner: isOwner,
       isVerified: req.user.isVerified,
     });
@@ -163,6 +168,7 @@ const updateUser = async (req, res) => {
     // renew token to remove verification code from it
     const newToken = JwtServices.generateUserToken(
       user.id,
+      req.isAdmin,
       req.isOwner,
       isVerified
     );
@@ -173,6 +179,7 @@ const updateUser = async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
+      isAdmin: req.isAdmin,
       isOwner: req.isOwner,
       isVerified: isVerified,
     });

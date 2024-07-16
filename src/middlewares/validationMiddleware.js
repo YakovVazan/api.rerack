@@ -34,10 +34,10 @@ const tokenShouldBeValid = async (req, res, next) => {
 const administrationRequired = async (req, res, next) => {
   try {
     const decodedToken = JwtServices.verifyToken(req.token);
-    if (!decodedToken.isOwner)
+    if (!decodedToken.isAdmin)
       return res.status(403).json({ msg: "Forbidden: Not Authorized" });
 
-    req.isOwner = decodedToken.isOwner;
+    req.isAdmin = decodedToken.isAdmin;
 
     next();
   } catch (error) {
@@ -47,19 +47,36 @@ const administrationRequired = async (req, res, next) => {
   }
 };
 
-const administrationOrOwnershipRequired = (req, res, next) => {
+const ownershipRequired = async (req, res, next) => {
+  try {
+    const decodedToken = JwtServices.verifyToken(req.token);
+    if (!decodedToken.isOwner)
+      return res.status(403).json({ msg: "Forbidden: Not Authorized" });
+
+    req.isOwner = decodedToken.isOwner;
+
+    next();
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ msg: "Ownership related error", error: error.message });
+  }
+};
+
+const administrationOrAuthenticationRequired = (req, res, next) => {
   try {
     const userIdFromParams = req.params.userId;
     const decodedToken = JwtServices.verifyToken(req.token);
     const userIdFromToken = JwtServices.getUserIdFromToken(req.token);
 
-    if (!decodedToken.isOwner && userIdFromToken !== parseInt(userIdFromParams))
+    if (!decodedToken.isAdmin && userIdFromToken !== parseInt(userIdFromParams))
       return res.status(403).json({
         msg:
           userIdFromToken?.message || "Forbidden: Token does not match user ID",
       });
 
     req.userId = userIdFromParams;
+    req.isAdmin = decodedToken.isAdmin;
     req.isOwner = decodedToken.isOwner;
 
     next();
@@ -226,7 +243,8 @@ export default {
   tokenRequired,
   tokenShouldBeValid,
   administrationRequired,
-  administrationOrOwnershipRequired,
+  ownershipRequired,
+  administrationOrAuthenticationRequired,
   idsFromTokenAndParamsShouldMatch,
   emailShouldNotExist,
   emailShouldExist,

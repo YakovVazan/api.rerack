@@ -3,9 +3,10 @@ import jwt from "jsonwebtoken";
 
 const secretKey = crypto.randomBytes(64).toString("hex");
 
-const generateUserToken = (userId, isOwner, isVerified) => {
+const generateUserToken = (userId, isAdmin, isOwner, isVerified) => {
   const payload = {
     userId,
+    isAdmin,
     isOwner,
     isVerified,
   };

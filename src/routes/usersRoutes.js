@@ -42,21 +42,21 @@ router.post(
 router.get(
   "/users/:userId",
   validationMiddleware.tokenRequired,
-  validationMiddleware.administrationOrOwnershipRequired,
+  validationMiddleware.administrationOrAuthenticationRequired,
   validationMiddleware.userShouldExistById,
   usersController.getUser
 );
 router.put(
   "/users/:userId/edit",
   validationMiddleware.tokenRequired,
-  validationMiddleware.administrationOrOwnershipRequired,
+  validationMiddleware.administrationOrAuthenticationRequired,
   usersController.updateUser
 );
 router.get(
   "/users/:userId/contributions",
   validationMiddleware.tokenRequired,
   validationMiddleware.tokenShouldBeValid,
-  validationMiddleware.administrationOrOwnershipRequired,
+  validationMiddleware.administrationOrAuthenticationRequired,
   validationMiddleware.userShouldExistById,
   usersController.getUserContributions
 );
@@ -64,7 +64,7 @@ router.get(
   "/users/:userId/favorites",
   validationMiddleware.tokenRequired,
   validationMiddleware.tokenShouldBeValid,
-  validationMiddleware.administrationOrOwnershipRequired,
+  validationMiddleware.administrationOrAuthenticationRequired,
   validationMiddleware.userShouldExistById,
   usersController.getFavorites
 );
@@ -72,7 +72,7 @@ router.get(
   "/users/:userId/saved",
   validationMiddleware.tokenRequired,
   validationMiddleware.tokenShouldBeValid,
-  validationMiddleware.administrationOrOwnershipRequired,
+  validationMiddleware.administrationOrAuthenticationRequired,
   validationMiddleware.userShouldExistById,
   usersController.getSaved
 );
@@ -101,7 +101,7 @@ router.post(
 router.delete(
   "/users/:userId/delete",
   validationMiddleware.tokenRequired,
-  validationMiddleware.administrationOrOwnershipRequired,
+  validationMiddleware.administrationOrAuthenticationRequired,
   usersController.deleteUser
 );
 

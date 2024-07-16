@@ -7,11 +7,13 @@ const router = express.Router();
 router.post(
   "/admins/:userId/add",
   validationMiddleware.tokenRequired,
+  validationMiddleware.ownershipRequired,
   adminsController.addAdmin
 );
 router.post(
   "/admins/:userId/remove",
   validationMiddleware.tokenRequired,
+  validationMiddleware.ownershipRequired,
   adminsController.removeAdmin
 );
 
