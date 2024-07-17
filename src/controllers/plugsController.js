@@ -3,6 +3,8 @@ import JwtServices from "../services/JwtServices.js";
 import plugsServices from "../services/plugsServices.js";
 
 const createPlug = async (req, res) => {
+  await plugsServices.validateAndSanitizePlugDetails(req);
+
   const { company, name, src, type } = req.body;
 
   const userId = JwtServices.getUserIdFromToken(req.token);
@@ -28,6 +30,8 @@ const getAllPlugs = async (req, res) => {
 };
 
 const updatePlug = async (req, res) => {
+  await plugsServices.validateAndSanitizePlugDetails(req);
+
   const plugId = req.params.id;
   const { company, name, src, type } = req.body;
 

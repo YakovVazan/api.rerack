@@ -5,7 +5,7 @@ import usersServices from "../services/usersServices.js";
 
 const createUser = async (req, res) => {
   try {
-    await usersServices.validateAndSanitizeUserInput(req);
+    await usersServices.validateAndSanitizeUserRegistration(req);
 
     const { email, name, password } = req.body;
 

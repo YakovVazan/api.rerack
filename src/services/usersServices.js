@@ -12,7 +12,7 @@ const emailExists = async (email) => {
   return users.some((user) => user.email === email);
 };
 
-const validateAndSanitizeUserInput = async (req) => {
+const validateAndSanitizeUserRegistration = async (req) => {
   await Promise.all(
     [
       body("email")
@@ -137,7 +137,7 @@ const deleteUser = async (userId) => {
 
 export default {
   emailExists,
-  validateAndSanitizeUserInput,
+  validateAndSanitizeUserRegistration,
   hashPassword,
   comparePasswords,
   createUser,

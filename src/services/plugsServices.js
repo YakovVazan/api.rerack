@@ -1,6 +1,41 @@
+import { body, validationResult } from "express-validator";
 import Plug from "../models/plugsModel.js";
 
 const plugInstance = new Plug();
+const validateAndSanitizePlugDetails = async (req) => {
+  await Promise.all(
+    [
+      body("company")
+        .isLength({ min: 1 })
+        .withMessage("Company is required")
+        .trim()
+        .escape(),
+      body("name")
+        .isLength({ min: 1 })
+        .withMessage("Name is required")
+        .trim()
+        .escape(),
+      body("src")
+        .isLength({ min: 1, max: 255 })
+        .withMessage("Invalid URL format for img src")
+        .trim(),
+      body("type")
+        .isLength({ min: 1 })
+        .withMessage("Type is required")
+        .trim()
+        .escape(),
+    ].map((validation) => validation.run(req))
+  );
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorsArray = errors.array().map((error) => {
+      return error.msg;
+    });
+
+    return errorsArray;
+  }
+};
 
 const createPlug = async (company, name, src, type, userId) => {
   return await plugInstance.createPlug(company, name, src, type, userId);
@@ -39,6 +74,7 @@ const deletePlug = (userId, plugId) => {
 };
 
 export default {
+  validateAndSanitizePlugDetails,
   createPlug,
   getPlug,
   getAllPlugs,
