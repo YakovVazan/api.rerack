@@ -1,8 +1,8 @@
 import bcryptjs from "bcryptjs";
 import { body, validationResult } from "express-validator";
 import User from "../models/usersModel.js";
-import { selectAllAdmins } from "../dao/adminsDao.js";
 import { selectAllOwners } from "../dao/ownersDao.js";
+import { deleteAdmin, selectAllAdmins } from "../dao/adminsDao.js";
 
 const userInstance = new User();
 
@@ -131,6 +131,8 @@ const deleteUser = async (userId) => {
   if (!userFound) {
     return "No user found with that ID.";
   }
+
+  await deleteAdmin(userId);
 
   return await userInstance.deleteUser(userId);
 };
