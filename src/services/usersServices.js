@@ -103,6 +103,10 @@ const deleteReport = async (reportId) => {
   return await userInstance.deleteReport(reportId);
 };
 
+const replyToReport = async (reportId, adminUserId, response) => {
+  return await userInstance.replyToReport(reportId, adminUserId, response);
+};
+
 const getUserContributions = async (userId) => {
   return await userInstance.getUserContributions(userId);
 };
@@ -171,6 +175,7 @@ export default {
   getUserReports,
   getAllUsersReports,
   deleteReport,
+  replyToReport,
   getUserContributions,
   getAllUsersContributions,
   getFavoritePlugs,

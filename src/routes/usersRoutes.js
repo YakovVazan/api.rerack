@@ -70,15 +70,21 @@ router.get(
   "/users/reports/:reportId",
   validationMiddleware.tokenRequired,
   validationMiddleware.tokenShouldBeValid,
-  validationMiddleware.administrationOrAuthenticationRequired,
+  validationMiddleware.administrationOrAuthenticationRequired, //
   usersController.getReport
 );
 router.post(
-  "/users/reports/add",
+  "/users/reports/report",
   validationMiddleware.tokenRequired,
   validationMiddleware.tokenShouldBeValid,
   validationMiddleware.administrationOrAuthenticationRequired,
   usersController.createReport
+);router.post(
+  "/users/reports/:reportId/reply",
+  validationMiddleware.tokenRequired,
+  validationMiddleware.tokenShouldBeValid,
+  validationMiddleware.administrationRequired,
+  usersController.replyToReport
 );
 router.delete(
   "/users/reports/delete/:reportId",

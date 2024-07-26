@@ -18,6 +18,7 @@ import {
   selectUserReports,
   selectAllReports,
   deleteReport,
+  replyToReport,
 } from "../dao/reportsDao.js";
 
 export default class User {
@@ -55,6 +56,10 @@ export default class User {
 
   deleteReport = async (reportId) => {
     return await deleteReport(reportId);
+  };
+
+  replyToReport = async (reportId, adminUserId, response) => {
+    return await replyToReport(reportId, adminUserId, response);
   };
 
   getUserContributions = async (userId) => {

@@ -192,13 +192,9 @@ const updateUser = async (req, res) => {
 const createReport = async (req, res) => {
   try {
     const { senderUserId, subject, request } = req.body;
-    const report = await usersServices.createReport(
-      senderUserId,
-      subject,
-      request
-    );
+    await usersServices.createReport(senderUserId, subject, request);
 
-    return res.status(200).json(report);
+    return res.status(200).json({ msg: "Report created successfully" });
   } catch (error) {
     return res.status(500).json({ msg: error?.message });
   }
@@ -208,10 +204,12 @@ const getReport = async (req, res) => {
   try {
     let formattedReport;
     const report = (await usersServices.getReport(req.params.reportId))[0];
-    const username = (await selectUser("id", report.senderUserId)).name;
+    const reporterUsername = (await selectUser("id", report.senderUserId)).name;
+    const replierUsername = (await selectUser("id", report.adminUserId))?.name;
 
     formattedReport = report;
-    formattedReport["senderUsername"] = username;
+    formattedReport["senderUsername"] = reporterUsername;
+    formattedReport["adminUsername"] = replierUsername;
 
     return res.status(200).json(formattedReport);
   } catch (error) {
@@ -257,10 +255,24 @@ const getAllUsersReports = async (req, res) => {
 const deleteReport = async (req, res) => {
   try {
     const reportId = req.params.reportId;
-    const reports = await usersServices.deleteReport(reportId);
+    await usersServices.deleteReport(reportId);
 
-    return res.status(200).json(reports);
+    return res.status(200).json({ msg: "Report deleted successfuly" });
   } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
+};
+
+const replyToReport = async (req, res) => {
+  try {
+    const { reportId } = req.params;
+    const { response } = req.body;
+    const adminUserId = await JwtServices.getUserIdFromToken(req.token);
+    await usersServices.replyToReport(reportId, adminUserId, response);
+
+    return res.status(200).json({ msg: "Replied to report successfully" });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ msg: error });
   }
 };
@@ -349,6 +361,7 @@ export default {
   getUserReports,
   getAllUsersReports,
   deleteReport,
+  replyToReport,
   getUserContributions,
   getUsersActivity,
   getFavorites,

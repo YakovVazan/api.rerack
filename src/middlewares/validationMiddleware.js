@@ -71,11 +71,9 @@ const notOwnershipRequired = async (req, res, next) => {
       .includes(+userId);
 
     if (isOwner)
-      return res
-        .status(403)
-        .json({
-          msg: "Forbidden: Cannot perofrm this action on this account",
-        });
+      return res.status(403).json({
+        msg: "Forbidden: Cannot perofrm this action on this account",
+      });
 
     req.userId = userId;
 
@@ -89,9 +87,9 @@ const notOwnershipRequired = async (req, res, next) => {
 
 const administrationOrAuthenticationRequired = (req, res, next) => {
   try {
-    const userIdFromParams = req.params.userId;
     const decodedToken = JwtServices.verifyToken(req.token);
     const userIdFromToken = JwtServices.getUserIdFromToken(req.token);
+    const userIdFromParams = req.params.userId || userIdFromToken;
 
     if (!decodedToken.isAdmin && userIdFromToken !== parseInt(userIdFromParams))
       return res.status(403).json({

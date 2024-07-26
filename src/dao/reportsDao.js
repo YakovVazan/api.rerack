@@ -72,6 +72,15 @@ const deleteReport = async (id) => {
   }
 };
 
+const replyToReport = async (reportId, adminUserId, response) => {
+  const query = `UPDATE reports SET adminUserId =?, response =?, responseDate=CURDATE() WHERE id = ${reportId}`;
+  try {
+    await dbActions.executeQuery(query, [adminUserId, response]);
+  } catch (error) {
+    throw error;
+  }
+};
+
 export {
   insertReport,
   selectReport,
@@ -79,4 +88,5 @@ export {
   selectAllReports,
   updateResponseToReport,
   deleteReport,
+  replyToReport,
 };
