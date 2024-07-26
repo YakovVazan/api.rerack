@@ -189,6 +189,82 @@ const updateUser = async (req, res) => {
   }
 };
 
+const createReport = async (req, res) => {
+  try {
+    const { senderUserId, subject, request } = req.body;
+    const report = await usersServices.createReport(
+      senderUserId,
+      subject,
+      request
+    );
+
+    return res.status(200).json(report);
+  } catch (error) {
+    return res.status(500).json({ msg: error?.message });
+  }
+};
+
+const getReport = async (req, res) => {
+  try {
+    let formattedReport;
+    const report = (await usersServices.getReport(req.params.reportId))[0];
+    const username = (await selectUser("id", report.senderUserId)).name;
+
+    formattedReport = report;
+    formattedReport["senderUsername"] = username;
+
+    return res.status(200).json(formattedReport);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: error });
+  }
+};
+
+const getUserReports = async (req, res) => {
+  try {
+    const reports = await usersServices.getUserReports(req.userId);
+
+    return res.status(200).json(reports);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
+};
+
+const getAllUsersReports = async (req, res) => {
+  try {
+    let formattedReports = [];
+    const reports = await usersServices.getAllUsersReports();
+
+    for (const report of reports) {
+      const user = await selectUser("id", report.senderUserId);
+      formattedReports.push({
+        id: report.id,
+        senderUserId: report.userId,
+        senderUsername: user?.name,
+        subject: report.subject,
+        request: report.request,
+        requestDate: report.requestDate,
+        response: report.response,
+      });
+    }
+
+    return res.status(200).json(formattedReports);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
+};
+
+const deleteReport = async (req, res) => {
+  try {
+    const reportId = req.params.reportId;
+    const reports = await usersServices.deleteReport(reportId);
+
+    return res.status(200).json(reports);
+  } catch (error) {
+    return res.status(500).json({ msg: error });
+  }
+};
+
 const getUserContributions = async (req, res) => {
   try {
     const plugs = await usersServices.getUserContributions(req.userId);
@@ -268,6 +344,11 @@ export default {
   resetPassword,
   verifyUser,
   updateUser,
+  createReport,
+  getReport,
+  getUserReports,
+  getAllUsersReports,
+  deleteReport,
   getUserContributions,
   getUsersActivity,
   getFavorites,

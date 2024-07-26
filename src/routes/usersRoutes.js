@@ -18,6 +18,12 @@ router.get(
   usersController.getUsersActivity
 );
 router.get(
+  "/users/reports",
+  validationMiddleware.tokenRequired,
+  validationMiddleware.administrationRequired,
+  usersController.getAllUsersReports
+);
+router.get(
   "/users/sessions/:userId",
   validationMiddleware.tokenRequired,
   usersController.checkUserSession
@@ -51,6 +57,35 @@ router.put(
   validationMiddleware.tokenRequired,
   validationMiddleware.administrationOrAuthenticationRequired,
   usersController.updateUser
+);
+router.get(
+  "/users/:userId/reports",
+  validationMiddleware.tokenRequired,
+  validationMiddleware.tokenShouldBeValid,
+  validationMiddleware.administrationOrAuthenticationRequired,
+  validationMiddleware.userShouldExistById,
+  usersController.getUserReports
+);
+router.get(
+  "/users/reports/:reportId",
+  validationMiddleware.tokenRequired,
+  validationMiddleware.tokenShouldBeValid,
+  validationMiddleware.administrationOrAuthenticationRequired,
+  usersController.getReport
+);
+router.post(
+  "/users/reports/add",
+  validationMiddleware.tokenRequired,
+  validationMiddleware.tokenShouldBeValid,
+  validationMiddleware.administrationOrAuthenticationRequired,
+  usersController.createReport
+);
+router.delete(
+  "/users/reports/delete/:reportId",
+  validationMiddleware.tokenRequired,
+  validationMiddleware.administrationOrAuthenticationRequired,
+  validationMiddleware.notOwnershipRequired,
+  usersController.deleteReport
 );
 router.get(
   "/users/:userId/contributions",

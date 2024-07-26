@@ -83,6 +83,26 @@ const updateUser = async (id, name, email, hash, isVerified) => {
   return await userInstance.updateUser(id, name, email, hash, isVerified);
 };
 
+const createReport = async (senderUserId, subject, request) => {
+  return await userInstance.createReport(senderUserId, subject, request);
+};
+
+const getReport = async (reportId) => {
+  return await userInstance.getReport(reportId);
+};
+
+const getUserReports = async (userId) => {
+  return await userInstance.getUserReports(userId);
+};
+
+const getAllUsersReports = async () => {
+  return await userInstance.getAllUsersReports();
+};
+
+const deleteReport = async (reportId) => {
+  return await userInstance.deleteReport(reportId);
+};
+
 const getUserContributions = async (userId) => {
   return await userInstance.getUserContributions(userId);
 };
@@ -146,6 +166,11 @@ export default {
   getUser,
   resetPassword,
   updateUser,
+  createReport,
+  getReport,
+  getUserReports,
+  getAllUsersReports,
+  deleteReport,
   getUserContributions,
   getAllUsersContributions,
   getFavoritePlugs,

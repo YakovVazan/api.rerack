@@ -12,6 +12,13 @@ import {
   selectAllUsers,
   dropUser,
 } from "../dao/usersDao.js";
+import {
+  insertReport,
+  selectReport,
+  selectUserReports,
+  selectAllReports,
+  deleteReport,
+} from "../dao/reportsDao.js";
 
 export default class User {
   createUser = async (email, name, hash) => {
@@ -28,6 +35,26 @@ export default class User {
 
   updateUser = async (id, name, email, hash, isVerified) => {
     return await alterUser(id, name, email, hash, isVerified);
+  };
+
+  createReport = async (senderUserId, subject, request) => {
+    return await insertReport(senderUserId, subject, request);
+  };
+
+  getReport = async (reportId) => {
+    return await selectReport(reportId);
+  };
+
+  getUserReports = async (senderUserId) => {
+    return await selectUserReports(senderUserId);
+  };
+
+  getAllUsersReports = async () => {
+    return await selectAllReports();
+  };
+
+  deleteReport = async (reportId) => {
+    return await deleteReport(reportId);
   };
 
   getUserContributions = async (userId) => {
