@@ -28,6 +28,11 @@ router.get(
   validationMiddleware.tokenRequired,
   usersController.checkUserSession
 );
+router.get(
+  "/users/sessions/admins/:userId",
+  validationMiddleware.tokenRequired,
+  validationMiddleware.administrationRequired
+);
 router.post(
   "/users/get_new_password",
   rateLimitMiddleware.limiter,
@@ -79,7 +84,8 @@ router.post(
   validationMiddleware.tokenShouldBeValid,
   validationMiddleware.administrationOrAuthenticationRequired,
   usersController.createReport
-);router.post(
+);
+router.post(
   "/users/reports/:reportId/reply",
   validationMiddleware.tokenRequired,
   validationMiddleware.tokenShouldBeValid,
@@ -125,12 +131,12 @@ router.post(
   usersController.verifyUser
 );
 router.post(
-  "/users/register",
+  "/users/auth/register",
   validationMiddleware.emailShouldNotExist,
   usersController.createUser
 );
 router.post(
-  "/users/login",
+  "/users/auth/login",
   rateLimitMiddleware.limiter,
   validationMiddleware.emailRequired,
   validationMiddleware.passwordRequired,

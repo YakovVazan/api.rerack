@@ -213,8 +213,7 @@ const getReport = async (req, res) => {
 
     return res.status(200).json(formattedReport);
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ msg: error });
+    return res.status(500).json({ msg: "Error fetching report" });
   }
 };
 
