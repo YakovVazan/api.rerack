@@ -91,7 +91,10 @@ const administrationOrAuthenticationRequired = (req, res, next) => {
     const userIdFromToken = JwtServices.getUserIdFromToken(req.token);
     const userIdFromParams = req.params.userId || userIdFromToken;
 
-    if (!decodedToken.isAdmin && userIdFromToken !== parseInt(userIdFromParams))
+    if (
+      !decodedToken.isAdmin &&
+      parseInt(userIdFromToken) !== parseInt(userIdFromParams)
+    )
       return res.status(403).json({
         msg:
           userIdFromToken?.message || "Forbidden: Token does not match user ID",

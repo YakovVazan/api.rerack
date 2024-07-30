@@ -11,9 +11,15 @@ const createUser = async (req, res) => {
     const { email, name, password } = req.body;
 
     const hashedPassword = await usersServices.hashPassword(password);
-    const newUser = await usersServices.createUser(email, name, hashedPassword);
+    const newUserId = await usersServices.createUser(
+      email,
+      name,
+      hashedPassword
+    );
 
-    res.status(201).json(newUser);
+    io.sendNewRegistration(newUserId);
+
+    res.status(201).json(newUserId);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error", msg: error });
   }
@@ -190,21 +196,22 @@ const updateUser = async (req, res) => {
   }
 };
 
-// add sanitations
 const createReport = async (req, res) => {
   try {
+    await usersServices.validateAndSanitizeReport(req);
+
     const { senderUserId, subject, request } = req.body;
-    const newReportId = await usersServices.createReport(
+    const newReport = await usersServices.createReport(
       senderUserId,
       subject,
       request
     );
 
-    io.sendReportToAdmins(newReportId.insertId);
+    io.sendReportToAdmins(newReport.insertId);
 
     return res
       .status(200)
-      .json({ msg: "Report created successfully", id: newReportId.insertId });
+      .json({ msg: "Report created successfully", id: newReport.insertId });
   } catch (error) {
     return res.status(500).json({ msg: error?.message });
   }
@@ -274,10 +281,18 @@ const deleteReport = async (req, res) => {
 
 const replyToReport = async (req, res) => {
   try {
+    await usersServices.validateAndSanitizeReply(req);
+
     const { reportId } = req.params;
     const { response } = req.body;
     const adminUserId = await JwtServices.getUserIdFromToken(req.token);
-    await usersServices.replyToReport(reportId, adminUserId, response);
+    const newReply = await usersServices.replyToReport(
+      reportId,
+      adminUserId,
+      response
+    );
+
+    io.sendReplyToReporter(reportId, newReply[0].senderUserId);
 
     return res.status(200).json({ msg: "Replied to report successfully" });
   } catch (error) {

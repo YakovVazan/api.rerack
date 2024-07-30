@@ -24,12 +24,12 @@ router.get(
   usersController.getAllUsersReports
 );
 router.get(
-  "/users/sessions/:userId",
+  "/users/tokens/check_session",
   validationMiddleware.tokenRequired,
   usersController.checkUserSession
 );
 router.get(
-  "/users/sessions/admins/:userId",
+  "/users/tokens/check_role",
   validationMiddleware.tokenRequired,
   validationMiddleware.administrationRequired
 );
@@ -83,7 +83,7 @@ router.post(
   validationMiddleware.tokenRequired,
   validationMiddleware.tokenShouldBeValid,
   validationMiddleware.administrationOrAuthenticationRequired,
-  usersController.createReport
+  usersController.createReport //
 );
 router.post(
   "/users/reports/:reportId/reply",

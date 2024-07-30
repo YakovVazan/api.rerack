@@ -73,9 +73,11 @@ const deleteReport = async (id) => {
 };
 
 const replyToReport = async (reportId, adminUserId, response) => {
-  const query = `UPDATE reports SET adminUserId =?, response =?, responseDate=CURDATE() WHERE id = ${reportId}`;
+  const updateQuery = `UPDATE reports SET adminUserId =?, response =?, responseDate=CURDATE() WHERE id = ${reportId}`;
+  const selectQuery = `SELECT senderUserId FROM reports WHERE id = ${reportId}`;
   try {
-    await dbActions.executeQuery(query, [adminUserId, response]);
+    await dbActions.executeQuery(updateQuery, [adminUserId, response]);
+    return await dbActions.executeQuery(selectQuery);
   } catch (error) {
     throw error;
   }

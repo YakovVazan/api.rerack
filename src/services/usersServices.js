@@ -83,6 +83,29 @@ const updateUser = async (id, name, email, hash, isVerified) => {
   return await userInstance.updateUser(id, name, email, hash, isVerified);
 };
 
+const validateAndSanitizeReport = async (req) => {
+  await Promise.all(
+    [
+      body("subject")
+        .isLength({ min: 1 })
+        .withMessage("Subject is required")
+        .trim()
+        .escape(),
+      body("request")
+        .isLength({ min: 1 })
+        .withMessage("Request is required")
+        .trim()
+        .escape(),
+    ].map((validation) => validation.run(req))
+  );
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorsArray = errors.array().map((error) => error.msg);
+    throw errorsArray;
+  }
+};
+
 const createReport = async (senderUserId, subject, request) => {
   return await userInstance.createReport(senderUserId, subject, request);
 };
@@ -101,6 +124,24 @@ const getAllUsersReports = async () => {
 
 const deleteReport = async (reportId) => {
   return await userInstance.deleteReport(reportId);
+};
+
+const validateAndSanitizeReply = async (req) => {
+  await Promise.all(
+    [
+      body("response")
+        .isLength({ min: 1 })
+        .withMessage("Response is required")
+        .trim()
+        .escape(),
+    ].map((validation) => validation.run(req))
+  );
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorsArray = errors.array().map((error) => error.msg);
+    throw errorsArray;
+  }
 };
 
 const replyToReport = async (reportId, adminUserId, response) => {
@@ -170,11 +211,13 @@ export default {
   getUser,
   resetPassword,
   updateUser,
+  validateAndSanitizeReport,
   createReport,
   getReport,
   getUserReports,
   getAllUsersReports,
   deleteReport,
+  validateAndSanitizeReply,
   replyToReport,
   getUserContributions,
   getAllUsersContributions,
