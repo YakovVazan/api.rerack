@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import { Socket } from "./socketioConfig.js";
 import dbActions from "../config/dbConfig.js";
 import dataRoutes from "../routes/dataRoutes.js";
 import plugsRoutes from "../routes/plugsRoutes.js";
@@ -14,7 +15,7 @@ app.use(express.json());
 app.use("/", plugsRoutes);
 app.use("/", usersRoutes);
 app.use("/", dataRoutes);
-app.use("/", adminsRoutes)
+app.use("/", adminsRoutes);
 
 app.get("/", (req, res) => {
   const payload = { code: 200, msg: "Welcome to Rerack's API!" };
@@ -31,6 +32,8 @@ app.get("/*", (req, res) => {
 const server = app.listen(port, "0.0.0.0", () => {
   console.log(`Server is listening on port ${port}...`);
 });
+
+export const io = new Socket(server);
 
 process.on("SIGINT", () => {
   console.log("Closing database connection...");

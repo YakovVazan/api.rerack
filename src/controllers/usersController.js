@@ -1,3 +1,4 @@
+import { io } from "../config/serverConfig.js";
 import { selectUser } from "../dao/usersDao.js";
 import JwtServices from "../services/JwtServices.js";
 import emailService from "../services/emailService.js";
@@ -189,12 +190,21 @@ const updateUser = async (req, res) => {
   }
 };
 
+// add sanitations
 const createReport = async (req, res) => {
   try {
     const { senderUserId, subject, request } = req.body;
-    await usersServices.createReport(senderUserId, subject, request);
+    const newReportId = await usersServices.createReport(
+      senderUserId,
+      subject,
+      request
+    );
 
-    return res.status(200).json({ msg: "Report created successfully" });
+    io.sendReportToAdmins(newReportId.insertId);
+
+    return res
+      .status(200)
+      .json({ msg: "Report created successfully", id: newReportId.insertId });
   } catch (error) {
     return res.status(500).json({ msg: error?.message });
   }
