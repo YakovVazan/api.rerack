@@ -9,6 +9,7 @@ const userInstance = new User();
 const emailExists = async (email) => {
   const users = await getAllUsers();
 
+
   return users.some((user) => user.email === email);
 };
 
@@ -169,7 +170,9 @@ const getAllUsers = async () => {
   const adminsIds = (await getAllAdmins("userId"))?.map(
     (admin) => admin.userId
   );
+  // console.log(adminsIds.length);
   const ownersIds = (await getAllOwners())?.map((owner) => owner.userId);
+  // console.log(ownersIds.length);
 
   for (const user of users) {
     user["isAdmin"] = adminsIds.includes(user.id);

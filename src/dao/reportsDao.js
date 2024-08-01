@@ -1,83 +1,76 @@
-import dbActions from "../config/dbConfig.js";
+import { executeQuery } from "../config/dbConfig.js";
 
 const insertReport = async (senderUserId, subject, request) => {
+  const query = `
+    INSERT INTO reports ("senderUserId", "subject", "request", "requestDate")
+    VALUES ($1, $2, $3, CURRENT_DATE)
+  `;
   try {
-    const query = `
-          INSERT INTO reports (senderUserId, subject, request, requestDate)
-          VALUES (?, ?, ?, CURDATE())
-      `;
-
-    return await dbActions.executeQuery(query, [
-      senderUserId,
-      subject,
-      request,
-    ]);
+    return await executeQuery(query, [senderUserId, subject, request]);
   } catch (error) {
     throw error;
   }
 };
 
 const selectReport = async (reportId) => {
+  const query = `SELECT * FROM reports WHERE "id" = $1`;
   try {
-    const query = "SELECT * FROM reports WHERE id =?";
-    return await dbActions.executeQuery(query, [reportId]);
+    return await executeQuery(query, [reportId]);
   } catch (error) {
     throw error;
   }
 };
 
 const selectUserReports = async (senderUserId) => {
+  const query = `SELECT * FROM reports WHERE "senderUserId" = $1`;
   try {
-    const query = "SELECT * FROM reports WHERE senderUserId = ?";
-
-    return await dbActions.executeQuery(query, [senderUserId]);
+    return await executeQuery(query, [senderUserId]);
   } catch (error) {
     throw error;
   }
 };
 
 const selectAllReports = async () => {
+  const query = "SELECT * FROM reports";
   try {
-    const query = "SELECT * FROM reports";
-
-    return await dbActions.executeQuery(query);
+    return await executeQuery(query);
   } catch (error) {
     throw error;
   }
 };
 
 const updateResponseToReport = async (adminUserId, response, reportId) => {
+  const query = `
+    UPDATE reports
+    SET "adminUserId" = $1, "response" = $2, "responseDate" = $3
+    WHERE "id" = $4
+  `;
   try {
-    const query = `
-          UPDATE reports
-          SET adminUserId =?, response =?, responseDate = ?
-          WHERE id =?
-      `;
-
-    await dbActions.executeQuery(query, [
-      adminUserId,
-      response,
-      new Date().toLocaleDateString(),
-      reportId,
-    ]);
-  } catch (error) {}
+    await executeQuery(query, [adminUserId, response, CURRENT_DATE, reportId]);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const deleteReport = async (id) => {
-  const query = `DELETE FROM reports WHERE id = ?`;
+  const query = `DELETE FROM reports WHERE "id" = $1`;
   try {
-    await dbActions.executeQuery(query, [id]);
+    await executeQuery(query, [id]);
   } catch (error) {
     throw error;
   }
 };
 
 const replyToReport = async (reportId, adminUserId, response) => {
-  const updateQuery = `UPDATE reports SET adminUserId =?, response =?, responseDate=CURDATE() WHERE id = ${reportId}`;
-  const selectQuery = `SELECT senderUserId FROM reports WHERE id = ${reportId}`;
+  const updateQuery = `
+    UPDATE reports
+    SET "adminUserId" = $1, "response" = $2, "responseDate" = CURRENT_DATE
+    WHERE "id" = $3
+  `;
+  const selectQuery = `SELECT "senderUserId" FROM reports WHERE "id" = $1`;
   try {
-    await dbActions.executeQuery(updateQuery, [adminUserId, response]);
-    return await dbActions.executeQuery(selectQuery);
+    await executeQuery(updateQuery, [adminUserId, response, reportId]);
+    return await executeQuery(selectQuery, [reportId]);
   } catch (error) {
     throw error;
   }

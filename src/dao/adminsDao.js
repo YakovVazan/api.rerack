@@ -1,4 +1,4 @@
-import dbActions from "../config/dbConfig.js";
+import { executeQuery } from "../config/dbConfig.js";
 
 const validColumnNames = ["*", "email_address", "userId"];
 
@@ -8,31 +8,34 @@ const selectAllAdmins = async (column = "*") => {
   }
 
   try {
-    const query = `SELECT ${column} FROM admins`;
-
-    return await dbActions.executeQuery(query);
+    const query = `SELECT "${column}" FROM admins`;
+    return await executeQuery(query);
   } catch (error) {
     throw error;
   }
 };
 
-const insertAmdin = async (userId, email) => {
+const insertAdmin = async (userId, email) => {
   try {
-    const query = `INSERT INTO admins (email_address, userId) VALUES (?, ?)`;
+    const query = `
+      INSERT INTO admins ("email_address", "userId")
+      VALUES ($1, $2)
+      RETURNING *
+    `;
 
-    return await dbActions.executeQuery(query, [email, userId]);
+    return await executeQuery(query, [email, userId]);
   } catch (error) {
     throw error;
   }
 };
 
 const deleteAdmin = async (userId) => {
-  const query = `DELETE FROM admins WHERE userId = ?`;
+  const query = `DELETE FROM admins WHERE "userId" = $1`;
   try {
-    return await dbActions.executeQuery(query, [userId]);
+    return await executeQuery(query, [userId]);
   } catch (error) {
     throw error;
   }
 };
 
-export { selectAllAdmins, insertAmdin, deleteAdmin };
+export { selectAllAdmins, insertAdmin, deleteAdmin };

@@ -1,17 +1,17 @@
-import dbActions from "../config/dbConfig.js";
+import { executeQuery } from "../config/dbConfig.js";
 
 const validColumnNames = ["type", "time", "userId", "plugId"];
 
 const selectUserContributions = async (userId) => {
   try {
     const query = `
-        SELECT c.*, p.name as plugName
-        FROM contributions c
-        JOIN plugins p ON c.plugId = p.id
-        WHERE c.userId = ?
+      SELECT c.*, p."name" as "plugName"
+      FROM "contributions" c
+      JOIN "plugins" p ON c."plugId" = p."id"
+      WHERE c."userId" = $1
     `;
 
-    return await dbActions.executeQuery(query, [userId]);
+    return await executeQuery(query, [userId]);
   } catch (error) {
     throw error;
   }
@@ -21,7 +21,7 @@ const selectAllContributions = async () => {
   try {
     const query = "SELECT * FROM contributions";
 
-    return await dbActions.executeQuery(query);
+    return await executeQuery(query);
   } catch (error) {
     throw error;
   }
@@ -31,22 +31,24 @@ const updateContributionedDetails = async (plugName, plugId) => {
   try {
     const query = `
         UPDATE contributions
-        SET plugName =?
-        WHERE plugId =?
+        SET "plugName" = $1
+        WHERE "plugId" = $2
     `;
 
-    await dbActions.executeQuery(query, [plugName, plugId]);
-  } catch (error) {}
+    await executeQuery(query, [plugName, plugId]);
+  } catch (error) {
+    // Handle the error
+  }
 };
 
 const insertContribution = async (type, plugName, plugId, userId) => {
   try {
     const query = `
-        INSERT INTO contributions (type, time, plugName, plugId, userId)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO contributions ("type", "time", "plugName", "plugId", "userId")
+        VALUES ($1, $2, $3, $4, $5)
     `;
 
-    const result = await dbActions.executeQuery(query, [
+    const result = await executeQuery(query, [
       type,
       new Date(),
       plugName,
@@ -67,9 +69,9 @@ const deleteContribution = async (column, value) => {
     throw new Error("Invalid column name");
   }
 
-  const query = `DELETE FROM contributions WHERE ${column} = ?`;
+  const query = `DELETE FROM contributions WHERE "${column}" = $1`;
   try {
-    await dbActions.executeQuery(query, [value]);
+    await executeQuery(query, [value]);
   } catch (error) {
     throw error;
   }

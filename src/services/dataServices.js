@@ -2,12 +2,13 @@ import { Parser } from "json2csv";
 import dao from "../dao/dataDao.js";
 
 const getDB = async () => {
-  const { users, plugs, saved, favorites, contributions } =
+  const { users, plugs, saved, reports, favorites, contributions } =
     await dao.downloadDb();
 
   const usersCsv = parseToCsv(users);
   const plugsCsv = parseToCsv(plugs);
   const savedCsv = parseToCsv(saved);
+  const reportsCsv = parseToCsv(reports);
   const favoritesCsv = parseToCsv(favorites);
   const contributionsCsv = parseToCsv(contributions);
 
@@ -15,6 +16,7 @@ const getDB = async () => {
     users: usersCsv,
     plugs: plugsCsv,
     saved: savedCsv,
+    reports: reportsCsv,
     favorites: favoritesCsv,
     contributions: contributionsCsv,
   };

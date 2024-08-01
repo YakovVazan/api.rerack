@@ -1,34 +1,30 @@
-/********************************  
-the DB is hosted on https://freedb.tech/
-available on https://phpmyadmin.freedb.tech/index.php/
- ********************************/
-
-import mysql from "mysql2";
+import pkg from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
+const { Pool } = pkg;
 
-const pool = mysql.createPool({
+const pool = new Pool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 3306,
-  waitForConnections: true,
-  connectionLimit: 5,
-  queueLimit: 0,
+  port: process.env.DB_PORT || 5432,
+  max: 5,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 5000,
 });
 
 const executeQuery = async (query, values = []) => {
-  return new Promise((resolve, reject) => {
-    pool.query(query, values, (err, results) => {
-      if (err) {
-        reject(err);
-        return;
-      }
-      resolve(results);
-    });
-  });
+  const client = await pool.connect();
+  try {
+    const res = await client.query(query, values);
+    return res.rows;
+  } catch (err) {
+    throw err;
+  } finally {
+    client.release();
+  }
 };
 
-export default { pool, executeQuery };
+export { pool, executeQuery };

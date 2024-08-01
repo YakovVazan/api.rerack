@@ -1,42 +1,53 @@
-import dbActions from "../config/dbConfig.js";
 import { selectPlug } from "../dao/plugsDao.js";
+import { executeQuery } from "../config/dbConfig.js";
 import { deleteSaved, selectUserSaved } from "./savedDao.js";
 import { deleteFavorite, selectUserFavorites } from "./favoritesDao.js";
 
 const insertNewUser = async (data) => {
-  const query = "INSERT INTO users SET ?";
+  const query = `
+    INSERT INTO users ("name", "email", "hash", "isVerified")
+    VALUES ($1, $2, $3, $4)
+    RETURNING id
+  `;
   try {
-    const result = await dbActions.executeQuery(query, data);
-    return result.insertId;
+    const result = await executeQuery(query, [
+      data.name,
+      data.email,
+      data.hash,
+      data.isVerified,
+    ]);
+    return result[0].id;
   } catch (error) {
     throw error;
   }
 };
 
 const selectUser = async (factor, identifier) => {
-  const query = `SELECT * FROM users WHERE ${factor} = ?`;
+  const query = `SELECT * FROM users WHERE "${factor}" = $1`;
   try {
-    const [result] = await dbActions.executeQuery(query, [identifier]);
-    return result;
+    const result = await executeQuery(query, [identifier]);
+    return result[0];
   } catch (error) {
     throw error;
   }
 };
 
 const alterHash = async (email, newHash) => {
-  const query = "UPDATE users SET hash =? WHERE email =?";
+  const query = `UPDATE users SET "hash" = $1 WHERE "email" = $2`;
   try {
-    return await dbActions.executeQuery(query, [newHash, email]);
+    return await executeQuery(query, [newHash, email]);
   } catch (error) {
     throw error;
   }
 };
 
 const alterUser = async (id, name, email, hash, isVerified) => {
-  const query =
-    "UPDATE users SET name =?, email =?, hash =?, isVerified =? WHERE id =?";
+  const query = `
+    UPDATE users SET "name" = $1, "email" = $2, "hash" = $3, "isVerified" = $4 
+    WHERE "id" = $5
+  `;
   try {
-    await dbActions.executeQuery(query, [name, email, hash, isVerified, id]);
+    await executeQuery(query, [name, email, hash, isVerified, id]);
     return selectUser("id", id);
   } catch (error) {
     throw error;
@@ -49,7 +60,6 @@ const selectFavoritePlugs = async (userId) => {
     let fullFavoritedPlugs = [];
     let toBeRemoved = [];
 
-    // detect deleted plugins in favorites
     if (userFavorites) {
       for (let item of userFavorites) {
         const plugDetails = await selectPlug("id", item["plugId"]);
@@ -59,7 +69,6 @@ const selectFavoritePlugs = async (userId) => {
       }
     }
 
-    // remove deleted plugs from user's lists
     toBeRemoved.forEach(async (item) => {
       await deleteFavorite(item.plugId, item.userId);
     });
@@ -76,7 +85,6 @@ const selectSavedPlugs = async (userId) => {
     let fullSavedPlugs = [];
     let toBeRemoved = [];
 
-    // detect deleted plugins in saved
     if (userSaved) {
       for (let item of userSaved) {
         const plugDetails = await selectPlug("id", item["plugId"]);
@@ -86,7 +94,6 @@ const selectSavedPlugs = async (userId) => {
       }
     }
 
-    // remove deleted plugs from user's lists
     toBeRemoved.forEach(async (item) => {
       await deleteSaved(item.plugId, item.userId);
     });
@@ -100,7 +107,7 @@ const selectSavedPlugs = async (userId) => {
 const selectAllUsers = async () => {
   const query = "SELECT * FROM users";
   try {
-    const results = await dbActions.executeQuery(query);
+    const results = await executeQuery(query);
     return results;
   } catch (error) {
     throw error;
@@ -108,9 +115,9 @@ const selectAllUsers = async () => {
 };
 
 const dropUser = async (id) => {
-  const query = "DELETE FROM users WHERE id = ?";
+  const query = `DELETE FROM users WHERE "id" = $1`;
   try {
-    await dbActions.executeQuery(query, [id]);
+    await executeQuery(query, [id]);
   } catch (error) {
     throw error;
   }

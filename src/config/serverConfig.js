@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import { Socket } from "./socketioConfig.js";
-import dbActions from "../config/dbConfig.js";
+import { pool } from "../config/dbConfig.js";
 import dataRoutes from "../routes/dataRoutes.js";
 import plugsRoutes from "../routes/plugsRoutes.js";
 import usersRoutes from "../routes/usersRoutes.js";
@@ -44,7 +44,7 @@ process.on("SIGINT", () => {
   });
 
   // Close the database connection
-  dbActions.pool.end((err) => {
+  pool.end((err) => {
     if (err) {
       console.error("Error closing MySQL pool:", err);
       process.exit(1);

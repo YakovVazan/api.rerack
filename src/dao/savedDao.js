@@ -1,40 +1,43 @@
-import dbActions from "../config/dbConfig.js";
+import { executeQuery } from "../config/dbConfig.js";
 
 const insertSaved = async (plugId, userId) => {
+  const query = `
+    INSERT INTO saved ("plugId", "userId")
+    VALUES ($1, $2)
+  `;
   try {
-    const query = `
-          INSERT INTO saved (plugId, userId)
-          VALUES (?, ?)
-      `;
-
-    return await dbActions.executeQuery(query, [plugId, userId]);
+    return await executeQuery(query, [plugId, userId]);
   } catch (error) {
     throw error;
   }
 };
 
 const selectUserSaved = async (userId) => {
+  const query = `
+    SELECT * FROM saved WHERE "userId" = $1
+  `;
   try {
-    const query = `SELECT * FROM saved WHERE userId = ?`;
-    return await dbActions.executeQuery(query, [userId]);
+    return await executeQuery(query, [userId]);
   } catch (error) {
     throw error;
   }
 };
 
 const selectAllSaved = async () => {
+  const query = "SELECT * FROM saved";
   try {
-    const query = "SELECT * FROM saved";
-    return await dbActions.executeQuery(query);
+    return await executeQuery(query);
   } catch (error) {
     throw error;
   }
 };
 
 const deleteSaved = async (plugId, userId) => {
+  const query = `
+    DELETE FROM saved WHERE "plugId" = $1 AND "userId" = $2
+  `;
   try {
-    const query = `DELETE FROM saved WHERE plugId =? AND userId =?`;
-    return await dbActions.executeQuery(query, [plugId, userId]);
+    return await executeQuery(query, [plugId, userId]);
   } catch (error) {
     throw error;
   }
