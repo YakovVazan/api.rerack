@@ -201,17 +201,17 @@ const createReport = async (req, res) => {
     await usersServices.validateAndSanitizeReport(req);
 
     const { senderUserId, subject, request } = req.body;
-    const newReport = await usersServices.createReport(
+    const newReportId = await usersServices.createReport(
       senderUserId,
       subject,
       request
     );
 
-    io.sendReportToAdmins(newReport.insertId);
+    io.sendReportToAdmins(newReportId);
 
     return res
       .status(200)
-      .json({ msg: "Report created successfully", id: newReport.insertId });
+      .json({ msg: "Report created successfully", id: newReportId });
   } catch (error) {
     return res.status(500).json({ msg: error?.message });
   }

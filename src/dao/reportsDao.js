@@ -4,9 +4,12 @@ const insertReport = async (senderUserId, subject, request) => {
   const query = `
     INSERT INTO reports ("senderUserId", "subject", "request", "requestDate")
     VALUES ($1, $2, $3, CURRENT_DATE)
+    RETURNING id
   `;
   try {
-    return await executeQuery(query, [senderUserId, subject, request]);
+    const result = await executeQuery(query, [senderUserId, subject, request]);
+
+    return result[0].id;
   } catch (error) {
     throw error;
   }
