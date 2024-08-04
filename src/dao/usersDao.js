@@ -14,7 +14,7 @@ const insertNewUser = async (data) => {
       data.name,
       data.email,
       data.hash,
-      data.isVerified,
+      false,
     ]);
     return result[0].id;
   } catch (error) {
